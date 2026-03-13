@@ -48,7 +48,7 @@
         .day-header { cursor: pointer; display: flex; align-items: center; justify-content: space-between; transition: background 0.3s; }
         .day-header:hover { background: rgba(255,255,255,0.05); }
         .day-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
-        .day-content.expanded { max-height: 2000px; }
+        .day-content.expanded { max-height: 3000px; }
         
         .meal-tag { padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: 600; }
         .meal-breakfast { background: rgba(251, 191, 36, 0.2); color: #fbbf24; }
@@ -67,6 +67,15 @@
         .custom-marker { background: transparent !important; border: none !important; }
         
         .restaurant-card { background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.2); border-radius: 8px; padding: 12px; margin: 8px 0; }
+        
+        .selling-point { background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(59, 130, 246, 0.1)); border-left: 3px solid #06b6d4; padding: 12px; margin: 8px 0; border-radius: 0 8px 8px 0; }
+        
+        .timing-badge { background: rgba(245, 158, 11, 0.2); color: #fbbf24; padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; display: inline-block; margin: 2px; }
+        
+        .photo-op { background: rgba(236, 72, 153, 0.1); border: 1px dashed rgba(236, 72, 153, 0.3); border-radius: 8px; padding: 8px 12px; margin: 6px 0; font-size: 12px; color: #f472b6; }
+        
+        .dont-miss { background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 8px; padding: 10px; margin: 8px 0; }
+        .dont-miss-title { color: #f87171; font-weight: 600; font-size: 12px; margin-bottom: 4px; }
         
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
@@ -176,9 +185,9 @@
             'Liverpool': [53.4084, -2.9916]
         };
 
-        // 7 TOURS - WHISKY TOUR REMOVED
+        // ENHANCED TOURS WITH DETAILED ITINERARIES FROM WORD DOCUMENT
         const tours = [
-            // TOUR 1: Grand British Isles Explorer (16 Days)
+            // TOUR 1: Grand British Isles Explorer (16 Days) - ENHANCED
             {
                 id: 'grand-british-isles',
                 title: 'Grand British Isles Explorer',
@@ -189,17 +198,17 @@
                 highlights: ['Thornbury Castle', 'Dalhousie Castle', 'Lake District', 'Scottish Highlands', 'Indian Veg Every Meal'],
                 route: ['London', 'Thornbury', 'Birmingham', 'Leeds', 'Windermere', 'Haweswater', 'Helensburgh', 'Edinburgh'],
                 hotels: [
-                    { nights: 3, location: 'London', hotel: 'Kingston Lodge Hotel', type: '4-star', features: 'Indian veg meals available' },
-                    { nights: 2, location: 'Thornbury', hotel: 'Thornbury Castle', type: 'Castle', features: 'Tudor castle, royal heritage' },
+                    { nights: 3, location: 'London', hotel: 'Kingston Lodge Hotel', type: '4-star', features: 'Southwest London base, Indian veg meals available' },
+                    { nights: 2, location: 'Thornbury', hotel: 'Thornbury Castle', type: 'Castle', features: 'Tudor castle, royal heritage, Henry VIII & Anne Boleyn stayed here' },
                     { nights: 1, location: 'Birmingham', hotel: 'Delta Hotels Marriott', type: '4-star', features: 'City centre location' },
-                    { nights: 2, location: 'Leeds', hotel: 'Weetwood Hall Estate', type: 'Manor', features: '17th-century manor' },
-                    { nights: 3, location: 'Windermere', hotel: 'The Ro Hotel', type: '4-star', features: 'Lake views' },
-                    { nights: 1, location: 'Haweswater', hotel: 'The Haweswater Hotel', type: 'Country', features: 'Remote rural location' },
-                    { nights: 2, location: 'Helensburgh', hotel: 'Rosslea Hall Hotel', type: '4-star', features: 'Scottish west coast' },
-                    { nights: 2, location: 'Edinburgh', hotel: 'Dalhousie Castle', type: 'Castle', features: '13th-century castle, falconry' }
+                    { nights: 2, location: 'Leeds', hotel: 'Weetwood Hall Estate', type: 'Manor', features: '17th-century manor, 9-hole golf course' },
+                    { nights: 3, location: 'Windermere', hotel: 'The Ro Hotel', type: '4-star', features: 'Lake views, Bowness-on-Windermere' },
+                    { nights: 1, location: 'Haweswater', hotel: 'The Haweswater Hotel', type: 'Country', features: 'Remote rural location, red squirrels, dark sky stargazing' },
+                    { nights: 2, location: 'Helensburgh', hotel: 'Rosslea Hall Hotel', type: '4-star', features: 'Scottish west coast, sea views over Firth of Clyde' },
+                    { nights: 2, location: 'Edinburgh', hotel: 'Dalhousie Castle', type: 'Castle', features: '13th-century castle, falconry school, Aqueous Spa' }
                 ],
-                description: 'The ultimate UK heritage journey featuring authentic castle stays at Thornbury and Dalhousie. Experience the Lake District, Scottish Highlands, and historic cities with comprehensive Indian vegetarian cuisine throughout.',
-                idealFor: 'Families, heritage enthusiasts, first-time UK visitors',
+                description: 'Embark on an extraordinary 16-day journey through the heart of Britain, where royal heritage meets dramatic landscapes and timeless traditions. Unlike rushed multi-country tours that spend hours on coaches crossing borders, this immersive experience delves deep into England, Scotland, and Wales using our exclusive portfolio of castle hotels and heritage properties. From the Tudor turrets of Thornbury Castle to the ancient stones of Edinburgh, every night is spent in character accommodation that tells its own story. This tour balances iconic sightseeing with authentic local experiences—explore Lake District fells, cruise Scottish lochs, walk York\'s medieval walls, and dine on specially arranged Indian cuisine throughout. With shorter daily drives (1-3 hours maximum) and longer stays in each region, you\'ll return home with genuine connections to British culture rather than just passport stamps.',
+                idealFor: 'Families, heritage enthusiasts, first-time UK visitors wanting comprehensive coverage',
                 color: '#3b82f6',
                 stats: { days: 16, cities: 8, activities: 24, attractions: 18, meals: 45, restaurants: 22 },
                 dietaryInfo: {
@@ -209,26 +218,218 @@
                     prasad: 'Prasad provided at temple visits'
                 },
                 itinerary: [
-                    { day: 1, title: 'Arrival in London', location: 'London', meals: ['Dinner'], activities: ['Heathrow arrival', 'Hotel check-in', 'Welcome dinner at Chokhi Dhani'], description: 'Traditional Indian welcome at London Heathrow. Transfer to hotel. Welcome dinner with Rajasthani cuisine.' },
-                    { day: 2, title: 'Iconic London Tour', location: 'London', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Tower of London', 'Crown Jewels', 'London Eye', 'City tour'], description: 'Full day London sightseeing including Tower of London with Beefeater guide, Crown Jewels, and London Eye.' },
-                    { day: 3, title: 'Lords Cricket & Madame Tussauds', location: 'London', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Lords Stadium tour', 'Madame Tussauds', 'Bicester Village shopping'], description: 'Visit Lords Cricket Stadium, Madame Tussauds with Bollywood stars, and Bicester Village outlet shopping.' },
-                    { day: 4, title: 'Windsor & Thornbury Castle', location: 'Thornbury', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Windsor Castle', 'Eton College', 'Castle check-in'], description: 'Visit Windsor Castle and Eton, then transfer to Thornbury Castle for Tudor castle experience.' },
-                    { day: 5, title: 'Cotswolds & Bath', location: 'Thornbury', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Cotswolds villages', 'Bibury', 'Roman Baths'], description: 'Explore Cotswolds AONB, Bibury, Bourton-on-the-Water, and Bath city with Roman Baths.' },
-                    { day: 6, title: 'Stratford & Birmingham', location: 'Birmingham', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Shakespeare Birthplace', 'Anne Hathaway Cottage', 'Birmingham tour'], description: 'Visit Shakespeare sites in Stratford, then transfer to Birmingham for city orientation.' },
-                    { day: 7, title: 'Peak District & Yorkshire', location: 'Leeds', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Chatsworth House', 'Peak District', 'Weetwood Hall'], description: 'Drive through Peak District, visit Chatsworth House, continue to Leeds and Weetwood Hall Estate.' },
-                    { day: 8, title: 'York Minster & Dales', location: 'Leeds', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['York Minster', 'Medieval walls', 'Yorkshire Dales'], description: 'Explore York Minster, walk medieval walls, visit Shambles, and tour Yorkshire Dales.' },
-                    { day: 9, title: 'Lake District Arrival', location: 'Windermere', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Scenic drive', 'Windermere cruise', 'Beatrix Potter'], description: 'Transfer to Lake District, Windermere Lake cruise, visit Beatrix Potter Hill Top Farm.' },
-                    { day: 10, title: 'Full Day Lake District', location: 'Windermere', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Ambleside', 'Grasmere', 'Wordsworth Cottage', 'Castlerigg Stone Circle'], description: 'Visit Ambleside, Grasmere, Dove Cottage, and ancient Castlerigg Stone Circle.' },
-                    { day: 11, title: 'Ullswater & Haweswater', location: 'Haweswater', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Ullswater Steamers', 'Aira Force waterfall', 'Wildlife spotting'], description: 'Cruise on Ullswater, hike to Aira Force, check-in at remote Haweswater Hotel.' },
-                    { day: 12, title: 'Hadrian Wall & Scotland', location: 'Helensburgh', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Hadrian Wall', 'Roman forts', 'Transfer to Scotland'], description: 'Visit Hadrian Wall UNESCO site, Housesteads Roman Fort, transfer to Glasgow area.' },
-                    { day: 13, title: 'Loch Lomond & Glengoyne', location: 'Helensburgh', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Loch Lomond cruise', 'Luss Village', 'Glengoyne Distillery'], description: 'Cruise on Loch Lomond, visit Luss Village, tour Glengoyne Distillery.' },
-                    { day: 14, title: 'Edinburgh Castle', location: 'Edinburgh', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Dalhousie Castle check-in', 'Edinburgh Castle', 'Royal Mile', 'Falconry'], description: 'Check-in at Dalhousie Castle, visit Edinburgh Castle, walk Royal Mile, falconry display.' },
-                    { day: 15, title: 'Edinburgh Exploration', location: 'Edinburgh', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Arthur Seat', 'New Town', 'Spa', 'Farewell dinner'], description: 'Hike Arthur Seat, explore New Town, optional spa treatment, farewell dinner at The Kitchin.' },
-                    { day: 16, title: 'Departure', location: 'Edinburgh', meals: ['Breakfast'], activities: ['Airport transfer'], description: 'Breakfast at castle, transfer to Edinburgh Airport for departure.' }
+                    { 
+                        day: 1, 
+                        title: 'Arrival in London — The Royal Welcome', 
+                        location: 'London', 
+                        meals: ['Dinner'], 
+                        activities: ['Heathrow arrival', 'Hotel check-in', 'Welcome dinner at Chokhi Dhani'], 
+                        description: 'Traditional Indian welcome with flower garlands at London Heathrow. Transfer to Kingston Lodge Hotel (45 minutes). Check-in and freshen up. Welcome dinner at Chokhi Dhani (Battersea) — authentic Rajasthani cuisine with live folk performances. Orientation meeting with tour manager covering 16-day journey preview.',
+                        timings: ['Arrive: Morning/Afternoon', 'Transfer: 45 min', 'Check-in: Late afternoon', 'Welcome Dinner: 7:00 PM'],
+                        sellingPoints: ['Traditional Indian welcome with tikka and flowers', 'Authentic Rajasthani welcome dinner — not standard hotel food', 'Tour manager introduction with detailed itinerary briefing'],
+                        photoOps: ['Group welcome photo at hotel with flower garlands', 'Chokhi Dhani traditional décor and performances'],
+                        dontMiss: 'The Rajasthani thali at Chokhi Dhani — this sets the standard for all meals to come',
+                        optionalExtras: ['Early check-in guaranteed (room ready regardless of arrival time)', 'Airport lounge access for early arrivals']
+                    },
+                    { 
+                        day: 2, 
+                        title: 'Iconic London — City Tour, Tower of London & London Eye', 
+                        location: 'London', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Tower of London', 'Crown Jewels', 'London Eye', 'City tour'], 
+                        description: 'Full English breakfast at hotel (Indian options available). Depart for panoramic London city tour with expert local guide: Hyde Park, Big Ben, Houses of Parliament, Westminster Abbey (exterior), Buckingham Palace (photo stop for Changing of the Guard, subject to schedule), Trafalgar Square, Piccadilly Circus, Tower Bridge. Lunch at Sagar (Covent Garden) — South Indian vegetarian specialties including dosas and thalis. Afternoon: Tower of London entrance with Yeoman Warder (Beefeater) guide. See Crown Jewels including Kohinoor Diamond. London Eye experience (30-minute rotation, panoramic views). Dinner at Dishoom (King\'s Cross) — Bombay-style cuisine in vintage railway setting.',
+                        timings: ['Breakfast: 7:00 AM', 'City Tour: 8:30 AM - 12:30 PM', 'Lunch: 12:30 PM', 'Tower of London: 2:00 PM', 'London Eye: 4:30 PM', 'Dinner: 7:00 PM'],
+                        sellingPoints: ['Beefeater guide at Tower of London — not just wandering alone', 'See the actual Kohinoor Diamond in the Crown Jewels', 'London Eye fast-track tickets — no queuing', 'Dishoom is London\'s hottest Indian restaurant — impossible to book individually'],
+                        photoOps: ['Beefeater in traditional uniform', 'Crown Jewels display (where photography permitted)', 'London Eye capsule with Big Ben backdrop', 'Tower Bridge from Tower of London grounds'],
+                        dontMiss: 'The Beefeater tour at Tower of London — their stories of imprisonment and execution bring history alive',
+                        optionalExtras: ['Westminster Abbey interior tour (add £25)', 'Thames River cruise add-on', 'Buckingham Palace State Rooms (if open)']
+                    },
+                    { 
+                        day: 3, 
+                        title: 'Lords Cricket, Madame Tussauds & Bicester Village', 
+                        location: 'London', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Lords Cricket Stadium tour', 'Madame Tussauds', 'Bicester Village shopping'], 
+                        description: 'Breakfast at hotel. Depart for Lords Cricket Stadium — "Home of Cricket" guided tour including Long Room (players walk through), players\' dressing rooms, and museum. See the actual Ashes urn. If closed: extended Tower of London visit. Lunch at Gymkhana (Mayfair) — Michelin-starred Indian cuisine (tasting menu available). Afternoon: Madame Tussauds London — wax figures of Bollywood stars (Shah Rukh Khan, Amitabh Bachchan), sports legends, royalty. Transfer to Bicester Village (1 hour) — luxury outlet shopping with discounts up to 60% on premium brands. Evening: Return to London. Dinner at Tayyabs (Whitechapel) — Punjabi grill specialties, famous for lamb chops (veg options excellent).',
+                        timings: ['Breakfast: 7:30 AM', 'Lords Tour: 9:00 AM', 'Lunch: 12:30 PM', 'Madame Tussauds: 2:00 PM', 'Bicester Village: 4:00 PM', 'Dinner: 8:00 PM'],
+                        sellingPoints: ['Walk through the Long Room at Lords — where cricketers enter the field', 'Michelin-starred Gymkhana — normally £100+ per person, included', 'Bicester Village VIP shopping card included for additional 10% off', 'Tayyabs queues are 2+ hours normally — we have reservations'],
+                        photoOps: ['Long Room at Lords with cricket memorabilia', 'With wax figure of favourite Bollywood star', 'Bicester Village designer shopping bags', 'Tayyabs famous grilled dishes'],
+                        dontMiss: 'The Long Room at Lords — this is cricket\'s most hallowed space, where players walk from dressing room to field',
+                        optionalExtras: ['Lords museum private viewing', 'Bicester Village personal shopper service', 'Madame Tussauds VIP fast-track']
+                    },
+                    { 
+                        day: 4, 
+                        title: 'Windsor Castle & Transfer to Thornbury Castle', 
+                        location: 'Thornbury', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Windsor Castle', 'Eton College', 'Castle check-in'], 
+                        description: 'Breakfast and checkout. Visit Windsor Castle — Queen\'s official weekend residence, State Apartments, St George\'s Chapel (where Harry & Meghan married), Queen\'s Dolls\' House. Walk through historic Eton College town — where Princes William and Harry studied. Lunch at The Mango Tree (Windsor) — contemporary Indian cuisine. Afternoon: Scenic drive to Thornbury (2.5 hours). Check-in at Thornbury Castle — your Tudor castle hotel where Henry VIII and Anne Boleyn once stayed. Explore castle grounds, wine cellar, and ramparts. Evening: Royal banquet-style dinner at Thornbury Castle with Indian vegetarian options arranged by castle chef. Sleep in a real castle — not a hotel styled like one.',
+                        timings: ['Breakfast: 7:00 AM', 'Windsor Castle: 8:30 AM', 'Lunch: 12:30 PM', 'Transfer: 2:00 PM (2.5 hrs)', 'Castle check-in: 4:30 PM', 'Dinner: 7:30 PM'],
+                        sellingPoints: ['Windsor Castle is the Queen\'s actual residence — working royal palace', 'Thornbury Castle is the only Tudor castle you can sleep in — Henry VIII slept here', 'Castle dinner in the original dining hall — not a modern restaurant', 'Walk the same ramparts Henry VIII walked'],
+                        photoOps: ['Changing of Guard at Windsor (if scheduled)', 'Windsor Castle State Apartments gold ceilings', 'Thornbury Castle exterior — Tudor architecture', 'Castle bedroom with four-poster bed'],
+                        dontMiss: 'Walking the castle ramparts at sunset — views over Gloucestershire countryside are magical',
+                        optionalExtras: ['Windsor Castle State Apartments private tour', 'Champagne afternoon tea in castle gardens', 'Wine cellar private tasting']
+                    },
+                    { 
+                        day: 5, 
+                        title: 'Cotswolds Villages, Bath & Castle Relaxation', 
+                        location: 'Thornbury', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Cotswolds villages', 'Bibury', 'Roman Baths'], 
+                        description: 'Breakfast at castle. Drive through Cotswolds Area of Outstanding Natural Beauty — England\'s most picturesque countryside. Visit Bibury — see Arlington Row, the most photographed cottages in England. Continue to Bourton-on-the-Water — "Venice of the Cotswolds" with low stone bridges. Lunch at Rajpoot (Bath) — traditional curries and tandoori. Afternoon: Bath city tour — Roman Baths (ancient sacred site with thermal waters), Royal Crescent (Georgian architecture masterpiece), Bath Abbey. Return to Thornbury Castle. Evening: Free time to enjoy castle amenities — explore gardens, read in library, or simply absorb the historic atmosphere. Dinner at castle with Indian vegetarian options.',
+                        timings: ['Breakfast: 8:00 AM', 'Cotswolds: 9:30 AM', 'Lunch: 1:00 PM', 'Bath tour: 2:30 PM', 'Return: 5:30 PM', 'Dinner: 7:30 PM'],
+                        sellingPoints: ['Bibury\'s Arlington Row appears on UK passports — iconic England', 'Roman Baths are 2,000 years old — walk where Romans walked', 'Bath is a UNESCO World Heritage city — entire city protected', 'Evening at leisure in castle — no rushing, pure relaxation'],
+                        photoOps: ['Arlington Row cottages with river reflection', 'Bourton-on-the-Water stone bridges', 'Roman Baths thermal pool with steam', 'Bath Royal Crescent panoramic view'],
+                        dontMiss: 'The Roman Baths at Bath — the thermal waters still run, and you can see the ancient Roman engineering',
+                        optionalExtras: ['Bath Thermae Spa rooftop pool experience', 'Cotswolds village walking tour with local guide', 'Castle falconry display']
+                    },
+                    { 
+                        day: 6, 
+                        title: 'Stratford-upon-Avon, Birmingham Arrival', 
+                        location: 'Birmingham', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Shakespeare Birthplace', 'Anne Hathaway Cottage', 'Birmingham tour'], 
+                        description: 'Breakfast and checkout. Visit Stratford-upon-Avon — Shakespeare\'s Birthplace (restored 16th-century house), Anne Hathaway\'s Cottage (thatched-roof romantic hideaway), Holy Trinity Church (Shakespeare\'s grave). Lunch at The Spice Kitchen (Stratford) — Indian fusion cuisine. Afternoon: Transfer to Birmingham (45 minutes). Check-in at Delta Hotels by Marriott Birmingham. Orientation tour of Birmingham: Bullring Shopping Centre (Selfridges building), Grand Central station, Jewellery Quarter (where 40% of UK jewellery is made). Evening: Dinner at Pushkar (Birmingham) — modern Indian fine dining with innovative presentation.',
+                        timings: ['Breakfast: 7:30 AM', 'Stratford: 9:00 AM', 'Lunch: 12:30 PM', 'Transfer: 2:00 PM', 'Birmingham tour: 3:30 PM', 'Dinner: 7:00 PM'],
+                        sellingPoints: ['Shakespeare\'s actual birthplace — see the room where he was born', 'Anne Hathaway\'s Cottage is the most romantic house in England', 'Birmingham Jewellery Quarter — buy gold at trade prices', 'Pushkar is Birmingham\'s finest Indian restaurant'],
+                        photoOps: ['Shakespeare Birthplace timber-framed exterior', 'Anne Hathaway\'s Cottage gardens', 'Birmingham Bullring modern architecture', 'Jewellery Quarter traditional workshops'],
+                        dontMiss: 'Shakespeare\'s Birthplace — the room where the world\'s greatest playwright was born and raised',
+                        optionalExtras: ['Royal Shakespeare Theatre backstage tour', 'Jewellery Quarter gold workshop visit', 'Birmingham Canal heritage boat trip']
+                    },
+                    { 
+                        day: 7, 
+                        title: 'Peak District, Chatsworth House & Yorkshire', 
+                        location: 'Leeds', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Chatsworth House', 'Peak District', 'Weetwood Hall'], 
+                        description: 'Breakfast and checkout. Drive through Peak District National Park — England\'s first national park, dramatic moorlands and dales. Visit Chatsworth House — "Palace of the Peak", home of Duke and Duchess of Devonshire. Stately home interiors, world-famous gardens, farm shop with local delicacies. Lunch at Saffron (Derby) — North Indian specialties. Afternoon: Continue to Leeds (1.5 hours). Check-in at Weetwood Hall Estate — your 17th-century manor house hotel set in parkland. Explore grounds and 9-hole golf course. Evening: Dinner at Aagrah (Leeds) — Yorkshire-based Indian chain founded by immigrants, excellent vegetarian selection.',
+                        timings: ['Breakfast: 7:00 AM', 'Peak District: 8:30 AM', 'Chatsworth House: 10:00 AM', 'Lunch: 1:00 PM', 'Transfer: 2:30 PM', 'Check-in: 4:30 PM', 'Dinner: 7:00 PM'],
+                        sellingPoints: ['Chatsworth House is the UK\'s most visited stately home — stunning interiors', 'Peak District drives are spectacular — featured in Pride and Prejudice film', 'Weetwood Hall is a real manor house — not a modern hotel', 'Aagrah is Yorkshire\'s most famous Indian restaurant chain'],
+                        photoOps: ['Chatsworth House exterior with fountains', 'Peak District heather moorlands', 'Weetwood Hall Jacobean architecture', 'Aagrah famous silver thali presentation'],
+                        dontMiss: 'Chatsworth House gardens — the Cascade waterfall and maze are world-class',
+                        optionalExtras: ['Chatsworth House farm shop tasting', 'Peak District guided walk', 'Weetwood Hall whisky tasting']
+                    },
+                    { 
+                        day: 8, 
+                        title: 'York Minster, Medieval Walls & Yorkshire Dales', 
+                        location: 'Leeds', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['York Minster', 'Medieval walls', 'Yorkshire Dales'], 
+                        description: 'Breakfast at hotel. Drive to York (45 minutes). York Minster cathedral tour — largest Gothic cathedral in Northern Europe, Great East Window (size of tennis court), Undercroft (Roman ruins beneath cathedral), optional tower climb (275 steps) for city views. Walk medieval city walls — best preserved in England, 2-mile circuit with views. Shambles street — inspiration for Diagon Alley, overhanging timber-framed shops. Lunch at Mumbai Lounge (York) — authentic Mumbai street food. Afternoon: Yorkshire Dales scenic drive: Bolton Abbey (ruined priory by river), Aysgarth Falls (waterfall walks), Hawes (Wensleydale cheese tasting — "Wallace and Gromit" cheese). Evening: Return to Weetwood Hall. Dinner at hotel with Indian vegetarian options arranged.',
+                        timings: ['Breakfast: 7:30 AM', 'York: 9:00 AM', 'York Minster: 9:30 AM', 'Lunch: 12:30 PM', 'Yorkshire Dales: 2:00 PM', 'Return: 6:00 PM', 'Dinner: 7:30 PM'],
+                        sellingPoints: ['York Minster is the largest cathedral in UK — breathtaking scale', 'Medieval walls are 700 years old — walk where medieval guards walked', 'Aysgarth Falls featured in Robin Hood Prince of Thieves', 'Wensleydale cheese tasting at source — fresh from the dairy'],
+                        photoOps: ['York Minster Rose Window from inside', 'Walking medieval walls with city views', 'Shambles street overhanging buildings', 'Aysgarth Falls cascades'],
+                        dontMiss: 'The Great East Window at York Minster — the largest expanse of medieval stained glass in the world',
+                        optionalExtras: ['York Minster tower climb', 'York Ghost Tour evening walk', 'Wensleydale cheese making demonstration']
+                    },
+                    { 
+                        day: 9, 
+                        title: 'Lake District Arrival, Windermere Cruise', 
+                        location: 'Windermere', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Scenic drive', 'Windermere cruise', 'Beatrix Potter'], 
+                        description: 'Breakfast and checkout. Scenic drive to Lake District (2 hours) — UNESCO World Heritage Site, England\'s largest national park. Check-in at The Ro Hotel, Windermere — prime location in Bowness-on-Windermere with lake views. Lunch at The Cottage (Bowness) — lakeside Indian cuisine. Afternoon: Windermere Lake cruise (steam yacht or modern cruiser) — England\'s longest lake, surrounded by fells. Visit Beatrix Potter\'s Hill Top Farm — where she wrote Peter Rabbit, preserved exactly as she left it. Orrest Head viewpoint walk — panoramic views of lake and mountains. Evening: Dinner at Bombay Spice (Windermere) — traditional curries in cosy setting.',
+                        timings: ['Breakfast: 7:30 AM', 'Transfer: 8:30 AM (2 hrs)', 'Check-in: 10:30 AM', 'Lunch: 12:00 PM', 'Windermere cruise: 2:00 PM', 'Beatrix Potter: 4:00 PM', 'Dinner: 7:00 PM'],
+                        sellingPoints: ['Lake District is UNESCO protected — natural beauty guaranteed', 'Windermere cruise on actual lake — surrounded by mountains on all sides', 'Beatrix Potter\'s house is a time capsule — her belongings exactly as left', 'The Ro Hotel is in Bowness — the heart of the Lake District'],
+                        photoOps: ['Windermere from Orrest Head summit', 'Beatrix Potter Hill Top Farm exterior', 'Steam yacht on lake with fells behind', 'Bowness Bay at sunset'],
+                        dontMiss: 'The view from Orrest Head — this is the panorama that made Beatrix Potter fall in love with the Lake District',
+                        optionalExtras: ['Windermere steam yacht private charter', 'Beatrix Potter garden tour', 'Lake District gin tasting']
+                    },
+                    { 
+                        day: 10, 
+                        title: 'Full Day Lake District — Ambleside, Grasmere, Keswick', 
+                        location: 'Windermere', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Ambleside', 'Grasmere', 'Wordsworth Cottage', 'Castlerigg Stone Circle'], 
+                        description: 'Breakfast at hotel. Drive to Ambleside — Bridge House (tiny house over stream), Waterhead pier. Continue to Grasmere — Dove Cottage (William Wordsworth\'s home where he wrote "I wandered lonely as a cloud"), Wordsworth Museum, Grasmere Gingerbread Shop (unique recipe since 1854). Lunch at Kathmandu (Ambleside) — Himalayan cuisine with Indian options. Afternoon: Derwentwater Lake cruise from Keswick, Castlerigg Stone Circle (5,000-year-old stone circle with mountain backdrop — more atmospheric than Stonehenge), Keswick town exploration. Evening: Return to Windermere. Dinner at The Royal Oak (Bowness) — extensive vegetarian menu, local favourite.',
+                        timings: ['Breakfast: 8:00 AM', 'Ambleside: 9:30 AM', 'Grasmere: 11:00 AM', 'Lunch: 1:00 PM', 'Derwentwater: 2:30 PM', 'Castlerigg: 4:30 PM', 'Dinner: 7:00 PM'],
+                        sellingPoints: ['Dove Cottage is where Wordsworth wrote his most famous poetry', 'Grasmere Gingerbread is unique — nowhere else in world makes it this way', 'Castlerigg Stone Circle is 1,000 years older than Stonehenge and free to visit', 'Derwentwater is surrounded by mountains on all sides — spectacular'],
+                        photoOps: ['Bridge House Ambleside', 'Dove Cottage garden', 'Castlerigg Stone Circle with mountains', 'Derwentwater with catamaran'],
+                        dontMiss: 'Castlerigg Stone Circle at sunset — the mountain backdrop makes this more magical than Stonehenge, and you can touch the stones',
+                        optionalExtras: ['Wordsworth Trust manuscript viewing', 'Grasmere gingerbread making class', 'Derwentwater rowing boat hire']
+                    },
+                    { 
+                        day: 11, 
+                        title: 'Ullswater, Haweswater & Rural Retreat', 
+                        location: 'Haweswater', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Ullswater Steamers', 'Aira Force waterfall', 'Wildlife spotting'], 
+                        description: 'Breakfast at hotel. Drive to Ullswater — England\'s most beautiful lake according to Wordsworth. Ullswater Steamers cruise to Howtown — traditional wooden launch boats. Optional: hike to Aira Force waterfall (50ft cascade through woodland, National Trust site). Lunch at The Haweswater Hotel (your next hotel) — Indian vegetarian options arranged. Afternoon: Check-in at The Haweswater Hotel — remote rural retreat in valley with no phone signal, perfect digital detox. Red squirrel spotting (native population), peregrine falcon watching, dark sky stargazing (minimal light pollution). Evening: Dinner at The Haweswater Hotel with Indian vegetarian options. Stargazing with hot chocolate — Milky Way visible to naked eye.',
+                        timings: ['Breakfast: 8:00 AM', 'Ullswater: 9:30 AM', 'Cruise: 10:30 AM', 'Aira Force: 12:00 PM', 'Lunch: 1:30 PM', 'Check-in: 3:00 PM', 'Dinner: 7:00 PM'],
+                        sellingPoints: ['Ullswater is the most beautiful lake in England — Wordsworth\'s favourite', 'Haweswater Hotel is completely remote — no traffic noise, pure peace', 'Red squirrels are endangered — this is one of few places to see them', 'Dark sky stargazing — see the Milky Way clearly'],
+                        photoOps: ['Ullswater Steamers with mountain reflection', 'Aira Force waterfall', 'Red squirrel feeding', 'Night sky with stars'],
+                        dontMiss: 'The red squirrels at Haweswater — they come right up to the hotel garden, and this is one of the last places in England to see them',
+                        optionalExtras: ['Ullswater steamer first-class lounge', 'Guided red squirrel walk with ranger', 'Night sky photography workshop']
+                    },
+                    { 
+                        day: 12, 
+                        title: 'Hadrian\'s Wall, Transfer to Scotland', 
+                        location: 'Helensburgh', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Hadrian\'s Wall', 'Roman forts', 'Transfer to Scotland'], 
+                        description: 'Breakfast and checkout. Visit Hadrian\'s Wall UNESCO World Heritage Site — 73-mile Roman wall built AD 122. Birdoswald Roman Fort (best preserved), Housesteads Roman Fort (complete layout visible), Sycamore Gap (famous tree in wall dip, featured in Robin Hood film). Lunch at Spice Hut (Carlisle) — Punjabi cuisine. Afternoon: Scenic drive to Glasgow area (2.5 hours). Check-in at Rosslea Hall Hotel, Helensburgh — coastal location with sea views over Firth of Clyde. Evening: Dinner at Dakhin (Glasgow) — South Indian specialties, dosas and idlis. Explore Helensburgh seafront promenade.',
+                        timings: ['Breakfast: 7:30 AM', 'Hadrian\'s Wall: 9:00 AM', 'Lunch: 12:30 PM', 'Transfer: 1:30 PM (2.5 hrs)', 'Check-in: 4:00 PM', 'Dinner: 7:00 PM'],
+                        sellingPoints: ['Hadrian\'s Wall is a UNESCO site — walk the actual Roman wall', 'Housesteads Fort is the most complete Roman fort in Britain', 'Rosslea Hall has sea views — wake up to Firth of Clyde', 'Dakhin is Glasgow\'s best South Indian restaurant'],
+                        photoOps: ['Hadrian\'s Wall stretching over hills', 'Sycamore Gap tree', 'Roman fort ruins', 'Rosslea Hall sea view'],
+                        dontMiss: 'Walking on Hadrian\'s Wall itself at Housesteads — you can stand on the actual stones Romans placed 1,900 years ago',
+                        optionalExtras: ['Hadrian\'s Wall Path guided walk', 'Roman reenactor demonstration', 'Helensburgh Hill walk for sunset views']
+                    },
+                    { 
+                        day: 13, 
+                        title: 'Loch Lomond, Luss Village & Glengoyne', 
+                        location: 'Helensburgh', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Loch Lomond cruise', 'Luss Village', 'Glengoyne Distillery'], 
+                        description: 'Breakfast at hotel. Drive to Loch Lomond (30 minutes) — largest lake in Great Britain by surface area. Cruise on Loch Lomond from Balloch to Luss — "bonnie banks" from the song. Luss Village — chocolate-box cottages, historic church, beach. Lunch at The Luss Seafood Bar (packed Indian lunch arranged as alternative). Afternoon: Glengoyne Distillery tour — whisky making process, warehouse tasting (non-alcoholic options and soft drinks for children available). Drive through Trossachs National Park — "Highlands in Miniature", dramatic scenery. Evening: Return to Rosslea Hall. Dinner at hotel with Indian vegetarian options arranged. Optional evening walk to Helensburgh pier.',
+                        timings: ['Breakfast: 8:00 AM', 'Loch Lomond: 9:30 AM', 'Cruise: 10:30 AM', 'Luss: 12:00 PM', 'Glengoyne: 2:00 PM', 'Return: 5:00 PM', 'Dinner: 7:30 PM'],
+                        sellingPoints: ['Loch Lomond is the largest lake in UK — surrounded by mountains', 'Luss Village is picture-perfect — thatched cottages on beach', 'Glengoyne Distillery tour includes tasting — understand Scotch whisky', 'Trossachs is called "Highlands in Miniature" — all scenery in one place'],
+                        photoOps: ['Loch Lomond with Ben Lomond mountain', 'Luss Village cottages', 'Glengoyne Distillery stills', 'Trossachs mountain pass'],
+                        dontMiss: 'The view from Loch Lomond cruise with Ben Lomond mountain behind — this is Scotland\'s most photographed view',
+                        optionalExtras: ['Loch Lomond seaplane experience', 'Glengoyne private cask tasting', 'Trossachs steam train journey']
+                    },
+                    { 
+                        day: 14, 
+                        title: 'Edinburgh Castle, Royal Mile & Dalhousie Castle', 
+                        location: 'Edinburgh', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Dalhousie Castle check-in', 'Edinburgh Castle', 'Royal Mile', 'Falconry'], 
+                        description: 'Breakfast and checkout. Transfer to Edinburgh (1.5 hours). Check-in at Dalhousie Castle — your 13th-century castle hotel with falconry school and Aqueous Spa. Lunch at Mother India (Edinburgh) — contemporary Indian cuisine, local favourite. Afternoon: Edinburgh Castle — Crown Jewels of Scotland (including Stone of Destiny), Great Hall, St Margaret\'s Chapel (oldest building in Edinburgh), National War Museum. Royal Mile walk — from Castle to Holyrood Palace, St Giles\' Cathedral (Thistle Chapel), historic closes (alleyways). Evening: Return to Dalhousie Castle. Falconry display — handle hawks, owls, and eagles with expert falconers. Castle dinner with Indian vegetarian options. Optional spa treatment in Aqueous Spa (hydrotherapy pool, sauna).',
+                        timings: ['Breakfast: 7:30 AM', 'Transfer: 8:30 AM', 'Check-in: 10:00 AM', 'Lunch: 12:30 PM', 'Edinburgh Castle: 2:00 PM', 'Royal Mile: 4:00 PM', 'Dinner: 7:00 PM'],
+                        sellingPoints: ['Dalhousie Castle is a 13th-century fortress — moat, drawbridge, towers', 'Edinburgh Castle houses the Scottish Crown Jewels — see the actual crowns', 'Royal Mile is 1,000 years old — walk the route of kings', 'Falconry at Dalhousie — handle birds of prey in castle grounds'],
+                        photoOps: ['Edinburgh Castle from below', 'Scottish Crown Jewels', 'Royal Mile cobblestones', 'Falconry with owl on arm', 'Dalhousie Castle drawbridge'],
+                        dontMiss: 'The Scottish Crown Jewels at Edinburgh Castle — including the Stone of Destiny used for coronations of Scottish kings for 1,000 years',
+                        optionalExtras: ['Edinburgh Castle after-hours private tour', 'Royal Mile underground vaults tour', 'Dalhousie Spa thermal suite']
+                    },
+                    { 
+                        day: 15, 
+                        title: 'Edinburgh Exploration, Arthur\'s Seat & Leisure', 
+                        location: 'Edinburgh', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Arthur\'s Seat', 'New Town', 'Spa', 'Farewell dinner'], 
+                        description: 'Breakfast at castle. Hike to Arthur\'s Seat — extinct volcano, panoramic 360° views of Edinburgh, Holyrood Park. Alternative: Scottish National Gallery (masterpieces including Titian, Rembrandt, Turner). New Town exploration: Princes Street (shopping), Scott Monument (Victorian Gothic), George Street (Georgian architecture), Charlotte Square. Lunch at Dishoom Edinburgh — Bombay café culture, famous for bacon naan roll (veg options excellent). Afternoon: Day at Leisure — options: Aqueous Spa treatment (book ahead), shopping at Jenners (historic department store), Royal Yacht Britannia visit (Queen\'s floating palace), additional castle exploration. Evening: Farewell dinner at The Kitchin (Michelin-starred, Indian-influenced Scottish cuisine) OR castle banquet with Indian options. Celebrate completion of 16-day journey.',
+                        timings: ['Breakfast: 8:00 AM', 'Arthur\'s Seat: 9:30 AM', 'New Town: 12:00 PM', 'Lunch: 1:00 PM', 'Leisure time: 2:30 PM', 'Farewell Dinner: 7:30 PM'],
+                        sellingPoints: ['Arthur\'s Seat is an extinct volcano in city centre — unique geology', 'The Kitchin is Michelin-starred — normally impossible to book', 'Dishoom Edinburgh is the Scottish outpost of London\'s favourite Indian', 'Farewell dinner celebrates 16 days of memories'],
+                        photoOps: ['Arthur\'s Seat summit panorama', 'Scott Monument Gothic spire', 'Dishoom interior vintage style', 'Farewell dinner group photo'],
+                        dontMiss: 'The view from Arthur\'s Seat — the only place to see all of Edinburgh at once, from castle to sea',
+                        optionalExtras: ['Arthur\'s Seat guided geology walk', 'Royal Yacht Britannia private tour', 'The Kitchin chef\'s table experience']
+                    },
+                    { 
+                        day: 16, 
+                        title: 'Departure from Edinburgh', 
+                        location: 'Edinburgh', 
+                        meals: ['Breakfast'], 
+                        activities: ['Airport transfer'], 
+                        description: 'Breakfast at castle. Optional morning walk in Dalhousie grounds — see the castle in morning light, say goodbye to falconry birds. Transfer to Edinburgh Airport (30 minutes). Departure flights to India with memories of 16 extraordinary days, 8 cities, 2 castles, and countless experiences. Tour manager assists with check-in and baggage. Farewell gifts: Scottish shortbread, castle postcards, photo USB.',
+                        timings: ['Breakfast: 7:30 AM', 'Morning walk: 8:30 AM', 'Transfer: 10:00 AM', 'Flight: Check with airline'],
+                        sellingPoints: ['Morning castle walk — see Dalhousie in golden light', 'Tour manager assists with airport check-in', 'Farewell gifts included', 'End of comprehensive UK journey'],
+                        photoOps: ['Final castle morning shot', 'Group farewell photo', 'Edinburgh Airport departure'],
+                        dontMiss: 'One last walk around Dalhousie Castle grounds — morning light on the 13th-century stones is magical',
+                        optionalExtras: ['Edinburgh Airport lounge access', 'Extra night in Edinburgh (add £200)', 'Private transfer upgrade']
+                    }
                 ]
             },
 
-            // TOUR 2: London, Paris & English Castles (7 Days)
+            // TOUR 2: London, Paris & English Castles (7 Days) - ENHANCED
             {
                 id: 'london-paris-castles',
                 title: 'London, Paris & English Castles',
@@ -239,27 +440,111 @@
                 highlights: ['Eiffel Tower', 'Thornbury Castle', 'Windsor Castle', 'Eurostar', 'Disneyland Paris'],
                 route: ['Paris', 'Thornbury', 'London'],
                 hotels: [
-                    { nights: 3, location: 'Paris', hotel: 'The Jangle Hotel CDG', type: '4-star', features: 'Airport location' },
-                    { nights: 1, location: 'Thornbury', hotel: 'Thornbury Castle', type: 'Castle', features: 'Tudor castle, Henry VIII history' },
-                    { nights: 3, location: 'London', hotel: 'Kingston Lodge Hotel', type: '4-star', features: 'Southwest London base' }
+                    { nights: 3, location: 'Paris', hotel: 'The Jangle Hotel CDG', type: '4-star', features: 'Airport location, easy Disney access' },
+                    { nights: 1, location: 'Thornbury', hotel: 'Thornbury Castle', type: 'Castle', features: 'Tudor castle, Henry VIII & Anne Boleyn history' },
+                    { nights: 3, location: 'London', hotel: 'Kingston Lodge Hotel', type: '4-star', features: 'Southwest London base, Indian veg meals' }
                 ],
-                description: 'Experience continental romance and British heritage. Begin with 3 nights in Paris including Disneyland, then cross the Channel for your exclusive castle stay at Thornbury before concluding in London.',
-                idealFor: 'Couples, families with children, first-time Europe visitors',
+                description: 'Experience the perfect fusion of continental romance and British heritage on this sophisticated 7-day journey connecting two of the world\'s greatest cities. Unlike standard tours that rush between capitals with minimal stops, this itinerary includes an exclusive night at Thornbury Castle—a genuine Tudor fortress where Henry VIII and Anne Boleyn once stayed—creating a heritage experience no competitor can match. Begin with three nights in Paris exploring iconic landmarks, cruising the Seine, and experiencing Disneyland magic. Then cross the Channel for your castle stay before concluding in London with royal sights, cricket heritage, and world-class shopping. With Indian vegetarian cuisine arranged throughout and carefully selected restaurants in both capitals, this tour offers the cultural richness of Paris combined with the historic depth of England, all while staying in character accommodation that elevates every moment.',
+                idealFor: 'Couples, families with children, first-time Europe visitors, those wanting Paris + UK combination',
                 color: '#ec4899',
                 stats: { days: 7, cities: 3, activities: 10, attractions: 8, meals: 18, restaurants: 6 },
                 dietaryInfo: { standard: '100% Indian Vegetarian', jain: 'Jain options available' },
                 itinerary: [
-                    { day: 1, title: 'Arrival Paris', location: 'Paris', meals: ['Dinner'], activities: ['CDG arrival', 'Hotel check-in', 'Welcome dinner'], description: 'Arrive at Charles de Gaulle, transfer to hotel, welcome dinner at Saravanaa Bhavan.' },
-                    { day: 2, title: 'Paris City Tour', location: 'Paris', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Eiffel Tower', 'Seine cruise', 'Champs-Élysées', 'Arc de Triomphe'], description: 'Paris city tour, Eiffel Tower ascent, Seine River cruise, major landmarks.' },
-                    { day: 3, title: 'Disneyland Paris', location: 'Paris', meals: ['Breakfast', 'Dinner'], activities: ['Disneyland Park', 'Walt Disney Studios', 'Character meets'], description: 'Full day at Disneyland Paris - both parks with Indian lunch options available.' },
-                    { day: 4, title: 'Paris to Thornbury Castle', location: 'Thornbury', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Eurostar to London', 'Transfer to castle', 'Castle check-in'], description: 'Eurostar to London, transfer to Thornbury Castle, explore grounds and wine cellar.' },
-                    { day: 5, title: 'Windsor & London', location: 'London', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Windsor Castle', 'State Apartments', 'London check-in'], description: 'Visit Windsor Castle, transfer to London hotel, dinner at Dishoom.' },
-                    { day: 6, title: 'Iconic London', location: 'London', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Tower of London', 'Crown Jewels', 'London Eye', 'City tour'], description: 'Full day London sightseeing including Tower of London and London Eye.' },
-                    { day: 7, title: 'Lords & Departure', location: 'London', meals: ['Breakfast', 'Lunch'], activities: ['Lords Cricket tour', 'Bicester Village', 'Heathrow transfer'], description: 'Lords Cricket Stadium tour, Bicester Village shopping, transfer to Heathrow.' }
+                    { 
+                        day: 1, 
+                        title: 'Arrival in Paris — City of Lights', 
+                        location: 'Paris', 
+                        meals: ['Dinner'], 
+                        activities: ['CDG arrival', 'Hotel check-in', 'Welcome dinner'], 
+                        description: 'Arrive at Charles de Gaulle Airport. Transfer to hotel (The Jangle Hotel CDG or similar 4-star). Check-in and freshen up. Evening: Welcome dinner at Saravanaa Bhavan (Indian restaurant, Paris) — authentic South Indian vegetarian specialties including dosas, idlis, and thalis. Orientation walk of local area near hotel. Briefing on 3 days in Paris.',
+                        timings: ['Arrive: Morning/Afternoon', 'Transfer: 30 min', 'Check-in: Late afternoon', 'Welcome Dinner: 7:30 PM'],
+                        sellingPoints: ['Saravanaa Bhavan is Paris\'s most famous South Indian restaurant', 'Hotel near CDG for easy Disney access tomorrow', 'Paris arrival sets tone for continental elegance'],
+                        photoOps: ['Group arrival at CDG', 'Saravanaa Bhavan traditional South Indian décor'],
+                        dontMiss: 'The masala dosa at Saravanaa Bhavan — crispy, authentic, and huge',
+                        optionalExtras: ['Paris airport lounge access', 'Evening Seine cruise add-on']
+                    },
+                    { 
+                        day: 2, 
+                        title: 'Paris City Tour — Eiffel Tower & Seine Cruise', 
+                        location: 'Paris', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Eiffel Tower', 'Seine cruise', 'Champs-Élysées', 'Arc de Triomphe'], 
+                        description: 'Breakfast at hotel. Panoramic Paris city tour: Champs-Élysées (most beautiful avenue), Arc de Triomphe (Napoleon\'s monument), Place de la Concorde (where guillotine stood), Opéra Garnier (inspiration for Phantom), Louvre Museum (exterior, glass pyramid). Lunch at Madras Café (Indian restaurant, Paris) — authentic South Indian cuisine, family-run since 1980s. Afternoon: Eiffel Tower — ascend to 2nd level for panoramic views of Paris (option to summit for extra fee). Seine River cruise — see Notre-Dame, Musée d\'Orsay, bridges of Paris from the water. Evening: Dinner at New Jawad (Indian restaurant, Paris) — Mughlai and North Indian dishes in elegant setting.',
+                        timings: ['Breakfast: 7:30 AM', 'City Tour: 8:30 AM', 'Lunch: 12:30 PM', 'Eiffel Tower: 2:00 PM', 'Seine Cruise: 4:30 PM', 'Dinner: 7:30 PM'],
+                        sellingPoints: ['Eiffel Tower 2nd level included — iconic Paris experience', 'Seine cruise shows Paris from unique angle', 'Madras Café is authentic family-run restaurant, not tourist trap', 'New Jawad is Paris\'s finest Mughlai restaurant'],
+                        photoOps: ['Eiffel Tower from Trocadéro', 'Seine cruise with Notre-Dame', 'Arc de Triomphe from Champs-Élysées', 'Group at Eiffel Tower'],
+                        dontMiss: 'The view from Eiffel Tower 2nd level — you can see all of Paris\'s landmarks from one spot',
+                        optionalExtras: ['Eiffel Tower summit tickets', 'Louvre Museum guided tour', 'Seine dinner cruise upgrade']
+                    },
+                    { 
+                        day: 3, 
+                        title: 'Disneyland Paris — Full Day Magic', 
+                        location: 'Paris', 
+                        meals: ['Breakfast', 'Dinner'], 
+                        activities: ['Disneyland Park', 'Walt Disney Studios', 'Character meets'], 
+                        description: 'Breakfast at hotel. Transfer to Disneyland Paris (45 minutes). Full day at either Disneyland Park (Sleeping Beauty\'s Castle, classic Disney magic, 40+ attractions) OR Walt Disney Studios Park (behind-the-scenes cinema, stunt shows, Pixar attractions). Park hopper available for both parks. Indian lunch options available at selected restaurants: Hakuna Matata (African/Indian fusion), Plaza Gardens Restaurant (buffet with veg options). Meet Disney characters, watch parades, experience thrilling rides for all ages. Evening: Return to Paris. Dinner at Kishna Bhavan (Indian restaurant, Paris) — vegetarian thalis, relaxed atmosphere after big day.',
+                        timings: ['Breakfast: 7:00 AM', 'Disneyland: 8:30 AM', 'Park hours: 10:00 AM - 8:00 PM', 'Return: 8:30 PM', 'Dinner: 9:30 PM'],
+                        sellingPoints: ['Disneyland Paris is the only Disney park in Europe', 'Indian food options available inside park — no need to compromise', 'Full day allows time for both parks if desired', 'Character meet-and-greets included'],
+                        photoOps: ['Sleeping Beauty Castle', 'With Mickey/Minnie', 'Disney parade', 'Thunder Mountain ride'],
+                        dontMiss: 'The Disney parade at 5:30 PM — see all characters in one spectacular show',
+                        optionalExtras: ['Park hopper ticket upgrade', 'Disney character dining breakfast', 'Disney PhotoPass for professional photos']
+                    },
+                    { 
+                        day: 4, 
+                        title: 'Paris to London via Thornbury Castle', 
+                        location: 'Thornbury', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Eurostar to London', 'Transfer to castle', 'Castle check-in'], 
+                        description: 'Breakfast and checkout. Morning at leisure in Paris OR optional visit to Montmartre/Sacré-Cœur (artists\' quarter, basilica with city views). Lunch at Saravanaa Bhavan (farewell Paris meal). Afternoon: Eurostar train from Paris Gare du Nord to London St Pancras (2 hours 15 minutes, under the Channel). Transfer to Thornbury Castle (2.5 hours drive through English countryside). Evening: Check-in at Thornbury Castle — your Tudor castle hotel. Welcome dinner with Indian vegetarian options arranged by castle chef. Explore ramparts, wine cellar, and historic rooms. Sleep where Henry VIII slept.',
+                        timings: ['Breakfast: 7:30 AM', 'Montmartre: 8:30 AM (optional)', 'Lunch: 11:30 AM', 'Eurostar: 1:00 PM', 'Arrive London: 3:15 PM', 'Transfer: 3:30 PM (2.5 hrs)', 'Castle check-in: 6:00 PM', 'Dinner: 7:30 PM'],
+                        sellingPoints: ['Eurostar is the most elegant way London-Paris — no airport hassle', 'Thornbury Castle is the only Tudor castle you can sleep in UK', 'Henry VIII and Anne Boleyn stayed here — authentic royal history', 'Castle dinner in historic dining hall'],
+                        photoOps: ['Eurostar at St Pancras', 'Thornbury Castle turrets', 'Castle bedroom four-poster bed', 'Wine cellar'],
+                        dontMiss: 'Walking the castle ramparts at night — the views over Gloucestershire are magical with sunset',
+                        optionalExtras: ['Eurostar Standard Premier upgrade', 'Montmartre guided walking tour', 'Castle champagne afternoon tea']
+                    },
+                    { 
+                        day: 5, 
+                        title: 'Windsor Castle & London Arrival', 
+                        location: 'London', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Windsor Castle', 'State Apartments', 'London check-in'], 
+                        description: 'Breakfast at castle. Late checkout (11 AM). Leisurely morning exploring Thornbury Castle grounds, gardens, and historic rooms. Lunch at The Mango Tree (Windsor) — contemporary Indian cuisine near castle. Afternoon: Visit Windsor Castle — Queen\'s official residence, State Apartments (opulent rooms), St George\'s Chapel (Harry & Meghan\'s wedding, royal tombs), Queen\'s Dolls\' House (world\'s most famous). Transfer to London (1 hour). Check-in at Kingston Lodge Hotel. Evening: Dinner at Dishoom (King\'s Cross) — Bombay-style cuisine, vintage railway atmosphere.',
+                        timings: ['Breakfast: 8:30 AM', 'Castle morning: 9:30 AM', 'Lunch: 12:00 PM', 'Windsor Castle: 1:30 PM', 'Transfer: 4:00 PM', 'Check-in: 5:00 PM', 'Dinner: 7:30 PM'],
+                        sellingPoints: ['Late checkout allows full castle morning — no rushing', 'Windsor Castle is Queen\'s actual home — working royal palace', 'Dishoom is London\'s most Instagrammed Indian restaurant', 'Easy transfer to London hotel'],
+                        photoOps: ['Thornbury Castle morning light', 'Windsor Castle State Apartments gold', 'Changing Guard if scheduled', 'Dishoom interior'],
+                        dontMiss: 'St George\'s Chapel at Windsor — see the actual spot where Prince Harry and Meghan Markle were married',
+                        optionalExtras: ['Windsor Castle State Rooms private tour', 'Castle morning tea in gardens', 'Dishoom priority seating']
+                    },
+                    { 
+                        day: 6, 
+                        title: 'Iconic London — City Tour, Tower & London Eye', 
+                        location: 'London', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Tower of London', 'Crown Jewels', 'London Eye', 'City tour'], 
+                        description: 'Breakfast at hotel. London city tour: Big Ben, Houses of Parliament, Westminster Abbey (exterior), Buckingham Palace (Changing of Guard if scheduled), Trafalgar Square, Piccadilly Circus. Lunch at Sagar (Covent Garden) — South Indian vegetarian specialties. Afternoon: Tower of London with Beefeater guide — Crown Jewels including Kohinoor Diamond, White Tower, medieval history. London Eye experience — panoramic views. Evening: Dinner at Tayyabs (Whitechapel) — Punjabi grill specialties, famous for seekh kebabs (veg options excellent).',
+                        timings: ['Breakfast: 7:30 AM', 'City Tour: 8:30 AM', 'Lunch: 12:30 PM', 'Tower of London: 2:00 PM', 'London Eye: 4:30 PM', 'Dinner: 7:30 PM'],
+                        sellingPoints: ['Beefeater guide at Tower brings history alive', 'See Kohinoor Diamond in Crown Jewels', 'London Eye fast-track tickets', 'Tayyabs is London\'s most famous Punjabi restaurant — queues normally 2 hours'],
+                        photoOps: ['Beefeater in uniform', 'Crown Jewels', 'London Eye with Big Ben', 'Tayyabs grilled dishes'],
+                        dontMiss: 'The Beefeater tour at Tower of London — their stories of imprisonment and execution are gripping',
+                        optionalExtras: ['Westminster Abbey interior tour', 'London Eye champagne experience', 'Tower of London after-hours tour']
+                    },
+                    { 
+                        day: 7, 
+                        title: 'Lords Cricket, Bicester Village & Departure', 
+                        location: 'London', 
+                        meals: ['Breakfast', 'Lunch'], 
+                        activities: ['Lords Cricket tour', 'Bicester Village', 'Heathrow transfer'], 
+                        description: 'Breakfast and checkout. Visit Lords Cricket Stadium — "Home of Cricket" tour including Long Room, players\' dressing rooms, museum, see the Ashes urn. If closed: extended Tower visit. Lunch at Gymkhana (Mayfair) — Michelin-starred Indian cuisine (tasting menu). Afternoon: Bicester Village outlet shopping — luxury brands at discounted prices, VIP shopping card included. Transfer to Heathrow Airport (45 minutes). Departure flights to India. End of 7-day twin-city journey with memories of Paris elegance, castle luxury, and London icons.',
+                        timings: ['Breakfast: 7:30 AM', 'Lords: 8:30 AM', 'Lunch: 12:00 PM', 'Bicester: 1:30 PM', 'Transfer: 4:00 PM'],
+                        sellingPoints: ['Lords is cricket\'s spiritual home — walk the Long Room', 'Michelin-starred Gymkhana farewell lunch', 'Bicester Village VIP card for extra discounts', 'Seamless airport transfer'],
+                        photoOps: ['Long Room at Lords', 'Gymkhana interior', 'Bicester Village shopping', 'Heathrow departure'],
+                        dontMiss: 'The Long Room at Lords — this is where cricketers walk from dressing room to field, the most hallowed space in cricket',
+                        optionalExtras: ['Lords museum private viewing', 'Gymkhana wine pairing', 'Personal shopper at Bicester']
+                    }
                 ]
             },
             
-            // TOUR 3: Lake District & Yorkshire Dales Discovery (6 Days)
+            // TOUR 3: Lake District & Yorkshire Dales Discovery (6 Days) - ENHANCED
             {
                 id: 'lake-district-yorkshire',
                 title: 'Lake District & Yorkshire Dales Discovery',
@@ -270,27 +555,99 @@
                 highlights: ['Lake District', 'Yorkshire Dales', 'Windermere', 'Wordsworth Country', 'Haweswater'],
                 route: ['Manchester', 'Leeds', 'Windermere', 'Haweswater', 'York'],
                 hotels: [
-                    { nights: 1, location: 'Leeds', hotel: 'Weetwood Hall Estate', type: 'Manor', features: '17th-century manor' },
-                    { nights: 3, location: 'Windermere', hotel: 'The Ro Hotel', type: '4-star', features: 'Lake views, Bowness location' },
-                    { nights: 1, location: 'Haweswater', hotel: 'The Haweswater Hotel', type: 'Country', features: 'Remote rural location' },
-                    { nights: 1, location: 'York', hotel: 'Judges Court York', type: '4-star', features: 'Historic city centre' }
+                    { nights: 1, location: 'Leeds', hotel: 'Weetwood Hall Estate', type: 'Manor', features: '17th-century manor, parkland setting' },
+                    { nights: 3, location: 'Windermere', hotel: 'The Ro Hotel', type: '4-star', features: 'Lake views, Bowness-on-Windermere location' },
+                    { nights: 1, location: 'Haweswater', hotel: 'The Haweswater Hotel', type: 'Country', features: 'Remote rural location, red squirrels, dark skies' },
+                    { nights: 1, location: 'York', hotel: 'Judges Court York', type: '4-star', features: 'Historic city centre, walkable to Minster' }
                 ],
-                description: 'Escape to England\'s most beautiful landscapes. Cruise pristine lakes, hike fells with panoramic views, explore Wordsworth\'s cottage, and walk medieval city walls in York.',
-                idealFor: 'Nature lovers, walkers, photographers, relaxation seekers',
+                description: 'Escape to England\'s most beautiful landscapes on this immersive 6-day journey through the Lake District and Yorkshire Dales—two national parks that showcase the very best of British countryside. Unlike rushed coach tours that pass through in a day, this experience allows you to truly settle into the rhythm of rural England, staying in character properties including a lakefront hotel in Windermere and a 17th-century manor house near Leeds. Cruise pristine lakes, hike fells with panoramic views, explore Wordsworth\'s cottage, and walk medieval city walls in York. This tour balances active days with genuine relaxation, including a night at our remote Haweswater property where red squirrels play and stars shine unpolluted. With Indian vegetarian cuisine arranged throughout and carefully selected local restaurants, this is the perfect antidote to hectic city life—a chance to breathe fresh air, connect with nature, and experience England\'s green heart at its most authentic.',
+                idealFor: 'Nature lovers, walkers, photographers, those seeking relaxation, couples',
                 color: '#10b981',
                 stats: { days: 6, cities: 4, activities: 10, attractions: 8, meals: 15, restaurants: 6 },
                 dietaryInfo: { standard: '100% Indian Vegetarian', jain: 'Jain options available' },
                 itinerary: [
-                    { day: 1, title: 'Arrival Manchester', location: 'Leeds', meals: ['Dinner'], activities: ['Manchester arrival', 'Weetwood Hall check-in', 'Dinner at Aagrah'], description: 'Arrive Manchester Airport, transfer to Weetwood Hall Estate near Leeds.' },
-                    { day: 2, title: 'Yorkshire Dales', location: 'Windermere', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Bolton Abbey', 'Aysgarth Falls', 'Wensleydale cheese', 'Transfer to Lake District'], description: 'Yorkshire Dales tour: Bolton Abbey, Aysgarth Falls, cheese tasting, transfer to Windermere.' },
-                    { day: 3, title: 'Lake District Day 1', location: 'Windermere', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Windermere cruise', 'Ambleside', 'Grasmere', 'Wordsworth Cottage'], description: 'Windermere Lake cruise to Ambleside, visit Grasmere and Dove Cottage.' },
-                    { day: 4, title: 'Lake District Day 2', location: 'Windermere', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Ullswater', 'Aira Force', 'Keswick', 'Castlerigg Stone Circle'], description: 'Ullswater cruise, Aira Force waterfall, Keswick, Castlerigg Stone Circle.' },
-                    { day: 5, title: 'Haweswater Retreat', location: 'Haweswater', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Haweswater Hotel check-in', 'Wildlife spotting', 'Stargazing'], description: 'Check-in at remote Haweswater Hotel, red squirrel spotting, dark sky stargazing.' },
-                    { day: 6, title: 'York & Departure', location: 'York', meals: ['Breakfast', 'Lunch'], activities: ['York Minster', 'Medieval walls', 'Shambles', 'Airport transfer'], description: 'Visit York Minster, walk medieval walls, Shambles street, transfer to Manchester Airport.' }
+                    { 
+                        day: 1, 
+                        title: 'Arrival Manchester, Transfer to Yorkshire', 
+                        location: 'Leeds', 
+                        meals: ['Dinner'], 
+                        activities: ['Manchester arrival', 'Weetwood Hall check-in', 'Dinner at Aagrah'], 
+                        description: 'Arrive at Manchester Airport. Transfer to Weetwood Hall Estate, Leeds (1 hour). Check-in and explore 17th-century manor house grounds — Jacobean architecture, parkland walks, 9-hole golf course. Evening: Dinner at Aagrah (Leeds) — Yorkshire-based Indian chain founded by Kashmiri immigrants, excellent vegetarian selection including their famous silver thali presentation.',
+                        timings: ['Arrive: Morning/Afternoon', 'Transfer: 1 hour', 'Check-in: Late afternoon', 'Dinner: 7:30 PM'],
+                        sellingPoints: ['Weetwood Hall is a genuine 17th-century manor — not a modern hotel', 'Aagrah is Yorkshire\'s most famous Indian restaurant', 'Golf course available for evening play', 'Relaxing start to nature-focused tour'],
+                        photoOps: ['Weetwood Hall Jacobean exterior', 'Aagrah famous silver thali'],
+                        dontMiss: 'The silver thali at Aagrah — the presentation is spectacular, and the food is authentic Kashmiri',
+                        optionalExtras: ['Manchester city tour if time permits', 'Evening golf at Weetwood', 'Aagrah chef\'s special tasting menu']
+                    },
+                    { 
+                        day: 2, 
+                        title: 'Yorkshire Dales, Transfer to Lake District', 
+                        location: 'Windermere', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Bolton Abbey', 'Aysgarth Falls', 'Wensleydale cheese', 'Transfer to Lake District'], 
+                        description: 'Breakfast at hotel. Drive to Yorkshire Dales National Park — England\'s most scenic dales. Visit Bolton Abbey — ruined 12th-century priory by River Wharfe, stepping stones across river. Aysgarth Falls — triple cascade waterfalls, featured in Robin Hood Prince of Thieves. Hawes village — Wensleydale cheese tasting at source (the "Wallace and Gromit" cheese). Lunch at The Indian Lounge (Skipton) — traditional curries. Afternoon: Scenic drive to Lake District (1.5 hours). Check-in at The Ro Hotel, Windermere. Orientation walk of Bowness-on-Windermere — lakeside village atmosphere. Evening: Dinner at The Cottage (Bowness) — lakeside Indian cuisine with views.',
+                        timings: ['Breakfast: 8:00 AM', 'Bolton Abbey: 9:30 AM', 'Aysgarth Falls: 11:00 AM', 'Cheese tasting: 12:30 PM', 'Lunch: 1:00 PM', 'Transfer: 2:30 PM', 'Check-in: 4:00 PM', 'Dinner: 7:00 PM'],
+                        sellingPoints: ['Bolton Abbey is one of England\'s most romantic ruins', 'Aysgarth Falls featured in Hollywood films', 'Wensleydale cheese tasting at source — fresh from dairy', 'The Ro Hotel is in Bowness — heart of Lake District'],
+                        photoOps: ['Bolton Abbey ruins with river', 'Aysgarth Falls cascades', 'Wensleydale cheese tasting', 'Bowness Bay sunset'],
+                        dontMiss: 'Stepping stones across River Wharfe at Bolton Abbey — iconic Yorkshire photo opportunity',
+                        optionalExtras: ['Bolton Abbey estate walk', 'Wensleydale cheese making demonstration', 'Lake District gin tasting']
+                    },
+                    { 
+                        day: 3, 
+                        title: 'Full Day Lake District — Windermere, Ambleside, Grasmere', 
+                        location: 'Windermere', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Windermere cruise', 'Ambleside', 'Grasmere', 'Wordsworth Cottage'], 
+                        description: 'Breakfast at hotel. Windermere Lake cruise from Bowness to Ambleside — traditional steamer or modern launch, surrounded by fells. Ambleside — Bridge House (tiny house over stream), Waterhead pier, shops. Continue to Grasmere — Dove Cottage (William Wordsworth\'s home where he wrote "I wandered lonely as a cloud"), Wordsworth Museum, Grasmere Gingerbread Shop (unique recipe since 1854, only sold here). Lunch at Kathmandu (Ambleside) — Himalayan/Nepalese cuisine with Indian options. Afternoon: Rydal Mount (Wordsworth\'s later home), Rydal Water walk. Evening: Return to Windermere. Dinner at Bombay Spice — traditional curries.',
+                        timings: ['Breakfast: 8:00 AM', 'Cruise: 9:30 AM', 'Ambleside: 11:00 AM', 'Grasmere: 12:00 PM', 'Lunch: 1:30 PM', 'Rydal: 3:00 PM', 'Dinner: 7:00 PM'],
+                        sellingPoints: ['Windermere cruise surrounded by mountains on all sides', 'Dove Cottage is where Wordsworth wrote his most famous poetry', 'Grasmere Gingerbread is unique — nowhere else in world sells it', 'Rydal Mount has stunning gardens'],
+                        photoOps: ['Windermere from steamer', 'Bridge House Ambleside', 'Dove Cottage garden', 'Grasmere Gingerbread Shop'],
+                        dontMiss: 'The Grasmere Gingerbread — Sarah Nelson invented this in 1854, and it\'s still made to her secret recipe, only sold in this one shop',
+                        optionalExtras: ['Windermere steamer first-class lounge', 'Wordsworth manuscript viewing', 'Grasmere village walk']
+                    },
+                    { 
+                        day: 4, 
+                        title: 'Lake District Day 2 — Ullswater, Keswick, Castlerigg', 
+                        location: 'Windermere', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Ullswater', 'Aira Force', 'Keswick', 'Castlerigg Stone Circle'], 
+                        description: 'Breakfast at hotel. Drive to Ullswater — England\'s most beautiful lake according to Wordsworth. Ullswater Steamers cruise to Howtown — traditional wooden launch boats. Optional: hike to Aira Force waterfall (50ft cascade through woodland, National Trust). Lunch at Kathmandu (Keswick) — Himalayan cuisine. Afternoon: Keswick — market town, Castlerigg Stone Circle (5,000-year-old stone circle with mountain backdrop — more atmospheric than Stonehenge, free to enter), Derwentwater lakeside walk. Evening: Return to Windermere. Dinner at The Royal Oak (Bowness) — extensive vegetarian menu, local favourite.',
+                        timings: ['Breakfast: 8:00 AM', 'Ullswater: 9:30 AM', 'Cruise: 10:30 AM', 'Aira Force: 12:00 PM', 'Lunch: 1:00 PM', 'Castlerigg: 3:00 PM', 'Dinner: 7:00 PM'],
+                        sellingPoints: ['Ullswater is Wordsworth\'s favourite lake — he wrote poetry here', 'Aira Force is a spectacular waterfall', 'Castlerigg is 1,000 years older than Stonehenge and free', 'The Royal Oak is locals\' favourite — authentic pub atmosphere'],
+                        photoOps: ['Ullswater with mountain reflection', 'Aira Force waterfall', 'Castlerigg Stone Circle panorama', 'Keswick market town'],
+                        dontMiss: 'Castlerigg Stone Circle at sunset — the mountain backdrop makes this more magical than Stonehenge, and you can walk among the stones',
+                        optionalExtras: ['Ullswater seaplane experience', 'Aira Force guided walk', 'Keswick whisky tasting']
+                    },
+                    { 
+                        day: 5, 
+                        title: 'Haweswater Retreat — Wildlife & Stargazing', 
+                        location: 'Haweswater', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Haweswater Hotel check-in', 'Wildlife spotting', 'Stargazing'], 
+                        description: 'Breakfast and checkout. Drive to Haweswater Reservoir (30 minutes) — remote, dramatic landscape, valley with no phone signal. Check-in at The Haweswater Hotel — your digital detox retreat. Lunch at hotel — Indian vegetarian options arranged. Afternoon: Day at leisure — red squirrel spotting (endangered native species, come right up to hotel), peregrine falcon watching, walking trails, fishing (permit required), photography, or simply relax by fireside with book. Evening: Dinner at The Haweswater Hotel with Indian vegetarian options. Stargazing with hot chocolate — minimal light pollution means Milky Way visible to naked eye, one of best dark sky sites in England.',
+                        timings: ['Breakfast: 8:00 AM', 'Transfer: 9:30 AM', 'Check-in: 10:00 AM', 'Lunch: 1:00 PM', 'Wildlife spotting: 3:00 PM', 'Dinner: 7:00 PM', 'Stargazing: 9:00 PM'],
+                        sellingPoints: ['Haweswater is completely remote — no traffic noise, pure peace', 'Red squirrels are endangered — this is one of few places to see them', 'Dark sky stargazing — see the Milky Way clearly', 'Digital detox — no phone signal forces relaxation'],
+                        photoOps: ['Haweswater reservoir with mountains', 'Red squirrel feeding', 'Night sky with stars', 'Hotel lounge with fire'],
+                        dontMiss: 'The red squirrels at Haweswater — they are incredibly tame and come right up to the hotel windows',
+                        optionalExtras: ['Guided red squirrel walk with ranger', 'Night sky photography workshop', 'Fly fishing instruction']
+                    },
+                    { 
+                        day: 6, 
+                        title: 'York Minster, Medieval City & Departure', 
+                        location: 'York', 
+                        meals: ['Breakfast', 'Lunch'], 
+                        activities: ['York Minster', 'Medieval walls', 'Shambles', 'Airport transfer'], 
+                        description: 'Breakfast and checkout. Drive to York (2 hours). Check-in at Judges Court York (city centre, drop luggage). York Minster cathedral tour — largest Gothic cathedral in Northern Europe, Great East Window (size of tennis court), Undercroft (Roman ruins beneath), optional tower climb. Walk medieval city walls — best preserved in England. Shambles street — inspiration for Diagon Alley, overhanging timber-framed shops. Lunch at Mumbai Lounge (York) — authentic Mumbai street food. Afternoon: Transfer to Manchester Airport (1.5 hours) OR Leeds Bradford Airport (45 minutes) for departure. End of 6-day nature and heritage journey.',
+                        timings: ['Breakfast: 7:30 AM', 'Transfer: 8:30 AM', 'York Minster: 11:00 AM', 'Lunch: 1:00 PM', 'Airport transfer: 2:30 PM'],
+                        sellingPoints: ['York Minster is the largest cathedral in UK', 'Medieval walls are 700 years old', 'Shambles is the most picturesque street in England', 'Flexible airport options'],
+                        photoOps: ['York Minster Rose Window', 'Walking medieval walls', 'Shambles street', 'Group farewell photo'],
+                        dontMiss: 'The Great East Window at York Minster — the largest expanse of medieval stained glass in the world, the size of a tennis court',
+                        optionalExtras: ['York Minster tower climb', 'York Ghost Tour', 'Extended York shopping time']
+                    }
                 ]
             },
             
-            // TOUR 4: Ultimate UK Heritage & Castles (10 Days)
+            // TOUR 4: Ultimate UK Heritage & Castles (10 Days) - ENHANCED
             {
                 id: 'ultimate-heritage',
                 title: 'Ultimate UK Heritage & Castles',
@@ -301,32 +658,152 @@
                 highlights: ['Thornbury Castle', 'Dalhousie Castle', 'York Minster', 'Lake District', 'Edinburgh Castle'],
                 route: ['London', 'Thornbury', 'York', 'Windermere', 'Edinburgh'],
                 hotels: [
-                    { nights: 2, location: 'London', hotel: 'Kingston Lodge Hotel', type: '4-star', features: 'Southwest London base' },
-                    { nights: 2, location: 'Thornbury', hotel: 'Thornbury Castle', type: 'Castle', features: 'Tudor castle' },
-                    { nights: 2, location: 'York', hotel: 'Judges Court York', type: '4-star', features: 'Historic city centre' },
-                    { nights: 2, location: 'Windermere', hotel: 'The Ro Hotel', type: '4-star', features: 'Lake views' },
-                    { nights: 2, location: 'Edinburgh', hotel: 'Dalhousie Castle', type: 'Castle', features: '13th-century castle' }
+                    { nights: 2, location: 'London', hotel: 'Kingston Lodge Hotel', type: '4-star', features: 'Southwest London base, Indian veg meals' },
+                    { nights: 2, location: 'Thornbury', hotel: 'Thornbury Castle', type: 'Castle', features: 'Tudor castle, Henry VIII history' },
+                    { nights: 2, location: 'York', hotel: 'Judges Court York', type: '4-star', features: 'Historic city centre, walkable to Minster' },
+                    { nights: 2, location: 'Windermere', hotel: 'The Ro Hotel', type: '4-star', features: 'Lake views, Bowness location' },
+                    { nights: 2, location: 'Edinburgh', hotel: 'Dalhousie Castle', type: 'Castle', features: '13th-century castle, falconry, spa' }
                 ],
-                description: 'Step back in time on this extraordinary 10-day journey through Britain\'s most historic landscapes, staying exclusively in heritage properties.',
-                idealFor: 'History enthusiasts, heritage lovers, mature travellers',
+                description: 'Step back in time on this extraordinary 10-day journey through Britain\'s most historic landscapes, staying exclusively in heritage properties that bring history to life. From the Tudor ramparts of Thornbury Castle where Henry VIII and Anne Boleyn once stayed, to the ancient stones of Dalhousie Castle with its own falconry school, this tour offers accommodation experiences no standard tour can match. Explore England\'s finest cathedrals at York and Westminster, walk the cobbled streets of Edinburgh\'s Royal Mile, cruise the Lake District\'s pristine waters, and discover the Roman heritage of Bath. This carefully paced itinerary balances structured sightseeing with leisure time, allowing you to absorb the atmosphere of each unique property. With Indian vegetarian cuisine arranged throughout and expert local guides revealing the stories behind every stone, this is Britain\'s heritage at its most immersive and memorable.',
+                idealFor: 'History enthusiasts, heritage lovers, mature travellers, those seeking unique accommodation',
                 color: '#f59e0b',
                 stats: { days: 10, cities: 5, activities: 15, attractions: 12, meals: 27, restaurants: 10 },
                 dietaryInfo: { standard: '100% Indian Vegetarian', jain: 'Jain options available' },
                 itinerary: [
-                    { day: 1, title: 'Arrival London', location: 'London', meals: ['Dinner'], activities: ['Heathrow arrival', 'Hotel check-in', 'Welcome dinner'], description: 'Arrive London Heathrow, check-in at Kingston Lodge Hotel, welcome dinner.' },
-                    { day: 2, title: 'Royal London', location: 'London', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Tower of London', 'Crown Jewels', 'Westminster Abbey', 'Thames walk'], description: 'Tower of London with Beefeater, Crown Jewels, Westminster Abbey tour.' },
-                    { day: 3, title: 'Windsor & Thornbury', location: 'Thornbury', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Windsor Castle', 'Transfer to castle', 'Castle exploration'], description: 'Windsor Castle State Apartments, transfer to Thornbury Castle.' },
-                    { day: 4, title: 'Cotswolds & Bath', location: 'Thornbury', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Cotswolds villages', 'Bibury', 'Roman Baths', 'Bath Abbey'], description: 'Cotswolds tour: Bibury, Bourton-on-the-Water, Bath city with Roman Baths.' },
-                    { day: 5, title: 'Stratford & York', location: 'York', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Shakespeare Birthplace', 'Anne Hathaway Cottage', 'Transfer to York'], description: 'Stratford-upon-Avon, Shakespeare sites, transfer to York.' },
-                    { day: 6, title: 'York Minster', location: 'York', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['York Minster', 'Medieval walls', 'Shambles', 'Railway Museum'], description: 'York Minster cathedral, medieval walls, Shambles, National Railway Museum.' },
-                    { day: 7, title: 'Yorkshire Dales & Lakes', location: 'Windermere', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Yorkshire Dales', 'Bolton Abbey', 'Transfer to Lake District'], description: 'Yorkshire Dales scenic drive, Bolton Abbey, transfer to Windermere.' },
-                    { day: 8, title: 'Lake District', location: 'Windermere', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Windermere cruise', 'Beatrix Potter', 'Wordsworth sites'], description: 'Lake Windermere cruise, Hill Top Farm, Grasmere, Dove Cottage.' },
-                    { day: 9, title: 'Hadrian Wall & Edinburgh', location: 'Edinburgh', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Hadrian Wall', 'Dalhousie Castle check-in', 'Falconry'], description: 'Hadrian Wall photo stop, transfer to Edinburgh, Dalhousie Castle check-in, falconry.' },
-                    { day: 10, title: 'Edinburgh & Departure', location: 'Edinburgh', meals: ['Breakfast', 'Lunch'], activities: ['Edinburgh Castle', 'Royal Mile', 'Airport transfer'], description: 'Edinburgh Castle, Royal Mile walk, transfer to airport.' }
+                    { 
+                        day: 1, 
+                        title: 'Arrival in London — Historic Capital', 
+                        location: 'London', 
+                        meals: ['Dinner'], 
+                        activities: ['Heathrow arrival', 'Hotel check-in', 'Welcome dinner'], 
+                        description: 'Arrive at London Heathrow. Transfer to Kingston Lodge Hotel. Check-in. Welcome dinner at Chokhi Dhani (Battersea) — authentic Rajasthani cuisine with traditional décor and folk performances. Tour orientation covering 10-day heritage journey.',
+                        timings: ['Arrive: Morning/Afternoon', 'Transfer: 45 min', 'Check-in: Late afternoon', 'Dinner: 7:00 PM'],
+                        sellingPoints: ['Traditional Indian welcome', 'Rajasthani welcome dinner sets heritage tone', 'Comfortable London base'],
+                        photoOps: ['Group welcome at hotel', 'Chokhi Dhani traditional décor'],
+                        dontMiss: 'The Rajasthani thali at Chokhi Dhani — this is authentic, not adapted for British palate',
+                        optionalExtras: ['Early check-in guaranteed', 'Airport lounge access']
+                    },
+                    { 
+                        day: 2, 
+                        title: 'Royal London — Tower, Westminster & Thames', 
+                        location: 'London', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Tower of London', 'Westminster Abbey', 'Thames walk'], 
+                        description: 'Breakfast at hotel. Tower of London with Beefeater guide — Crown Jewels including Kohinoor Diamond, White Tower, medieval history, Traitors\' Gate. Lunch at Sagar (Covent Garden) — South Indian vegetarian specialties. Afternoon: Westminster Abbey tour — coronation church of English monarchs since 1066, Poets\' Corner, Royal Tombs. Big Ben and Houses of Parliament (exterior). Thames River walk. Dinner at Dishoom (King\'s Cross) — Bombay-style cuisine.',
+                        timings: ['Breakfast: 7:30 AM', 'Tower: 8:30 AM', 'Lunch: 12:30 PM', 'Westminster: 2:00 PM', 'Dinner: 7:00 PM'],
+                        sellingPoints: ['Westminster Abbey is where every English monarch since 1066 was crowned', 'See the actual Kohinoor Diamond', 'Beefeater stories bring history alive', 'Dishoom is London\'s most atmospheric Indian'],
+                        photoOps: ['Beefeater in uniform', 'Crown Jewels', 'Westminster Abbey interior', 'Big Ben from Westminster Bridge'],
+                        dontMiss: 'The Coronation Chair in Westminster Abbey — every English king and queen has been crowned in this chair since 1308',
+                        optionalExtras: ['Westminster Abbey behind-the-scenes tour', 'Thames river cruise', 'Tower of London early entry']
+                    },
+                    { 
+                        day: 3, 
+                        title: 'Windsor Castle & Transfer to Thornbury', 
+                        location: 'Thornbury', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Windsor Castle', 'Transfer to castle', 'Castle exploration'], 
+                        description: 'Breakfast and checkout. Visit Windsor Castle — Queen\'s official residence, State Apartments, St George\'s Chapel (Harry & Meghan\'s wedding), Queen\'s Dolls\' House. Lunch at The Mango Tree (Windsor) — contemporary Indian cuisine. Afternoon: Drive to Thornbury (2 hours). Check-in at Thornbury Castle — your Tudor castle. Explore grounds, wine cellar, ramparts. Evening: Castle banquet dinner with Indian vegetarian options. Sleep where royalty slept.',
+                        timings: ['Breakfast: 7:00 AM', 'Windsor: 8:30 AM', 'Lunch: 12:00 PM', 'Transfer: 1:30 PM', 'Check-in: 3:30 PM', 'Dinner: 7:30 PM'],
+                        sellingPoints: ['Windsor is Queen\'s actual home — working palace', 'Thornbury Castle is only Tudor castle hotel in UK', 'Henry VIII and Anne Boleyn stayed here', 'Castle dinner in historic hall'],
+                        photoOps: ['Windsor State Apartments', 'St George\'s Chapel', 'Thornbury Castle turrets', 'Castle bedroom'],
+                        dontMiss: 'St George\'s Chapel at Windsor — see the exact spot where Prince Harry and Meghan were married in May 2018',
+                        optionalExtras: ['Windsor State Rooms private tour', 'Castle falconry display', 'Wine cellar private tasting']
+                    },
+                    { 
+                        day: 4, 
+                        title: 'Cotswolds, Bath & Castle Life', 
+                        location: 'Thornbury', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Cotswolds villages', 'Bath', 'Roman Baths'], 
+                        description: 'Breakfast at castle. Cotswolds tour: Bibury (Arlington Row — most photographed cottages in England), Bourton-on-the-Water ("Venice of the Cotswolds"), Stow-on-the-Wold. Lunch at Rajpoot (Bath) — traditional curries. Afternoon: Bath city tour — Roman Baths (2,000-year-old thermal waters, walk where Romans walked), Royal Crescent, Bath Abbey. Return to Thornbury Castle. Evening: Day at leisure at castle — explore gardens, enjoy afternoon tea, relax in historic surroundings. Dinner with Indian options.',
+                        timings: ['Breakfast: 8:00 AM', 'Cotswolds: 9:30 AM', 'Lunch: 1:00 PM', 'Bath: 2:30 PM', 'Return: 5:30 PM', 'Dinner: 7:30 PM'],
+                        sellingPoints: ['Bibury appears on UK passports — iconic England', 'Roman Baths are 2,000 years old', 'Bath is UNESCO World Heritage city', 'Leisure time to absorb castle atmosphere'],
+                        photoOps: ['Arlington Row cottages', 'Bourton-on-the-Water bridges', 'Roman Baths thermal pool', 'Bath Royal Crescent'],
+                        dontMiss: 'The Roman Baths at Bath — you can see the actual thermal water steaming in the ancient pool, and the Roman engineering is incredible',
+                        optionalExtras: ['Bath Thermae Spa rooftop pool', 'Cotswolds walking tour', 'Castle afternoon tea']
+                    },
+                    { 
+                        day: 5, 
+                        title: 'Stratford-upon-Avon & Transfer to York', 
+                        location: 'York', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Shakespeare Birthplace', 'Anne Hathaway Cottage', 'Transfer to York'], 
+                        description: 'Breakfast and checkout. Visit Stratford-upon-Avon — Shakespeare\'s Birthplace (restored 16th-century house), Anne Hathaway\'s Cottage (thatched-roof romantic hideaway), Holy Trinity Church (Shakespeare\'s grave). Lunch at The Spice Kitchen (Stratford) — Indian fusion. Afternoon: Drive to York (2.5 hours). Check-in at Judges Court York — historic city centre location. Evening: Dinner at Mumbai Lounge (York) — authentic Mumbai street food.',
+                        timings: ['Breakfast: 7:30 AM', 'Stratford: 9:00 AM', 'Lunch: 12:30 PM', 'Transfer: 1:30 PM', 'Check-in: 4:00 PM', 'Dinner: 7:00 PM'],
+                        sellingPoints: ['Shakespeare\'s actual birthplace — see his room', 'Anne Hathaway\'s Cottage is most romantic house in England', 'Judges Court is in York city centre', 'Mumbai Lounge brings authentic Indian street food'],
+                        photoOps: ['Shakespeare Birthplace', 'Anne Hathaway\'s Cottage gardens', 'York Minster from city walls', 'Shambles street'],
+                        dontMiss: 'Shakespeare\'s Birthplace — the room where the world\'s greatest writer was born, with original furnishings from his time',
+                        optionalExtras: ['Royal Shakespeare Theatre backstage tour', 'York evening ghost walk', 'Stratford river cruise']
+                    },
+                    { 
+                        day: 6, 
+                        title: 'York Minster, Medieval Walls & Cathedral City', 
+                        location: 'York', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['York Minster', 'Medieval walls', 'Shambles', 'Railway Museum'], 
+                        description: 'Breakfast at hotel. York Minster cathedral tour — Great East Window (largest medieval stained glass in world), Undercroft (Roman ruins beneath cathedral), tower climb optional. Walk medieval city walls — 2-mile circuit, best preserved in England. Shambles street — inspiration for Diagon Alley. National Railway Museum — largest railway museum in world, free entry. Lunch at The Indian Ocean (York) — traditional curries. Afternoon: Continued York exploration. Evening: Dinner at Akbar\'s (York) — North Indian and Bengali cuisine.',
+                        timings: ['Breakfast: 8:00 AM', 'Minster: 9:00 AM', 'Walls: 11:30 AM', 'Lunch: 1:00 PM', 'Railway Museum: 2:30 PM', 'Dinner: 7:00 PM'],
+                        sellingPoints: ['York Minster Great East Window is size of tennis court', 'Railway Museum is best in world — free entry', 'Medieval walls are 700 years old', 'Akbar\'s is Yorkshire legend'],
+                        photoOps: ['Great East Window', 'Walking walls with Minster view', 'Shambles overhanging buildings', 'Railway Museum steam engines'],
+                        dontMiss: 'The Great East Window at York Minster — the largest expanse of medieval stained glass in the world, depicting the beginning and end of all things',
+                        optionalExtras: ['Minster tower climb', 'Railway Museum royal train viewing', 'York chocolate story tour']
+                    },
+                    { 
+                        day: 7, 
+                        title: 'Yorkshire Dales & Transfer to Lake District', 
+                        location: 'Windermere', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Yorkshire Dales', 'Bolton Abbey', 'Transfer to Lake District'], 
+                        description: 'Breakfast and checkout. Drive through Yorkshire Dales: Bolton Abbey (ruined priory by river), Aysgarth Falls (waterfalls), Hawes (Wensleydale cheese tasting). Lunch at The Indian Lounge (Skipton) — traditional curries. Afternoon: Continue to Lake District (1.5 hours). Check-in at The Ro Hotel, Windermere. Evening: Dinner at The Cottage (Bowness) — lakeside Indian cuisine.',
+                        timings: ['Breakfast: 7:30 AM', 'Dales: 9:00 AM', 'Lunch: 1:00 PM', 'Transfer: 2:30 PM', 'Check-in: 4:00 PM', 'Dinner: 7:00 PM'],
+                        sellingPoints: ['Yorkshire Dales are England\'s most scenic', 'Bolton Abbey is one of most romantic ruins', 'Lake District is UNESCO protected', 'The Ro Hotel has lake views'],
+                        photoOps: ['Bolton Abbey with river', 'Aysgarth Falls', 'Wensleydale cheese', 'Bowness Bay'],
+                        dontMiss: 'Stepping stones across River Wharfe at Bolton Abbey — iconic Yorkshire photo opportunity',
+                        optionalExtras: ['Dales guided walk', 'Cheese making demo', 'Lake cruise booking']
+                    },
+                    { 
+                        day: 8, 
+                        title: 'Lake District — Wordsworth, Beatrix Potter & Cruises', 
+                        location: 'Windermere', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Windermere cruise', 'Beatrix Potter', 'Wordsworth sites'], 
+                        description: 'Breakfast at hotel. Windermere Lake cruise. Visit Hill Top Farm (Beatrix Potter\'s home — preserved exactly as she left it), Hawkshead village. Lunch at Kathmandu (Ambleside) — Himalayan cuisine. Afternoon: Dove Cottage (Wordsworth\'s home), Grasmere Gingerbread Shop, Rydal Mount. Evening: Dinner at Bombay Spice (Windermere) — traditional curries.',
+                        timings: ['Breakfast: 8:00 AM', 'Cruise: 9:30 AM', 'Beatrix Potter: 11:00 AM', 'Lunch: 1:00 PM', 'Wordsworth sites: 2:30 PM', 'Dinner: 7:00 PM'],
+                        sellingPoints: ['Beatrix Potter\'s house is time capsule', 'Dove Cottage is where Wordsworth wrote famous poetry', 'Grasmere Gingerbread unique', 'Himalayan cuisine is different'],
+                        photoOps: ['Hill Top Farm', 'Dove Cottage garden', 'Grasmere Gingerbread', 'Windermere from ferry'],
+                        dontMiss: 'Grasmere Gingerbread — Sarah Nelson invented this in 1854, and it\'s still made to her secret recipe, only sold in this one shop in the world',
+                        optionalExtras: ['Beatrix Potter garden tour', 'Wordsworth manuscript viewing', 'Lake District gin tasting']
+                    },
+                    { 
+                        day: 9, 
+                        title: 'Transfer to Edinburgh — Dalhousie Castle', 
+                        location: 'Edinburgh', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Hadrian\'s Wall', 'Dalhousie Castle check-in', 'Falconry'], 
+                        description: 'Breakfast and checkout. Scenic drive to Edinburgh via Hadrian\'s Wall (3.5 hours). Photo stops at Roman ruins. Lunch at Spice Hut (Carlisle) — Punjabi cuisine. Afternoon: Check-in at Dalhousie Castle — your 13th-century fortress. Falconry experience: handle hawks, owls, and eagles with expert falconers. Evening: Castle dinner with Indian vegetarian options. Relax in Aqueous Spa.',
+                        timings: ['Breakfast: 7:30 AM', 'Hadrian\'s Wall: 9:00 AM', 'Lunch: 12:30 PM', 'Transfer: 1:30 PM', 'Check-in: 4:00 PM', 'Falconry: 5:00 PM', 'Dinner: 7:30 PM'],
+                        sellingPoints: ['Hadrian\'s Wall is UNESCO site', 'Dalhousie Castle is 13th-century — moat and drawbridge', 'Falconry included — handle birds of prey', 'Aqueous Spa thermal suite'],
+                        photoOps: ['Hadrian\'s Wall over hills', 'Dalhousie drawbridge', 'Falconry with owl', 'Castle interior'],
+                        dontMiss: 'Walking on Hadrian\'s Wall itself — you can stand on the actual stones Romans placed 1,900 years ago',
+                        optionalExtras: ['Hadrian\'s Wall guided walk', 'Spa treatment booking', 'Castle dungeon tour']
+                    },
+                    { 
+                        day: 10, 
+                        title: 'Edinburgh City Tour & Departure', 
+                        location: 'Edinburgh', 
+                        meals: ['Breakfast', 'Lunch'], 
+                        activities: ['Edinburgh Castle', 'Royal Mile', 'Airport transfer'], 
+                        description: 'Breakfast at castle. Edinburgh Castle — Crown Jewels of Scotland, Stone of Destiny, Great Hall. Royal Mile walk — from Castle to Holyrood Palace, St Giles\' Cathedral, historic closes. Lunch at Mother India (Edinburgh) — contemporary Indian. Afternoon: Transfer to Edinburgh Airport (30 minutes). Departure flights.',
+                        timings: ['Breakfast: 8:00 AM', 'Castle: 9:00 AM', 'Royal Mile: 11:00 AM', 'Lunch: 1:00 PM', 'Transfer: 2:30 PM'],
+                        sellingPoints: ['Edinburgh Castle houses Scottish Crown Jewels', 'Royal Mile is 1,000 years old', 'Mother India is Edinburgh\'s best Indian', 'Easy airport transfer'],
+                        photoOps: ['Edinburgh Castle from below', 'Scottish Crown Jewels', 'Royal Mile cobblestones', 'Group farewell'],
+                        dontMiss: 'The Scottish Crown Jewels — including the Stone of Destiny used for coronations of Scottish kings for 1,000 years',
+                        optionalExtras: ['Castle after-hours tour', 'Royal Mile underground vaults', 'Airport lounge access']
+                    }
                 ]
             },
             
-            // TOUR 5: UK Family Adventure (12 Days)
+            // TOUR 5: UK Family Adventure (12 Days) - ENHANCED
             {
                 id: 'family-adventure',
                 title: 'UK Family Adventure: Castles, Wizards & Wildlife',
@@ -337,36 +814,180 @@
                 highlights: ['Harry Potter Studio Tour', 'Legoland', 'Cadbury World', 'Alton Towers', 'Thornbury Castle', 'Longleat Safari', 'Dalhousie Castle'],
                 route: ['London', 'Windsor', 'Birmingham', 'Thornbury', 'Longleat', 'Manchester', 'Windermere', 'Edinburgh'],
                 hotels: [
-                    { nights: 3, location: 'London', hotel: 'Kingston Lodge Hotel', type: '4-star', features: 'Family rooms, Indian veg meals' },
-                    { nights: 2, location: 'Birmingham', hotel: 'Delta Hotels Marriott', type: '4-star', features: 'Swimming pool, family rooms' },
-                    { nights: 1, location: 'Thornbury', hotel: 'Thornbury Castle', type: 'Castle', features: 'Castle adventure for kids' },
+                    { nights: 3, location: 'London', hotel: 'Kingston Lodge Hotel', type: '4-star', features: 'Family rooms, Indian veg meals, near parks' },
+                    { nights: 2, location: 'Birmingham', hotel: 'Delta Hotels Marriott', type: '4-star', features: 'Swimming pool, family rooms, near Cadbury World' },
+                    { nights: 1, location: 'Thornbury', hotel: 'Thornbury Castle', type: 'Castle', features: 'Castle adventure for kids, Junior Knight certificates' },
                     { nights: 1, location: 'Longleat', hotel: 'Longleat area hotel', type: '4-star', features: 'Safari location' },
-                    { nights: 2, location: 'Leeds', hotel: 'Weetwood Hall Estate', type: 'Manor', features: 'Family rooms, grounds' },
-                    { nights: 2, location: 'Windermere', hotel: 'The Ro Hotel', type: '4-star', features: 'Lake activities' },
-                    { nights: 1, location: 'Edinburgh', hotel: 'Dalhousie Castle', type: 'Castle', features: 'Falconry for kids' }
+                    { nights: 2, location: 'Leeds', hotel: 'Weetwood Hall Estate', type: 'Manor', features: 'Family rooms, grounds to explore' },
+                    { nights: 2, location: 'Windermere', hotel: 'The Ro Hotel', type: '4-star', features: 'Lake activities, family rooms' },
+                    { nights: 1, location: 'Edinburgh', hotel: 'Dalhousie Castle', type: 'Castle', features: 'Falconry for kids, fairytale finale' }
                 ],
-                description: 'The ultimate family holiday with Harry Potter Studio Tour, Legoland Windsor, Cadbury World, Alton Towers, Longleat Safari Park, and castle stays. Designed for children aged 5-15 with kid-approved Indian meals.',
-                idealFor: 'Families with children 5-15, multi-generational travel',
+                description: 'Get ready for the family holiday of a lifetime! This action-packed 12-day adventure is designed specifically for families with children aged 5-15, combining magical experiences, thrilling theme parks, interactive museums, and hands-on animal encounters. Unlike standard sightseeing tours that leave kids bored on coaches, every day features exciting activities that will have children begging for more. Stay in family-friendly rooms at our character properties—including a real castle where kids can sleep like royalty and a lakeside hotel perfect for evening walks. From the wizarding world of Harry Potter to the chocolatey delights of Cadbury World, from roaring lions at Longleat Safari Park to building sandcastles on Lake Windermere, this tour balances structured fun with downtime for swimming and family relaxation. With kid-approved Indian meals throughout, dedicated children\'s activity packs, and family rooms guaranteed, this is the stress-free UK vacation that creates memories for a lifetime.',
+                idealFor: 'Families with children 5-15, multi-generational travel, school holiday trips',
                 color: '#06b6d4',
                 stats: { days: 12, cities: 8, activities: 20, attractions: 15, meals: 33, restaurants: 12 },
                 dietaryInfo: { standard: '100% Indian Vegetarian', jain: 'Jain options', kids: 'Kids portions, mild curries, high chairs' },
                 itinerary: [
-                    { day: 1, title: 'Arrival London', location: 'London', meals: ['Dinner'], activities: ['Airport welcome', 'Hotel check-in', 'Welcome dinner'], description: 'Traditional Indian welcome with flower garlands. Kids receive activity packs.' },
-                    { day: 2, title: 'Harry Potter Studio Tour', location: 'London', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Warner Bros Studio', 'Great Hall', 'Hogwarts Express', 'Diagon Alley', 'Butterbeer'], description: 'Full day at Harry Potter Studio Tour - Making of Harry Potter. Walk through Great Hall, board Hogwarts Express, see Diagon Alley. Indian lunch options available.' },
-                    { day: 3, title: 'London Eye & Natural History Museum', location: 'London', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['London Eye', 'Sea Life Aquarium', 'Natural History Museum', 'Diana Playground'], description: 'London Eye, Sea Life Aquarium with sharks, Natural History Museum with dinosaurs, Diana Memorial Playground.' },
-                    { day: 4, title: 'Legoland Windsor', location: 'Birmingham', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Legoland Windsor', 'Miniland', 'Driving School', 'Water rides', 'Transfer to Birmingham'], description: 'Full day at Legoland Windsor with 55+ rides. Miniland, Driving School, water rides. Transfer to Birmingham.' },
-                    { day: 5, title: 'Cadbury World & Thinktank', location: 'Birmingham', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Cadbury World', '4D Chocolate Adventure', 'Thinktank Science Museum', 'Interactive exhibits'], description: 'Cadbury World - 4D cinema, chocolate making, free samples. Thinktank Science Museum with hands-on exhibits.' },
-                    { day: 6, title: 'Cotswold Wildlife Park & Castle', location: 'Thornbury', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Cotswold Wildlife Park', 'Thornbury Castle check-in', 'Treasure hunt', 'Junior Knight certificates'], description: 'Cotswold Wildlife Park with lions, giraffes, train ride. Check-in at Thornbury Castle with treasure hunt for kids.' },
-                    { day: 7, title: 'Longleat Safari Park', location: 'Longleat', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Longleat Safari', 'Lions, tigers, elephants', 'Adventure Castle', 'Postman Pat Village'], description: 'Longleat Safari Park - drive-through safari with lions and tigers, Adventure Castle playground, maze.' },
-                    { day: 8, title: 'Transfer to Manchester', location: 'Leeds', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Science Museum Manchester', 'Hotel check-in', 'Grounds exploration'], description: 'Transfer to Manchester area, Science and Industry Museum with steam engines and aircraft.' },
-                    { day: 9, title: 'Alton Towers', location: 'Windermere', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Alton Towers', 'CBeebies Land', 'Thrill rides', 'Waterpark'], description: 'Full day at Alton Towers - UK\'s biggest theme park. CBeebies Land for younger kids, thrill rides for older children.' },
-                    { day: 10, title: 'Lake District Adventure', location: 'Windermere', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Windermere cruise', 'Beatrix Potter Attraction', 'Gruffalo Trail', 'Beach time'], description: 'Windermere Lake cruise, World of Beatrix Potter, Gruffalo Trail at Whinlatter Forest, beach time at Bowness Bay.' },
-                    { day: 11, title: 'Edinburgh Castle & Falconry', location: 'Edinburgh', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Dalhousie Castle check-in', 'Edinburgh Castle', 'Falconry for kids', 'Royal Mile'], description: 'Check-in at Dalhousie Castle, Edinburgh Castle, falconry experience with gentle birds for children.' },
-                    { day: 12, title: 'Edinburgh Zoo & Departure', location: 'Edinburgh', meals: ['Breakfast', 'Lunch'], activities: ['Edinburgh Zoo', 'Penguin Parade', 'Airport transfer'], description: 'Edinburgh Zoo with Giant Pandas and Penguin Parade, transfer to airport.' }
+                    { 
+                        day: 1, 
+                        title: 'Arrival in London — The Adventure Begins!', 
+                        location: 'London', 
+                        meals: ['Dinner'], 
+                        activities: ['Airport welcome', 'Hotel check-in', 'Welcome dinner'], 
+                        description: 'Arrive at London Heathrow. Traditional Indian welcome with flower garlands and tikka. Kids receive activity packs: UK colouring books, stickers, fun facts sheet, scavenger hunt list for tour, word search puzzles. Transfer to Kingston Lodge Hotel (45 minutes). Check-in with early room access if available. Free time for swimming in hotel pool. Evening: Welcome family dinner at Chokhi Dhani (Battersea) — kids\' menu available, high chairs provided, ice cream for children. Tour briefing for parents.',
+                        timings: ['Arrive: Morning/Afternoon', 'Transfer: 45 min', 'Check-in: Late afternoon', 'Welcome Dinner: 6:30 PM'],
+                        sellingPoints: ['Kids activity packs on arrival — keeps them engaged from minute one', 'Early check-in guaranteed — room ready regardless of arrival time', 'Chokhi Dhani has kids\' menu and entertainment', 'Hotel has pool for burning energy'],
+                        photoOps: ['Family welcome with garlands', 'Kids with activity packs', 'Group dinner'],
+                        dontMiss: 'The kids\' activity packs — specially designed for this tour with UK facts, colouring, and scavenger hunt',
+                        optionalExtras: ['Airport lounge access for families', 'Extra activity packs for siblings', 'Hotel pool private hire']
+                    },
+                    { 
+                        day: 2, 
+                        title: 'Harry Potter Warner Bros. Studio Tour — The Making of Magic', 
+                        location: 'London', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Warner Bros Studio', 'Great Hall', 'Hogwarts Express', 'Diagon Alley', 'Butterbeer'], 
+                        description: 'Early breakfast at hotel (7:00 AM for early entry). Depart for Warner Bros. Studio Tour London — The Making of Harry Potter (1 hour drive). FULL DAY MAGICAL EXPERIENCE: Walk through the Great Hall at Hogwarts, see original costumes and props, board the Hogwarts Express on Platform 9¾, walk down Diagon Alley (Ollivanders, Flourish & Blotts), see the Forbidden Forest with animatronic creatures, try butterbeer (non-alcoholic, kids love it!), green screen experience: fly on broomstick over London. Lunch at studio café (packed Indian lunch available for children if preferred). Continue studio exploration. Souvenir shop for wands and robes. Evening: Return to London. Dinner at Sagar (Covent Garden) — kids\' curry options (mild korma), naan bread popular with children.',
+                        timings: ['Breakfast: 7:00 AM', 'Harry Potter: 8:00 AM', 'Studio tour: 9:00 AM - 5:00 PM', 'Lunch: 12:30 PM', 'Return: 5:30 PM', 'Dinner: 7:00 PM'],
+                        sellingPoints: ['Full day at Harry Potter — not rushed', 'Platform 9¾ with actual Hogwarts Express train', 'Butterbeer tasting included', 'Green screen broomstick ride — kids fly over London', 'Indian lunch options available in studio'],
+                        photoOps: ['Great Hall with house tables', 'On Platform 9¾ with luggage trolley', 'Diagon Alley', 'Riding broomstick green screen', 'Drinking butterbeer'],
+                        dontMiss: 'The green screen broomstick experience — kids actually fly on a broomstick and the video shows them flying over London like Harry Potter',
+                        optionalExtras: ['Deluxe wand package', 'Private Harry Potter guide', 'Studio behind-the-scenes tour']
+                    },
+                    { 
+                        day: 3, 
+                        title: 'London Eye, Sea Life Aquarium & Natural History Museum', 
+                        location: 'London', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['London Eye', 'Sea Life Aquarium', 'Natural History Museum', 'Diana Playground'], 
+                        description: 'Breakfast at hotel. London Eye — family capsule with 360° views, kids\' activity sheet provided. Sea Life London Aquarium — walk through ocean tunnel, see sharks, touch pool experience (kids can touch starfish), penguin beach. Lunch at Madras Café (near South Bank) — quick service, kids\' portions. Natural History Museum (free entry) — DINOSAURS! See the famous Diplodocus skeleton in Hintze Hall, T-Rex moving model in dinosaur gallery, earthquake simulator, hands-on science zones. Children\'s favourite museum. Late Afternoon: Diana Memorial Playground (Kensington Gardens) — pirate ship playground, free entry, let kids burn energy. Evening: Dinner at Dishoom (King\'s Cross) — kids\' menu, lively atmosphere, early evening for tired children.',
+                        timings: ['Breakfast: 8:00 AM', 'London Eye: 9:00 AM', 'Sea Life: 10:30 AM', 'Lunch: 12:30 PM', 'Natural History Museum: 1:30 PM', 'Diana Playground: 4:30 PM', 'Dinner: 6:00 PM'],
+                        sellingPoints: ['London Eye family capsule — not mixed with strangers', 'Sea Life touch pool — kids touch real sea creatures', 'Natural History Museum dinosaurs — free entry', 'Diana Playground pirate ship — best playground in London', 'Dishoom has excellent kids\' menu'],
+                        photoOps: ['Family in London Eye capsule', 'Touching starfish at Sea Life', 'With T-Rex at Natural History', 'Pirate ship playground'],
+                        dontMiss: 'The T-Rex at Natural History Museum — it moves and roars, and kids absolutely love it',
+                        optionalExtras: ['London Eye fast-track', 'Sea Life behind-the-scenes tour', 'Natural History Museum sleepover (special dates)']
+                    },
+                    { 
+                        day: 4, 
+                        title: 'Legoland Windsor & Transfer to Birmingham', 
+                        location: 'Birmingham', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Legoland Windsor', 'Miniland', 'Driving School', 'Water rides', 'Transfer to Birmingham'], 
+                        description: 'Breakfast and checkout. Depart for LEGOLAND Windsor (45 minutes). FULL DAY THEME PARK: Over 55 interactive rides and attractions, Miniland (LEGO replicas of famous landmarks including London, Paris, Sydney), Driving School (kids aged 6-13 drive LEGO cars and get real driving licences), Pirate Falls, Viking River Splash (water rides — bring change of clothes!), Star Wars LEGO models, Duplo Valley for younger children (ages 2-5), live shows and character meet-and-greets. Lunch inside Legoland (various options, packed Indian lunch available). Late Afternoon: Depart for Birmingham (2 hours). Check-in at Delta Hotels by Marriott Birmingham — swimming pool for evening relaxation. Evening: Dinner at hotel with Indian vegetarian options. Family movie night in hotel room or early sleep for tired kids.',
+                        timings: ['Breakfast: 7:00 AM', 'Legoland: 8:00 AM', 'Park: 10:00 AM - 5:00 PM', 'Lunch: 12:30 PM', 'Transfer: 5:00 PM', 'Check-in: 7:00 PM', 'Dinner: 7:30 PM'],
+                        sellingPoints: ['Full day at Legoland — 55+ rides', 'Driving School — kids get actual LEGO driving licences', 'Miniland has LEGO London — kids recognise landmarks', 'Hotel pool for evening relaxation', 'Packed Indian lunches available'],
+                        photoOps: ['In Miniland with LEGO Big Ben', 'Driving LEGO car', 'On water ride', 'With LEGO characters'],
+                        dontMiss: 'The Driving School at Legoland — kids aged 6-13 drive real LEGO cars on roads with traffic lights, and get official LEGO driving licences',
+                        optionalExtras: ['Legoland VIP experience', 'Q-Bot ride reservation', 'Hotel pool party booking']
+                    },
+                    { 
+                        day: 5, 
+                        title: 'Cadbury World & Thinktank Science Museum', 
+                        location: 'Birmingham', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Cadbury World', '4D Chocolate Adventure', 'Thinktank Science Museum', 'Interactive exhibits'], 
+                        description: 'Breakfast at hotel. Depart for Cadbury World (30 minutes). FULL MORNING CHOCOLATE ADVENTURE: 4D Chocolate Adventure cinema experience (moving seats, wind, water), see how chocolate is made from bean to bar, write your name in melted chocolate, play in chocolate rain, free chocolate samples throughout tour, outdoor African adventure play area, world\'s biggest Cadbury shop. Lunch at Cadbury World café or packed Indian lunch. Afternoon: Thinktank Birmingham Science Museum — interactive science garden, planetarium, steam engines, aircraft including Spitfire, future technology zone, hands-on exhibits perfect for children. Evening: Dinner at Pushkar (Birmingham) — family-friendly, kids\' curry options.',
+                        timings: ['Breakfast: 8:00 AM', 'Cadbury World: 9:00 AM', 'Tour: 10:00 AM - 1:00 PM', 'Lunch: 1:00 PM', 'Thinktank: 2:00 PM', 'Dinner: 6:30 PM'],
+                        sellingPoints: ['Cadbury World — free chocolate samples throughout', '4D cinema experience included', 'Write name in chocolate', 'Thinktank is hands-on — kids can touch everything', 'Pushkar has kids\' portions'],
+                        photoOps: ['With Cadbury characters', 'Writing name in chocolate', '4D cinema experience', 'In aircraft at Thinktank'],
+                        dontMiss: 'The chocolate samples at Cadbury World — you get so much free chocolate throughout the tour, kids are in heaven',
+                        optionalExtras: ['Cadbury private tour', 'Thinktank planetarium show', 'Science museum workshop']
+                    },
+                    { 
+                        day: 6, 
+                        title: 'Cotswold Wildlife Park & Castle Check-in', 
+                        location: 'Thornbury', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Cotswold Wildlife Park', 'Thornbury Castle check-in', 'Treasure hunt', 'Junior Knight certificates'], 
+                        description: 'Breakfast and checkout. Depart for Cotswolds (1 hour). Cotswold Wildlife Park — AMAZING FOR KIDS: see lions, giraffes, rhinos, zebras, walk through lemur enclosure (lemurs climb on you), train ride around park, adventure playground, farmyard petting area, dinosaurs in the woods (model T-Rex!). Picnic lunch in park (packed Indian lunch provided) or park café. Afternoon: Drive to Thornbury Castle (30 minutes). CASTLE ADVENTURE BEGINS! Kids receive "Junior Knight" certificates on arrival, explore castle ramparts and towers, treasure hunt in castle grounds (find hidden clues), dress-up box with medieval costumes for photos. Evening: Medieval Banquet Dinner at castle — kids eat early (5:30 PM), adults later. Indian vegetarian options for all.',
+                        timings: ['Breakfast: 7:30 AM', 'Wildlife Park: 9:00 AM', 'Lunch: 12:30 PM', 'Transfer: 2:00 PM', 'Castle check-in: 3:00 PM', 'Kids dinner: 5:30 PM', 'Adults dinner: 7:30 PM'],
+                        sellingPoints: ['Cotswold Wildlife Park — lemurs climb on you!', 'Thornbury Castle Junior Knight certificates', 'Treasure hunt in castle', 'Medieval dress-up for photos', 'Kids eat early — no waiting'],
+                        photoOps: ['With lemur on shoulder', 'Junior Knight certificate', 'In medieval costume', 'Castle ramparts'],
+                        dontMiss: 'The lemur enclosure at Cotswold Wildlife Park — you walk through and the lemurs climb on you, completely tame and safe',
+                        optionalExtras: ['Wildlife Park keeper experience', 'Castle falconry for kids', 'Treasure hunt prizes']
+                    },
+                    { 
+                        day: 7, 
+                        title: 'Longleat Safari Park & Adventure', 
+                        location: 'Longleat', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Longleat Safari', 'Lions, tigers, elephants', 'Adventure Castle', 'Postman Pat Village'], 
+                        description: 'Breakfast at castle. Checkout with sad goodbyes. Depart for Longleat Safari Park (45 minutes). FULL DAY SAFARI ADVENTURE — KIDS LOVE THIS: Drive-through safari (in our coach) with lions, tigers, wolves, elephants, giraffes, monkeys (they climb on vehicles!), safari boats to see hippos and sea lions, Jungle Kingdom walk-through enclosures with small animals, Adventure Castle (huge playground with slides and towers), Longleat House (stately home), world\'s longest hedge maze, Postman Pat Village for younger children. Lunch at safari park (various options, packed Indian lunch available). Late Afternoon: Transfer to hotel near Longleat/Bath (30 minutes). Check-in. Evening: Dinner at Rajpoot (Bath) or hotel with Indian options. Family games evening or early night.',
+                        timings: ['Breakfast: 8:00 AM', 'Checkout: 9:30 AM', 'Longleat: 10:00 AM', 'Safari: 10:30 AM - 4:00 PM', 'Lunch: 1:00 PM', 'Check-in: 5:00 PM', 'Dinner: 7:00 PM'],
+                        sellingPoints: ['Longleat is UK\'s first safari park — established 1966', 'Monkeys climb on the coach — amazing experience', 'Adventure Castle playground is huge', 'Postman Pat Village for little ones', 'Packed Indian lunches available'],
+                        photoOps: ['Lion next to coach window', 'Monkeys on vehicle', 'In maze', 'Adventure Castle'],
+                        dontMiss: 'The monkey drive-through at Longleat — the monkeys actually climb all over the vehicle, and kids absolutely love it',
+                        optionalExtras: ['Longleat VIP safari', 'House private tour', 'Maze challenge with prize']
+                    },
+                    { 
+                        day: 8, 
+                        title: 'Transfer to Manchester, Science Museum', 
+                        location: 'Leeds', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Science Museum Manchester', 'Hotel check-in', 'Grounds exploration'], 
+                        description: 'Breakfast and checkout. Scenic drive to Manchester (3 hours with stops). Lunch at The Indian Cottage (en route) — break journey. Afternoon: Check-in at Weetwood Hall Estate. Science and Industry Museum Manchester — GREAT FOR KIDS: interactive exhibits on Manchester\'s industrial past, working steam engines, Air and Space Hall with real aircraft including Spitfire, Experiment! hands-on science zone, free entry. Late Afternoon: Hotel pool time or explore Weetwood Hall grounds (9-hole family golf, woodland walks). Evening: Dinner at Aagrah (Leeds) — family-friendly, kids\' portions.',
+                        timings: ['Breakfast: 7:30 AM', 'Transfer: 8:30 AM', 'Lunch: 12:00 PM', 'Check-in: 2:00 PM', 'Science Museum: 3:00 PM', 'Dinner: 6:30 PM'],
+                        sellingPoints: ['Science Museum is free and hands-on', 'Weetwood Hall has grounds to run around', 'Aagrah has excellent kids\' menu', 'Journey broken with stops'],
+                        photoOps: ['With aircraft at museum', 'Steam engine demonstration', 'Hotel grounds', 'Family dinner'],
+                        dontMiss: 'The Experiment! gallery at Science Museum — kids can touch everything, generate electricity, make bubbles, test their reflexes',
+                        optionalExtras: ['Science Museum workshop', 'Weetwood golf for families', 'Aagrah chef special']
+                    },
+                    { 
+                        day: 9, 
+                        title: 'Alton Towers Theme Park — Thrill Day!', 
+                        location: 'Windermere', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Alton Towers', 'CBeebies Land', 'Thrill rides', 'Waterpark'], 
+                        description: 'Early breakfast at hotel (6:30 AM for early entry). Depart for Alton Towers (1.5 hours). FULL DAY AT UK\'S BIGGEST THEME PARK: CBeebies Land for ages 2-6 (In the Night Garden, Postman Pat, Octonauts, live shows), thrill rides for older kids (Nemesis, Oblivion, The Smiler, Wicker Man), Waterpark optional afternoon session (separate ticket), beautiful gardens for quieter moments, monorail transport around park. Lunch inside Alton Towers (various options, packed Indian lunch available). Late Afternoon: Depart for Lake District (2 hours). Check-in at The Ro Hotel, Windermere. Evening: Dinner at The Cottage (Bowness) — lakeside location, kids\' menu. Early night after big day.',
+                        timings: ['Breakfast: 6:30 AM', 'Alton Towers: 8:00 AM', 'Park: 10:00 AM - 5:00 PM', 'Lunch: 1:00 PM', 'Transfer: 5:00 PM', 'Check-in: 7:00 PM', 'Dinner: 7:30 PM'],
+                        sellingPoints: ['Alton Towers is UK\'s biggest theme park', 'CBeebies Land for little ones', 'Thrill rides for teenagers', 'Waterpark option', 'Packed Indian lunches available'],
+                        photoOps: ['In CBeebies Land', 'On thrill ride', 'Waterpark slides', 'Lake view from hotel'],
+                        dontMiss: 'CBeebies Land at Alton Towers — if you have young children, this is paradise, with all their favourite TV characters',
+                        optionalExtras: ['Fastrack ride passes', 'Waterpark tickets', 'Alton Towers hotel character breakfast']
+                    },
+                    { 
+                        day: 10, 
+                        title: 'Lake District — Boats, Beatrix Potter & Gruffalo Trail', 
+                        location: 'Windermere', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Windermere cruise', 'Beatrix Potter Attraction', 'Gruffalo Trail', 'Beach time'], 
+                        description: 'Breakfast at hotel. Windermere Lake Cruise — kids love boats! Cruise from Bowness to Ambleside. The World of Beatrix Potter Attraction — PERFECT FOR YOUNGER KIDS: walk through Peter Rabbit\'s world, see Jemima Puddle-Duck, Mrs. Tiggy-Winkle, interactive exhibits, garden play area. Lunch at Kathmandu (Ambleside) — kids\' options available. Afternoon: Gruffalo Trail at Whinlatter Forest — OUTDOOR ADVENTURE: follow the Gruffalo story through the woods, activity pack for kids, play areas and sculptures, beautiful forest setting, free entry (parking charge only). Late Afternoon: Return to Windermere. Beach time at Bowness Bay — build sandcastles, paddle in lake (weather permitting). Evening: Dinner at Bombay Spice (Windermere) — takeaway option if kids tired.',
+                        timings: ['Breakfast: 8:30 AM', 'Cruise: 9:30 AM', 'Beatrix Potter: 11:00 AM', 'Lunch: 12:30 PM', 'Gruffalo Trail: 2:00 PM', 'Beach: 4:30 PM', 'Dinner: 6:00 PM'],
+                        sellingPoints: ['Beatrix Potter attraction brings books to life', 'Gruffalo Trail is free and in real forest', 'Beach time at lake — sandcastles and paddling', 'Flexible dinner — takeaway if tired'],
+                        photoOps: ['With Peter Rabbit', 'On Gruffalo trail', 'Building sandcastles', 'Lake beach'],
+                        dontMiss: 'The Gruffalo Trail at Whinlatter Forest — kids follow the story through the woods and find the Gruffalo sculpture at the end',
+                        optionalExtras: ['Beatrix Potter tea party', 'Gruffalo activity pack', 'Lake cruise private charter']
+                    },
+                    { 
+                        day: 11, 
+                        title: 'Transfer to Edinburgh, Castle & Falconry', 
+                        location: 'Edinburgh', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Dalhousie Castle check-in', 'Edinburgh Castle', 'Falconry for kids', 'Royal Mile'], 
+                        description: 'Breakfast and checkout. Scenic drive to Edinburgh via Hadrian\'s Wall (3.5 hours with stops). Lunch at Spice Hut (Carlisle) — break journey. Afternoon: Arrive at Dalhousie Castle — FAIRYTALE FINALE! Check-in. Kids receive "Lord/Lady of the Castle" certificates. Edinburgh Castle — see Crown Jewels, Mons Meg cannon, prison cells. Walk Royal Mile — street performers, tartan shops, fudge tasting. Return to Dalhousie Castle. Falconry experience for kids: handle owls and hawks (gentle birds for children). Evening: Farewell Medieval Banquet — early kids\' dinner (5:30 PM), adults later. Indian vegetarian options.',
+                        timings: ['Breakfast: 7:30 AM', 'Transfer: 8:30 AM', 'Lunch: 12:30 PM', 'Check-in: 3:00 PM', 'Edinburgh Castle: 4:00 PM', 'Kids dinner: 5:30 PM', 'Adults dinner: 7:30 PM'],
+                        sellingPoints: ['Dalhousie Castle is fairytale ending', 'Lord/Lady of Castle certificates for kids', 'Falconry with gentle birds', 'Royal Mile street performers', 'Early kids dinner'],
+                        photoOps: ['With castle certificate', 'Holding owl at falconry', 'Edinburgh Castle', 'Royal Mile'],
+                        dontMiss: 'The falconry at Dalhousie Castle — kids actually hold owls and hawks, and the birds are incredibly gentle and used to children',
+                        optionalExtras: ['Castle dungeon tour', 'Royal Mile ghost tour', 'Falconry extended session']
+                    },
+                    { 
+                        day: 12, 
+                        title: 'Edinburgh Zoo & Departure', 
+                        location: 'Edinburgh', 
+                        meals: ['Breakfast', 'Lunch'], 
+                        activities: ['Edinburgh Zoo', 'Penguin Parade', 'Airport transfer'], 
+                        description: 'Breakfast at castle. Edinburgh Zoo — FINAL ANIMAL ADVENTURE: Giant Pandas (if still at zoo — check current status), Penguin Parade (daily walk of penguins at 11:00 AM — must-see!), koalas, lions, tigers, giraffes, hilltop location with great views, play areas. Lunch at zoo café or packed Indian lunch. Afternoon: Transfer to Edinburgh Airport (30 minutes). Departure flights. End of 12-day family adventure with memories of magic, wildlife, castles, and fun. Farewell gifts for kids: Scottish teddy bears, photo USB.',
+                        timings: ['Breakfast: 8:00 AM', 'Zoo: 9:00 AM', 'Penguin Parade: 11:00 AM', 'Lunch: 12:30 PM', 'Transfer: 2:00 PM'],
+                        sellingPoints: ['Edinburgh Zoo Penguin Parade — world famous', 'Giant Pandas if available', 'Hilltop zoo with amazing views', 'Farewell gifts for kids', 'Easy airport transfer'],
+                        photoOps: ['Penguin Parade', 'With pandas', 'Zoo views', 'Farewell with gifts'],
+                        dontMiss: 'The Penguin Parade at Edinburgh Zoo — at 11 AM every day, the penguins walk right past you on their way to the pool, and you can get incredibly close',
+                        optionalExtras: ['Zoo keeper experience', 'Panda viewing priority', 'Airport lounge for families']
+                    }
                 ]
             },
             
-            // TOUR 6: Towers and Temples (12 Days)
+            // TOUR 6: Towers and Temples (12 Days) - ENHANCED
             {
                 id: 'towers-temples',
                 title: 'Towers and Temples: UK Heritage & Hindu Spiritual Journey',
@@ -378,39 +999,183 @@
                 route: ['London', 'Neasden', 'Watford', 'Birmingham', 'Leicester', 'Manchester', 'Windermere', 'Edinburgh'],
                 hotels: [
                     { nights: 2, location: 'London', hotel: 'Kingston Lodge Hotel', type: '4-star', features: '45 min to Neasden Temple' },
-                    { nights: 2, location: 'Wembley', hotel: 'Hilton London Wembley', type: '4-star', features: 'Walking distance to Neasden' },
+                    { nights: 2, location: 'Wembley', hotel: 'Hilton London Wembley', type: '4-star', features: 'Walking distance to Neasden Temple' },
                     { nights: 2, location: 'Birmingham', hotel: 'Delta Hotels Marriott', type: '4-star', features: '20 min to Balaji Temple' },
-                    { nights: 1, location: 'Thornbury', hotel: 'Thornbury Castle', type: 'Castle', features: 'Countryside retreat' },
+                    { nights: 1, location: 'Thornbury', hotel: 'Thornbury Castle', type: 'Castle', features: 'Countryside retreat after temple visits' },
                     { nights: 2, location: 'Leicester', hotel: 'Marriott Leicester', type: '4-star', features: '15 min to Swaminarayan Mandir' },
                     { nights: 2, location: 'Leeds', hotel: 'Weetwood Hall Estate', type: 'Manor', features: '30 min to Manchester temples' },
                     { nights: 1, location: 'Edinburgh', hotel: 'Dalhousie Castle', type: 'Castle', features: '45 min to Edinburgh temples' }
                 ],
-                description: 'A transformative journey weaving Britain\'s architectural heritage with dedicated time at Hindu temples. Full mornings/afternoons at temples for darshan, aarti participation, and prasad.',
-                idealFor: 'Hindu families, spiritual seekers, NRIs, multi-generational groups',
+                description: 'A transformative journey weaving Britain\'s architectural heritage with dedicated time at Hindu temples. Full mornings/afternoons at temples for darshan, aarti participation, and prasad. Unlike standard tours that rush past religious sites, we allocate full days at temples, with knowledgeable guides explaining the deities, rituals, and community significance. Stay in your portfolio\'s character properties, including a night at Thornbury Castle and Dalhousie Castle, while experiencing the UK\'s largest Hindu temple in Neasden, the architectural marvel of the Swaminarayan Mandir in Leicester, and the serene Shakti Temple in the Scottish Highlands. This is a journey for body, mind, and soul—where Stonehenge\'s ancient mysteries meet the divine vibrations of temple bells, and where every day offers both photographic wonders and spiritual nourishment.',
+                idealFor: 'Hindu families, spiritual seekers, NRIs, multi-generational groups, temple enthusiasts',
                 color: '#ef4444',
                 stats: { days: 12, cities: 8, activities: 18, attractions: 12, meals: 33, restaurants: 10 },
                 dietaryInfo: { standard: '100% Indian Vegetarian (strictly no eggs)', jain: 'Jain options (no onion/garlic)', temple: 'Temple-standard meals', prasad: 'Prasad at all temples' },
                 itinerary: [
-                    { day: 1, title: 'Arrival London', location: 'London', meals: ['Dinner'], activities: ['Heathrow arrival', 'Hotel check-in', 'Welcome dinner at Sagar'], description: 'Traditional Indian welcome. Dinner at Sagar (South Indian pure veg).' },
-                    { day: 2, title: 'London Sightseeing', location: 'London', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['London city tour', 'Westminster Abbey', 'London Eye', 'Tower Bridge'], description: 'London city tour, Westminster Abbey exterior, London Eye, Tower of London exterior.' },
-                    { day: 3, title: 'Neasden Temple - Full Day', location: 'Wembley', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Mangla Arti 7:30AM', 'Abhishek ceremony', 'Darshan of all deities', 'Understanding Hinduism exhibition', 'Sandhya Arti 6PM', 'Shayona restaurant'], description: 'Full day at BAPS Shri Swaminarayan Mandir, Neasden - largest Hindu temple outside India. Mangla Arti, Abhishek, darshan of 7 shrines, museum. Shayona restaurant for lunch and dinner.' },
-                    { day: 4, title: 'Bhaktivedanta Manor & Birmingham', location: 'Birmingham', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['ISKCON temple', 'George Harrison garden', 'Goshala visit', 'Govindas restaurant', 'Transfer to Birmingham'], description: 'Bhaktivedanta Manor - ISKCON UK headquarters, George Harrison\'s former home. Cow protection centre, Govindas prasadam lunch.' },
-                    { day: 5, title: 'Shri Venkateshwara (Balaji) Temple - Full Day', location: 'Birmingham', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Suprabhatam 8AM', 'Thomala Seva', 'Archana', 'Abhishekam', 'Rajbhog Arti', 'Evening arti', 'Special blessings'], description: 'Full day at Shri Venkateshwara (Balaji) Temple, Tividale. Suprabhatam, Thomala Seva, Abhishekam viewing, evening arti with special group blessings.' },
-                    { day: 6, title: 'Warwick, Stratford & Castle', location: 'Thornbury', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Warwick Castle', 'Shakespeare Birthplace', 'Thornbury Castle check-in', 'Meditation session'], description: 'Warwick Castle medieval fortress, Stratford-upon-Avon Shakespeare sites, check-in at Thornbury Castle with chapel meditation.' },
-                    { day: 7, title: 'Stonehenge, Bath & Leicester', location: 'Leicester', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Stonehenge', 'Roman Baths', 'Bath Abbey', 'Transfer to Leicester'], description: 'Stonehenge ancient stone circle, Bath city with Roman Baths, transfer to Leicester.' },
-                    { day: 8, title: 'Shree Swaminarayan Mandir Leicester - Full Day', location: 'Leicester', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Mangla Arti', 'Architectural tour', 'Haveli complex', 'Satsang session', 'Sandhya Arti', 'Shayona thali'], description: 'Full day at Shree Swaminarayan Mandir Leicester - architectural marvel built without steel. Satsang, volunteer activities, Shayona thali meals.' },
-                    { day: 9, title: 'Manchester Temples', location: 'Leeds', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Shri Geeta Bhavan Manchester', 'Shri Lakshmi Narayan Temple Bradford', 'Evening arti'], description: 'Shri Geeta Bhavan Hindu Temple Manchester, Shri Lakshmi Narayan Temple Bradford with evening arti.' },
-                    { day: 10, title: 'Yorkshire Dales & Lake District', location: 'Windermere', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Shakti Temple Skipton', 'Yorkshire Dales', 'Transfer to Lake District'], description: 'Shakti Temple Skipton darshan, Yorkshire Dales scenic drive, transfer to Windermere.' },
-                    { day: 11, title: 'Lake District & Edinburgh Castle', location: 'Edinburgh', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Windermere cruise', 'Hadrian Wall', 'Dalhousie Castle check-in', 'Meditation'], description: 'Lake Windermere morning cruise, Hadrian Wall photo stop, check-in at Dalhousie Castle with meditation session.' },
-                    { day: 12, title: 'Edinburgh Temple & Departure', location: 'Edinburgh', meals: ['Breakfast', 'Lunch'], activities: ['Edinburgh Hindu Mandir', 'Final darshan', 'Prasad for flight', 'Airport transfer'], description: 'Final darshan at Edinburgh Hindu Mandir & Cultural Centre, prasad for journey, transfer to airport.' }
+                    { 
+                        day: 1, 
+                        title: 'Arrival in London — The Journey Begins', 
+                        location: 'London', 
+                        meals: ['Dinner'], 
+                        activities: ['Heathrow arrival', 'Hotel check-in', 'Welcome dinner at Sagar'], 
+                        description: 'Arrive at London Heathrow. Traditional Indian welcome with tikka and flowers. Transfer to Kingston Lodge Hotel. Check-in and rest after flight. Evening: Welcome dinner at Sagar (South Indian pure veg restaurant, Covent Garden) — no eggs, authentic dosas and thalis. Tour orientation including spiritual significance of upcoming temple visits. Briefing on temple etiquette and dress codes.',
+                        timings: ['Arrive: Morning/Afternoon', 'Transfer: 45 min', 'Check-in: Late afternoon', 'Dinner: 7:00 PM'],
+                        sellingPoints: ['Traditional Indian welcome with religious elements', 'Sagar is pure veg South Indian — no eggs', 'Temple etiquette briefing', 'Spiritual focus from day one'],
+                        photoOps: ['Welcome with tikka', 'Sagar traditional décor'],
+                        dontMiss: 'The temple etiquette briefing — we explain exactly how to participate in aartis and receive prasad',
+                        optionalExtras: ['Early check-in for rest', 'Airport lounge access', 'Private puja arrangements']
+                    },
+                    { 
+                        day: 2, 
+                        title: 'Central London & Preparation', 
+                        location: 'London', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['London city tour', 'Westminster Abbey', 'London Eye', 'Tower Bridge'], 
+                        description: 'Breakfast at hotel (pure veg). London city tour: Big Ben, Houses of Parliament, Westminster Abbey exterior, Buckingham Palace (Changing of Guard if scheduled), Trafalgar Square, Tower Bridge exterior. Lunch at Woodlands (South Indian pure veg, Marylebone) — authentic dosas, idlis, no onion/garlic options available. Afternoon: London Eye experience. Tower of London exterior walk. Evening: Dinner at Diwana Bhel Poori House (Gujarati pure veg, no onion/garlic, King\'s Cross) — thali meals, famous for chaat.',
+                        timings: ['Breakfast: 7:30 AM', 'City Tour: 8:30 AM', 'Lunch: 12:30 PM', 'London Eye: 2:30 PM', 'Dinner: 7:00 PM'],
+                        sellingPoints: ['Woodlands is London\'s oldest South Indian pure veg', 'Diwana is Gujarati pure veg — no onion/garlic', 'Day of purity before temple visits', 'All meals strictly veg'],
+                        photoOps: ['Westminster Abbey exterior', 'Tower Bridge', 'London Eye view'],
+                        dontMiss: 'The thali at Diwana Bhel Poori House — unlimited refills, completely authentic Gujarati home-style cooking',
+                        optionalExtras: ['Westminster Abbey interior tour', 'Thames river cruise', 'Private temple briefing']
+                    },
+                    { 
+                        day: 3, 
+                        title: 'Neasden Temple — BAPS Shri Swaminarayan Mandir Full Day', 
+                        location: 'Wembley', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Mangla Arti 7:30AM', 'Abhishek ceremony', 'Darshan of all deities', 'Understanding Hinduism exhibition', 'Sandhya Arti 6PM', 'Shayona restaurant'], 
+                        description: 'Early checkout and transfer to BAPS Shri Swaminarayan Mandir, Neasden — largest Hindu temple outside India. FULL DAY SPIRITUAL IMMERSION: 7:30 AM Mangla Arti participation, 8:00 AM Abhishek ceremony viewing (sacred bathing of deities), 8:30 AM Guided tour of temple architecture (Italian Carrara marble, Indian craftsmanship, no steel frame), 9:30 AM Darshan of all seven shrines: Ghanshyam Maharaj, Sukhshaiya, Narayan, Shiv-Parvati, Ganesh, Hanuman, 10:30 AM Understanding the seven shrines and their significance, 11:00 AM "Understanding Hinduism" exhibition — excellent for families, 12:00 PM Prasad distribution. Lunch at Shayona (temple\'s own pure veg restaurant, no onion/garlic) — thali meals, snacks, sweets. Afternoon: Check-in at Hilton London Wembley (walking distance to temple). Rest. Late Afternoon: Haveli visit — cultural centre, bookshop, traditional crafts. Evening: Sandhya Arti at 6:00 PM — evening prayers with music and lamps. Optional: join in singing bhajans. Dinner at Shayona or Sakonis (Wembley, pure veg Gujarati) — extensive thali.',
+                        timings: ['Mangla Arti: 7:30 AM', 'Abhishek: 8:00 AM', 'Tour: 8:30 AM', 'Lunch: 12:30 PM', 'Check-in: 2:00 PM', 'Sandhya Arti: 6:00 PM', 'Dinner: 7:30 PM'],
+                        sellingPoints: ['Neasden is largest Hindu temple outside India', 'Full day — not rushed', 'Mangla Arti and Sandhya Arti participation', 'Abhishek ceremony viewing', 'Prasad at temple', 'Shayona is temple\'s own restaurant — purest food'],
+                        photoOps: ['Neasden exterior white marble', 'Inside main shrine', 'Abhishek ceremony', 'Sandhya Arti lamps', 'Haveli architecture'],
+                        dontMiss: 'The Abhishek ceremony at Neasden — watching the sacred bathing of the deities is a deeply moving experience',
+                        optionalExtras: ['Private shrine blessing', 'Haveli cultural show', 'Temple photography permit']
+                    },
+                    { 
+                        day: 4, 
+                        title: 'Bhaktivedanta Manor & Transfer to Birmingham', 
+                        location: 'Birmingham', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['ISKCON temple', 'George Harrison garden', 'Goshala visit', 'Govindas restaurant', 'Transfer to Birmingham'], 
+                        description: 'Early 4:30 AM optional: Mangala Arti at Neasden Temple for early risers. Breakfast at hotel. Checkout. Drive to Bhaktivedanta Manor, Watford (30 minutes) — ISKCON UK\'s headquarters, former home of George Harrison. SPIRITUAL EXPERIENCE: Temple darshan of Sri Sri Radha Gokulananda, Sri Sri Sita-Rama-Lakshman-Hanuman, Sri Sri Gaura-Nitai. Walk through George Harrison\'s garden (he donated house to ISKCON). See shrine to George Harrison. Cow protection centre visit (goshala) — meet the cows, understand ahimsa, feed the cows. Temple grounds walk — beautiful gardens, lake. Lunch at Govinda\'s (temple\'s pure veg restaurant, no onion/garlic) — prasadam meals. Afternoon: Drive to Birmingham (2 hours). Check-in at Delta Hotels by Marriott Birmingham. Evening: Dinner at Pushkar (Indian fine dining, can arrange pure veg) or Jyoti\'s (vegetarian Indian, Birmingham).',
+                        timings: ['Optional Arti: 4:30 AM', 'Breakfast: 8:00 AM', 'Transfer: 9:00 AM', 'Temple: 9:30 AM', 'Lunch: 12:30 PM', 'Transfer: 1:30 PM', 'Check-in: 3:30 PM', 'Dinner: 7:00 PM'],
+                        sellingPoints: ['Bhaktivedanta Manor was George Harrison\'s home — he gave it to ISKCON', 'Goshala cow protection — feed the cows', 'Govinda\'s prasadam — sanctified food', 'George Harrison memorial shrine'],
+                        photoOps: ['Temple deities', 'George Harrison garden', 'Goshala cows', 'Manor exterior'],
+                        dontMiss: 'Feeding the cows at the goshala — this is a deeply spiritual experience and the cows are incredibly gentle',
+                        optionalExtras: ['Early morning arti at Manor', 'Goshala volunteer session', 'George Harrison memorial talk']
+                    },
+                    { 
+                        day: 5, 
+                        title: 'Shri Venkateshwara (Balaji) Temple — Full Day Spiritual', 
+                        location: 'Birmingham', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Suprabhatam 8AM', 'Thomala Seva', 'Archana', 'Abhishekam', 'Rajbhog Arti', 'Evening arti', 'Special blessings'], 
+                        description: 'Breakfast at hotel (pure veg). Transfer to Shri Venkateshwara (Balaji) Temple, Tividale (20 minutes) — one of UK\'s largest and most active South Indian temples. FULL DAY COMPREHENSIVE TEMPLE EXPERIENCE: 8:00 AM Suprabhatam (morning awakening of deities with sacred songs), 8:30 AM Thomala Seva (flower decoration ceremony — watch priests decorate deities), 9:00 AM Archana and personal prayers, 10:00 AM Temple tour with priest — understand the seven alankaras of Balaji, 11:00 AM Abhishekam viewing (sacred bathing if scheduled), 12:00 PM Rajbhog Arti and darshan. Lunch at Saravanaa Bhavan (Birmingham, pure veg South Indian) or temple annadanam if available. Afternoon: Return to temple for 4:00 PM Cultural programme or temple volunteer experience, 6:00 PM Evening arti and deeparadhana (lamp ceremony), 7:00 PM Special blessings for tour group (pre-arranged with priests). Prasad distribution. Evening: Dinner at Dasaprakash (South Indian pure veg, Birmingham) — authentic Udipi cuisine.',
+                        timings: ['Suprabhatam: 8:00 AM', 'Thomala Seva: 8:30 AM', 'Archana: 9:00 AM', 'Abhishekam: 11:00 AM', 'Rajbhog: 12:00 PM', 'Lunch: 12:30 PM', 'Evening Arti: 6:00 PM', 'Dinner: 7:30 PM'],
+                        sellingPoints: ['Full day at Balaji temple — most active South Indian temple UK', 'Suprabhatam, Thomala Seva, Abhishekam — all ceremonies', 'Special group blessings pre-arranged', 'Prasad at temple', 'Priest-guided tour'],
+                        photoOps: ['Balaji deity', 'Thomala Seva flower decoration', 'Abhishekam ceremony', 'Evening arti lamps'],
+                        dontMiss: 'The Thomala Seva ceremony — watching the priests decorate Lord Balaji with flowers is incredibly beautiful and peaceful',
+                        optionalExtras: ['Private archana for family', 'Abhishekam sponsorship', 'Temple volunteer day']
+                    },
+                    { 
+                        day: 6, 
+                        title: 'Warwick, Stratford & Castle Retreat', 
+                        location: 'Thornbury', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Warwick Castle', 'Shakespeare Birthplace', 'Thornbury Castle check-in', 'Meditation session'], 
+                        description: 'Breakfast and checkout. Visit Warwick Castle — medieval fortress, dungeons, ramparts, falconry displays. Lunch at Saffron (Indian restaurant, Warwick, pure veg options). Afternoon: Drive to Stratford-upon-Avon — Shakespeare\'s Birthplace, Anne Hathaway\'s Cottage, Holy Trinity Church exterior. Late Afternoon: Transfer to Thornbury Castle (1 hour). Check-in at your Tudor castle. Evening: Castle meditation session — peaceful reflection in castle chapel. Dinner at castle with pure veg Indian options arranged by chef. No onion/garlic available on request.',
+                        timings: ['Breakfast: 7:30 AM', 'Warwick: 9:00 AM', 'Lunch: 12:30 PM', 'Stratford: 1:30 PM', 'Transfer: 4:00 PM', 'Check-in: 5:00 PM', 'Meditation: 6:00 PM', 'Dinner: 7:30 PM'],
+                        sellingPoints: ['Warwick Castle is best medieval castle in UK', 'Stratford is Shakespeare\'s birthplace', 'Thornbury Castle meditation session', 'Pure veg castle dinner', 'Spiritual retreat after intensive temple days'],
+                        photoOps: ['Warwick Castle towers', 'Shakespeare Birthplace', 'Thornbury Castle chapel', 'Meditation session'],
+                        dontMiss: 'The castle meditation session in the chapel — a unique opportunity for spiritual reflection in a 500-year-old sacred space',
+                        optionalExtras: ['Warwick Castle dungeon tour', 'Shakespeare play evening', 'Castle chapel private puja']
+                    },
+                    { 
+                        day: 7, 
+                        title: 'Stonehenge, Bath & Transfer to Leicester', 
+                        location: 'Leicester', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Stonehenge', 'Roman Baths', 'Bath Abbey', 'Transfer to Leicester'], 
+                        description: 'Early sunrise meditation at Thornbury Castle gardens (optional). Breakfast at castle. Checkout. Drive to Stonehenge (1 hour) — ancient stone circle, 5,000 years old, UNESCO World Heritage, visitor centre with exhibitions. Lunch at Rajpoot (Indian restaurant, Salisbury, pure veg options). Afternoon: Bath city tour — Roman Baths (ancient sacred site with thermal waters, walk where Romans walked 2,000 years ago), Bath Abbey, Royal Crescent. Drive to Leicester (2 hours). Check-in at hotel. Evening: Dinner at Chutney Ivy (Indian fine dining, Leicester, pure veg options) or Sharmilee (pure veg Gujarati).',
+                        timings: ['Sunrise meditation: 6:00 AM (optional)', 'Breakfast: 8:00 AM', 'Stonehenge: 10:00 AM', 'Lunch: 1:00 PM', 'Bath: 2:30 PM', 'Transfer: 5:00 PM', 'Dinner: 7:30 PM'],
+                        sellingPoints: ['Stonehenge is 5,000 years old — spiritual energy', 'Roman Baths ancient sacred site', 'Bath is UNESCO city', 'Leicester has large Hindu community'],
+                        photoOps: ['Stonehenge stones', 'Roman Baths thermal pool', 'Bath Abbey', 'Royal Crescent'],
+                        dontMiss: 'The Roman Baths at Bath — this was a sacred site long before the Romans, and you can feel the spiritual energy of the thermal waters',
+                        optionalExtras: ['Stonehenge inner circle access', 'Bath Thermae Spa rooftop pool', 'Leicester temple preview']
+                    },
+                    { 
+                        day: 8, 
+                        title: 'Shree Swaminarayan Mandir, Leicester — Architectural Marvel', 
+                        location: 'Leicester', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Mangla Arti', 'Architectural tour', 'Haveli complex', 'Satsang session', 'Sandhya Arti', 'Shayona thali'], 
+                        description: 'Breakfast at hotel (pure veg). FULL DAY at Shree Swaminarayan Mandir, Leicester: 8:00 AM Mangla Arti and darshan, 9:00 AM Guided architectural tour — this is one of the most beautiful Hindu temples in Europe, built using traditional Indian methods without steel framework, Italian marble and Indian craftsmanship, 10:00 AM Understanding the intricate carvings and deity symbolism, 11:00 AM Haveli complex visit — cultural exhibitions, traditional crafts, 12:00 PM Rajbhog Arti and prasad. Lunch at Mandir\'s Shayona (pure veg, no onion/garlic) — thali meals. Afternoon: Return to temple for 2:00 PM Satsang session (spiritual discourse) — English/Hindi, 4:00 PM Volunteer activity (optional): help in kitchen, cleaning, or bookshop — sewa opportunity, 6:00 PM Sandhya Arti — evening prayers with music and lamps, 7:00 PM Cultural programme (if scheduled) or bhajan singing. Evening: Dinner at Sharmilee (pure veg Gujarati, Leicester) — unlimited thali.',
+                        timings: ['Mangla Arti: 8:00 AM', 'Architectural tour: 9:00 AM', 'Haveli: 11:00 AM', 'Rajbhog: 12:00 PM', 'Lunch: 12:30 PM', 'Satsang: 2:00 PM', 'Sandhya Arti: 6:00 PM', 'Dinner: 7:30 PM'],
+                        sellingPoints: ['Leicester Mandir is architectural wonder — no steel frame', 'Full day with satsang and volunteer opportunities', 'Sewa (volunteer) experience available', 'Shayona thali — unlimited prasad', 'Cultural programme'],
+                        photoOps: ['Leicester Mandir exterior', 'Interior marble work', 'Haveli complex', 'Sandhya Arti'],
+                        dontMiss: 'The architectural tour at Leicester — understanding how they built this massive structure using traditional Indian methods without any steel is incredible',
+                        optionalExtras: ['Sewa volunteer session', 'Private satsang with sadhu', 'Haveli cultural show']
+                    },
+                    { 
+                        day: 9, 
+                        title: 'Manchester Temples & Transfer', 
+                        location: 'Leeds', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Shri Geeta Bhavan Manchester', 'Shri Lakshmi Narayan Temple Bradford', 'Evening arti'], 
+                        description: 'Breakfast and checkout. Drive to Manchester (2.5 hours). Late Morning: Shri Geeta Bhavan Hindu Temple, Manchester: darshan of Radha-Krishna, Ram-Sita, Shiv-Parvati, Durga Mata, temple founded by early Indian immigrants — historical significance, community centre visit. Lunch at This & That (Indian curry cafe, Manchester) or Dera (pure veg options). Afternoon: Check-in at Weetwood Hall Estate, Leeds. Rest and explore manor house grounds. Late Afternoon: Shri Lakshmi Narayan Hindu Temple, Bradford (optional, 30 minutes): evening arti at 6:00 PM, darshan and prasad. Evening: Dinner at Aagrah (Indian chain, Leeds, pure veg options excellent) — family thali.',
+                        timings: ['Breakfast: 7:30 AM', 'Transfer: 8:30 AM', 'Geeta Bhavan: 11:00 AM', 'Lunch: 1:00 PM', 'Check-in: 3:00 PM', 'Bradford temple: 5:30 PM', 'Dinner: 7:30 PM'],
+                        sellingPoints: ['Geeta Bhavan is historic Manchester temple', 'Bradford temple serves Yorkshire Hindu community', 'Aagrah is Yorkshire\'s finest', 'Weetwood Hall manor house retreat'],
+                        photoOps: ['Geeta Bhavan exterior', 'Bradford temple', 'Weetwood Hall', 'Aagrah thali'],
+                        dontMiss: 'The evening arti at Bradford Lakshmi Narayan Temple — the devotion of the local community is deeply moving',
+                        optionalExtras: ['Manchester temple volunteer', 'Bradford temple langar', 'Aagrah special thali']
+                    },
+                    { 
+                        day: 10, 
+                        title: 'Yorkshire Dales, Lake District & Shakti Temple', 
+                        location: 'Windermere', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Shakti Temple Skipton', 'Yorkshire Dales', 'Transfer to Lake District'], 
+                        description: 'Breakfast at hotel (pure veg). Scenic drive through Yorkshire Dales. Late Morning: Shakti Temple, Skipton (or nearby) — small but vibrant community temple: darshan of Durga Mata, Kali Ma, Lakshmi, meet local Hindu community, understand temple\'s role in rural UK Hindu life. Lunch at The Indian Lounge (Skipton, pure veg options). Afternoon: Drive to Lake District (1.5 hours). Check-in at The Ro Hotel, Windermere. Late Afternoon: Lakshmi Narayan Hindu Temple, Carlisle (if time permits) OR relaxation by Lake Windermere — spiritual reflection time. Evening: Dinner at The Cottage (Indian restaurant, Bowness, pure veg options). Evening walk by lake.',
+                        timings: ['Breakfast: 8:00 AM', 'Shakti Temple: 10:30 AM', 'Lunch: 1:00 PM', 'Transfer: 2:30 PM', 'Check-in: 4:00 PM', 'Dinner: 7:00 PM'],
+                        sellingPoints: ['Shakti Temple serves rural Hindu community', 'Lake District natural beauty for spiritual reflection', 'Carlisle temple if time permits', 'Peaceful lakeside evening'],
+                        photoOps: ['Shakti Temple', 'Yorkshire Dales scenery', 'Lake Windermere sunset'],
+                        dontMiss: 'Meeting the local Hindu community at Shakti Temple — seeing how they maintain their faith in a rural area is inspiring',
+                        optionalExtras: ['Shakti Temple community lunch', 'Lake District meditation walk', 'Carlisle temple special puja']
+                    },
+                    { 
+                        day: 11, 
+                        title: 'Lake District Beauty & Transfer to Edinburgh Castle', 
+                        location: 'Edinburgh', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Windermere cruise', 'Hadrian\'s Wall', 'Dalhousie Castle check-in', 'Meditation'], 
+                        description: 'Breakfast at hotel. Lake Windermere morning cruise — peaceful spiritual reflection on water. Late Morning: Visit Beatrix Potter\'s Hill Top Farm — charming for all ages. Lunch at Kathmandu (Ambleside, pure veg options available). Afternoon: Scenic drive to Edinburgh via Hadrian\'s Wall (3.5 hours) — Roman frontier, symbolic of ancient spiritual boundaries. Late Afternoon: Check-in at Dalhousie Castle — your 13th-century castle hotel. Castle meditation session — review spiritual journey, gratitude practice. Evening: Castle dinner with pure veg Indian banquet. No onion/garlic available.',
+                        timings: ['Breakfast: 8:00 AM', 'Cruise: 9:30 AM', 'Hill Top: 11:00 AM', 'Lunch: 12:30 PM', 'Transfer: 1:30 PM', 'Check-in: 5:00 PM', 'Meditation: 6:00 PM', 'Dinner: 7:30 PM'],
+                        sellingPoints: ['Morning cruise for spiritual reflection', 'Hadrian\'s Wall — ancient boundary', 'Dalhousie Castle is 13th-century', 'Journey review meditation', 'Pure veg castle banquet'],
+                        photoOps: ['Windermere morning light', 'Hadrian\'s Wall', 'Dalhousie Castle', 'Meditation session'],
+                        dontMiss: 'The castle meditation session — reviewing your spiritual journey through 8 temples in 12 days, setting intentions for return home',
+                        optionalExtras: ['Private castle chapel puja', 'Extended meditation session', 'Castle spa relaxation']
+                    },
+                    { 
+                        day: 12, 
+                        title: 'Edinburgh Temple & Departure with Blessings', 
+                        location: 'Edinburgh', 
+                        meals: ['Breakfast', 'Lunch'], 
+                        activities: ['Edinburgh Hindu Mandir', 'Final darshan', 'Prasad for flight', 'Airport transfer'], 
+                        description: 'Early sunrise yoga/meditation at castle (optional). Breakfast at castle. Checkout. Late Morning: Edinburgh Hindu Mandir & Cultural Centre: final darshan of trip, special blessings for safe journey home, prasad for flight (blessed food to eat during travel), meet Scottish Hindu community. Midday: Lunch at Mother India (Edinburgh, pure veg options) or Kalpna (pure veg restaurant). Afternoon: Transfer to Edinburgh Airport (30 minutes). Departure with prasad and blessings. Tour manager assists with check-in. End of 12-day spiritual journey through 8 temples, 2 castles, and countless blessings.',
+                        timings: ['Sunrise yoga: 6:00 AM (optional)', 'Breakfast: 8:00 AM', 'Temple: 10:00 AM', 'Lunch: 12:30 PM', 'Transfer: 2:00 PM'],
+                        sellingPoints: ['Final darshan and blessings', 'Prasad for journey home', 'Scottish Hindu community connection', 'Tour manager assists with airport', '12 days, 8 temples, countless blessings'],
+                        photoOps: ['Final temple darshan', 'Receiving prasad', 'Group farewell', 'Castle morning'],
+                        dontMiss: 'Receiving prasad for your flight home — this blessed food will sustain you and remind you of your spiritual journey',
+                        optionalExtras: ['Private final blessing', 'Extra prasad for family', 'Airport lounge access']
+                    }
                 ]
             },
             
-            // TOUR 7: BOLLYWOOD UK EXPERIENCE (9 Days)
+            // TOUR 7: BOLLYWOOD UK EXPERIENCE (9 Days) - ENHANCED
             {
                 id: 'bollywood-uk',
                 title: 'Bollywood UK Experience: Lights, Camera, Action!',
-                subtitle: '9 Days | London to Manchester | Film Locations & Cultural Immersion',
+                subtitle: '9 Days | London to Glasgow | Film Locations & Cultural Immersion',
                 category: 'bollywood',
                 duration: 9,
                 price: '£1,899',
@@ -423,21 +1188,129 @@
                     { nights: 1, location: 'Birmingham', hotel: 'Hotel du Vin Birmingham', type: '4-star', features: 'Jewellery Quarter location' },
                     { nights: 2, location: 'Thornbury', hotel: 'Thornbury Castle', type: 'Castle', features: 'Grand Bollywood finale night' }
                 ],
-                description: 'Walk in the footsteps of Bollywood legends! Visit iconic filming locations from Dilwale Dulhania Le Jayenge, Kabhi Khushi Kabhie Gham, and more. Expert guides share movie trivia, and enjoy 4 spectacular Bollywood nights with DJs, dhol players, and live singers.',
-                idealFor: 'Bollywood fans, couples, groups of friends, cultural enthusiasts',
+                description: 'Walk in the footsteps of Bollywood legends! Visit iconic filming locations from Dilwale Dulhania Le Jayenge, Kabhi Khushi Kabhie Gham, Mohabbatein, and more. Expert guides share movie trivia at every stop, and evenings come alive with Bollywood nights—dancing to DJ beats at your castle hotels, live performances at authentic desi venues, and the electric atmosphere of Southall\'s Broadway. Stay in your portfolio\'s character properties including Thornbury Castle transformed for one night into a Bollywood palace with music, lights, and celebration. This is Britain as you\'ve seen it on screen, experienced with the energy, colour, and music that makes Bollywood unforgettable.',
+                idealFor: 'Bollywood fans, couples, groups of friends, cultural enthusiasts, social media content creators',
                 color: '#ec4899',
                 stats: { days: 9, cities: 6, activities: 16, attractions: 12, meals: 24, restaurants: 10 },
                 dietaryInfo: { standard: '100% Indian Vegetarian', jain: 'Jain options available', bollywood: 'Themed dining experiences' },
                 itinerary: [
-                    { day: 1, title: 'Arrival & Southall Broadway', location: 'London', meals: ['Dinner'], activities: ['Heathrow arrival', 'Hotel check-in', 'Southall Broadway evening', 'Garam Masala restaurant'], description: 'Traditional Indian welcome. Evening exploration of Southall Broadway - London\'s Little India. Dinner at Garam Masala with live Bollywood music.' },
-                    { day: 2, title: 'Pinewood Studios & London Film Tour', location: 'London', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Pinewood Studios tour', 'James Bond sets', 'Bollywood productions', 'Madame Tussauds Bollywood stars', 'Dinner at Dishoom'], description: 'Full day at Pinewood Studios - see where Bollywood blockbusters were filmed. Visit sets from James Bond and Bollywood productions. Evening at Madame Tussauds with Bollywood star wax figures.' },
-                    { day: 3, title: 'Windsor & Eton College (DDLJ)', location: 'Windsor', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Windsor Castle', 'Eton College', 'DDLJ bridge locations', 'Bollywood night at hotel'], description: 'Visit Windsor Castle and Eton College - featured in Dilwale Dulhania Le Jayenge. Find the famous bridge locations. Evening Bollywood party at hotel with DJ and dhol player.' },
-                    { day: 4, title: 'Oxford University & Transfer to Manchester', location: 'Manchester', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Oxford University tour', 'Christ Church College', 'Transfer to Manchester', 'Curry Mile evening'], description: 'Oxford University tour including Christ Church College (Harry Potter and Bollywood filming location). Transfer to Manchester. Evening on famous Curry Mile.' },
-                    { day: 5, title: 'Manchester Film Locations', location: 'Manchester', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Old Trafford stadium', 'Etihad Stadium', 'Northern Quarter', 'Castlefield', 'Bollywood night with live singer'], description: 'Manchester film locations - stadiums featured in Bollywood sports films, Northern Quarter urban scenes, Castlefield canals. Special Bollywood night with live singer and dance performances.' },
-                    { day: 6, title: 'Liverpool Docks & Beatles Story', location: 'Liverpool', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Albert Dock', 'Liverpool waterfront', 'Bollywood dance sequences location', 'The Beatles Story', 'Evening at Panoramic 34'], description: 'Liverpool waterfront - featured in multiple Bollywood dance sequences. Visit Albert Dock, The Beatles Story. Dinner with views at Panoramic 34.' },
-                    { day: 7, title: 'Birmingham Jewellery Quarter & Transfer', location: 'Birmingham', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Jewellery Quarter tour', 'Bollywood jewelry shopping', 'Bullring', 'Transfer to Thornbury Castle'], description: 'Birmingham Jewellery Quarter - Bollywood jewelry connections, shopping at Bullring. Transfer to Thornbury Castle for grand finale.' },
-                    { day: 8, title: 'Thornbury Castle Grand Bollywood Night', location: 'Thornbury', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Castle exploration', 'Tudor history', 'Grand Bollywood Gala Night', 'Professional dancers', 'Fireworks'], description: 'Explore Thornbury Castle where Henry VIII and Anne Boleyn stayed. Grand Bollywood Gala Night in the castle ballroom with professional dancers, live band, dhol players, and fireworks display.' },
-                    { day: 9, title: 'Cotswolds & Departure', location: 'London', meals: ['Breakfast', 'Lunch'], activities: ['Cotswolds villages', 'Bibury', 'Bourton-on-the-Water', 'Heathrow transfer'], description: 'Scenic drive through Cotswolds villages featured in Bollywood films. Bibury and Bourton-on-the-Water. Transfer to Heathrow for departure.' }
+                    { 
+                        day: 1, 
+                        title: 'Arrival & Southall Broadway — The Opening Scene', 
+                        location: 'London', 
+                        meals: ['Dinner'], 
+                        activities: ['Heathrow arrival', 'Hotel check-in', 'Southall Broadway evening', 'Garam Masala restaurant'], 
+                        description: 'Arrive at London Heathrow. Traditional Indian welcome with flower garlands and taal music. Transfer to hotel. Check-in. Welcome kit includes: Bollywood UK location map, movie trivia booklet, playlist of songs filmed in UK. Evening: Exploration of Southall Broadway — London\'s Little India. Punjabi road signs, sari shops, jewellers, jalebi shops, Bollywood music playing everywhere. Dinner at Garam Masala (Southall institution) — authentic Punjabi, Bollywood posters on walls, often has local singers performing. Welcome to the UK\'s desi heartland.',
+                        timings: ['Arrive: Morning/Afternoon', 'Transfer: 45 min', 'Check-in: Late afternoon', 'Southall: 6:00 PM', 'Dinner: 7:30 PM'],
+                        sellingPoints: ['Welcome kit with movie map and trivia', 'Southall is London\'s Little India — full immersion', 'Garam Masala has live singers', 'Bollywood music everywhere'],
+                        photoOps: ['Southall Broadway signs', 'With Bollywood posters', 'Garam Masala interior', 'Group welcome'],
+                        dontMiss: 'The atmosphere on Southall Broadway — it feels like India, with Punjabi signs, sari shops, and Bollywood music blaring',
+                        optionalExtras: ['Southall shopping spree', 'Bollywood movie poster purchase', 'Live singer dedication']
+                    },
+                    { 
+                        day: 2, 
+                        title: 'Pinewood Studios & London Film Tour — The Romantic Classics', 
+                        location: 'London', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Pinewood Studios tour', 'James Bond sets', 'Bollywood productions', 'Madame Tussauds Bollywood stars', 'Dinner at Dishoom'], 
+                        description: 'Breakfast at hotel. Depart for Pinewood Studios (1 hour) — "Home of British Cinema". FULL DAY: Tour working film studios, see James Bond sets (007 Stage), learn about Bollywood productions filmed here (including songs and dance sequences), visit prop stores, see how movies are made. Lunch at studio café (Indian options available). Afternoon: Madame Tussauds London — wax figures of Bollywood stars: Shah Rukh Khan, Amitabh Bachchan, Aishwarya Rai, Salman Khan. Evening: Dinner at Dishoom (King\'s Cross) — Bombay-style cuisine, vintage railway atmosphere, Bollywood posters.',
+                        timings: ['Breakfast: 7:30 AM', 'Pinewood: 8:30 AM', 'Tour: 9:30 AM - 3:00 PM', 'Lunch: 12:30 PM', 'Madame Tussauds: 4:00 PM', 'Dinner: 7:30 PM'],
+                        sellingPoints: ['Pinewood is where James Bond and Bollywood films are made', 'See actual film sets', 'Madame Tussauds Bollywood stars', 'Dishoom is London\'s most atmospheric Indian'],
+                        photoOps: ['Pinewood 007 Stage', 'With SRK wax figure', 'With Amitabh wax figure', 'Dishoom interior'],
+                        dontMiss: 'The 007 Stage at Pinewood — this is where the biggest Bollywood dance numbers and James Bond action scenes are filmed',
+                        optionalExtras: ['Pinewood VIP access', 'Madame Tussauds behind-the-scenes', 'Dishoom priority seating']
+                    },
+                    { 
+                        day: 3, 
+                        title: 'Westminster Bridge, Southall & Wembley Desi Scene', 
+                        location: 'Southall', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Westminster Bridge DDLJ location', 'Millennium Bridge', 'Southall Broadway full day', 'Wembley Bollywood DJ Night'], 
+                        description: 'Breakfast at hotel. Bollywood location guide joins tour. Morning: Westminster Bridge — DDLJ (1995) location where Shah Rukh Khan and Kajol had pivotal moments. Guide explains: "This is where \'Suraj Hua Maddham\' montage was filmed." Millennium Bridge & St Paul\'s — Love Aaj Kal (2009), Jhoom Barabar Jhoom (2007). Tower Bridge & Tower of London — Namastey London (2007), London Dreams (2009). Lunch at Woodlands (South Indian pure veg, Marylebone) — favourite of Bollywood stars visiting London. Afternoon: FULL SOUTHALL EXPERIENCE: Glassy Junction pub (featured in British-Asian films), Gurdwara Sri Guru Singh Sabha (massive Sikh temple), sari shopping, jalebi tasting, music shops. Dinner at Gifto\'s Lahore Karahi (Southall institution since 1980s) — walls covered with Bollywood posters, live singing on weekends. EVENING: BOLLYWOOD NIGHT #1 — WEMBLEY DESI SCENE: Transfer to Wembley venue. Bollywood DJ Night with UK-based desi DJ, dance floor with latest hits and classic UK-filmed songs, dhol player appearance, optional bhangra dance lesson. Late night snack at Sakonis (Wembley, open late) — Gujarati street food.',
+                        timings: ['Breakfast: 8:00 AM', 'Westminster: 9:00 AM', 'Tower Bridge: 11:00 AM', 'Lunch: 1:00 PM', 'Southall: 2:30 PM', 'Dinner: 6:00 PM', 'Bollywood Night: 8:00 PM'],
+                        sellingPoints: ['Stand where SRK stood on Westminster Bridge', 'Full Southall immersion — not just drive-through', 'Gifto\'s has live singers', 'Wembley DJ night with dhol player', 'Bhangra lessons'],
+                        photoOps: ['On Westminster Bridge DDLJ style', 'At Glassy Junction', 'Gifto\'s Bollywood posters', 'Dancing at Wembley'],
+                        dontMiss: 'The Wembley Bollywood night — dancing to desi beats with a live dhol player is an experience you can\'t get on standard tours',
+                        optionalExtras: ['Personal DJ request', 'Bhangra costume hire', 'Southall shopping guide']
+                    },
+                    { 
+                        day: 4, 
+                        title: 'Oxford University & Mohabbatein Locations', 
+                        location: 'Thornbury', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Oxford University tour', 'Christ Church College', 'Mohabbatein locations', 'Transfer to Thornbury Castle', 'Bollywood Palace Night'], 
+                        description: 'Breakfast and checkout. Depart for Oxford (1 hour). OXFORD UNIVERSITY FILM LOCATIONS: Keble College — Mohabbatein (2000) "Gurukul" school exterior where Amitabh Bachchan walked and Shah Rukh Khan gave rebellious speeches, Radcliffe Camera & Bodleian Library — background for multiple Bollywood university scenes, Christ Church College — Harry Potter dining hall (Bollywood stars often visit), walk through Oxford\'s cobbled streets — recognisable from Mohabbatein song sequences. Lunch at Majliss (Indian restaurant, Oxford) — popular with Oxford\'s Indian students. Afternoon: Free time in Oxford — Bodleian Library courtyard (where Mohabbatein characters hung out), Bridge of Sighs, punting on River Cam (optional). Late Afternoon: Transfer to Thornbury Castle (1.5 hours). EVENING: BOLLYWOOD PALACE NIGHT #2 — THE CASTLE TRANSFORMED: Castle exterior lit with coloured lights like film set, red carpet arrival with dhol welcome, live Bollywood singer (UK-based artist) performing romantic classics and dance numbers, karaoke session — guests sing their favourite Bollywood songs, dance floor in castle courtyard, dress code: Bollywood glamour (saris, sherwanis, film-inspired outfits), dinner: Royal banquet with Indian menu — butter chicken, dal makhani, biryani, naan, movie screening: Mohabbatein (partial) or Namastey London in castle cinema room.',
+                        timings: ['Breakfast: 8:00 AM', 'Oxford: 9:00 AM', 'Tour: 10:00 AM', 'Lunch: 1:00 PM', 'Free time: 2:30 PM', 'Transfer: 4:00 PM', 'Check-in: 5:30 PM', 'Bollywood Night: 7:00 PM'],
+                        sellingPoints: ['Stand at Keble College where Mohabbatein was filmed', 'Castle transformed into Bollywood set', 'Live Bollywood singer', 'Karaoke — sing your favourite songs', 'Red carpet dhol arrival', 'Mohabbatein screening in castle'],
+                        photoOps: ['At Keble College "Gurukul"', 'Red carpet castle arrival', 'With live singer', 'Karaoke performance', 'Castle lit up'],
+                        dontMiss: 'The Bollywood Palace Night at Thornbury Castle — this is a unique experience, dining and dancing in a 500-year-old castle transformed into a Bollywood set',
+                        optionalExtras: ['Oxford punting', 'Karaoke recording', 'Professional photographer at castle night']
+                    },
+                    { 
+                        day: 5, 
+                        title: 'Cotswolds, Bride and Prejudice Locations & Manchester', 
+                        location: 'Manchester', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Cotswolds villages', 'Bibury', 'Bride and Prejudice locations', 'Transfer to Manchester', 'Curry Mile evening'], 
+                        description: 'Breakfast at castle (late start after Bollywood night). Leisurely checkout. COTSWOLDS FILM LOCATIONS: Bibury — Arlington Row cottages featured in Bridget Jones\'s Diary (popular with Indian audiences), Bourton-on-the-Water — "Venice of the Cotswolds", picturesque setting used in multiple British-Asian productions, Stanway House (if accessible) — Bride and Prejudice (2004) Gurinder Chadha film. Lunch at The Spice Kitchen (Cirencester) — Indian restaurant in Cotswolds. Afternoon: Continue through Cotswolds scenic drive — recognisable from The Holiday (popular with Indian women) and other rom-coms. Transfer to Birmingham (1 hour). Check-in at Delta Hotels by Marriott Birmingham. Evening: Dinner at Pushkar (Birmingham) — modern Indian fine dining. Bollywood music evening — restaurant plays classic hits.',
+                        timings: ['Breakfast: 9:00 AM', 'Cotswolds: 10:30 AM', 'Lunch: 1:00 PM', 'Transfer: 2:30 PM', 'Check-in: 4:00 PM', 'Dinner: 7:30 PM'],
+                        sellingPoints: ['Bibury cottages appear in multiple films', 'Bride and Prejudice locations', 'Late start after party night', 'Pushkar has Bollywood music'],
+                        photoOps: ['Arlington Row', 'Bourton-on-the-Water', 'Pushkar interior'],
+                        dontMiss: 'Bibury\'s Arlington Row — these cottages appear on UK passports and in multiple films, the most photographed street in England',
+                        optionalExtras: ['Cotswolds village walking tour', 'Bride and Prejudice location map', 'Pushkar chef\'s table']
+                    },
+                    { 
+                        day: 6, 
+                        title: 'Manchester Film Locations & Bollywood Night', 
+                        location: 'Manchester', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Old Trafford stadium', 'Etihad Stadium', 'Northern Quarter', 'Castlefield', 'Bollywood night with live singer'], 
+                        description: 'Breakfast at hotel. MANCHESTER FILM LOCATIONS: Old Trafford stadium — featured in Bollywood sports films, "Theatre of Dreams", stadium tour. Etihad Stadium — Manchester City, modern architecture featured in films. Northern Quarter — urban scenes in British-Asian productions, street art, indie vibe. Castlefield — canals, Roman ruins, atmospheric backdrops. Lunch at Al Frash (Balti restaurant, Birmingham) — Birmingham invented "Balti" curry. Afternoon: Continue Manchester exploration. Black Country Living Museum (optional) — industrial heritage, featured in Peaky Blinders (massively popular in India). EVENING: BOLLYWOOD NIGHT #3 — MANCHESTER DESI SCENE: Venue in Manchester city centre. Bollywood DJ with latest hits, live singer performing romantic classics, dance floor, dhol player, Manchester\'s desi crowd. Late night curry on Curry Mile.',
+                        timings: ['Breakfast: 8:00 AM', 'Old Trafford: 9:00 AM', 'Etihad: 11:00 AM', 'Lunch: 1:00 PM', 'Northern Quarter: 2:30 PM', 'Bollywood Night: 8:00 PM'],
+                        sellingPoints: ['Old Trafford stadium tour', 'Manchester film locations with expert guide', 'Balti curry invented in Birmingham', 'Manchester Bollywood night', 'Curry Mile experience'],
+                        photoOps: ['At Old Trafford', 'Northern Quarter street art', 'Bollywood night dancing'],
+                        dontMiss: 'Old Trafford stadium tour — even if you\'re not a football fan, the scale and atmosphere of this iconic stadium is impressive',
+                        optionalExtras: ['Old Trafford museum', 'Peaky Blinders tour', 'Personal DJ playlist']
+                    },
+                    { 
+                        day: 7, 
+                        title: 'Liverpool Docks, Beatles Story & Transfer', 
+                        location: 'Liverpool', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Albert Dock', 'Liverpool waterfront', 'Bollywood dance sequences location', 'The Beatles Story', 'Evening at Panoramic 34'], 
+                        description: 'Breakfast and checkout. Transfer to Liverpool (1 hour). LIVERPOOL FILM LOCATIONS: Albert Dock — featured in multiple Bollywood dance sequences, waterfront setting, Liverpool waterfront — dramatic backdrop for romantic scenes, The Beatles Story — museum dedicated to Fab Four (massively popular in India). Lunch at local Indian restaurant. Afternoon: Liverpool city exploration — Two Cathedrals, Penny Lane, Strawberry Field. Evening: Dinner at Panoramic 34 — restaurant on 34th floor with city views. BOLLYWOOD NIGHT #4 — LIVERPOOL: Local desi venue with DJ and dancing.',
+                        timings: ['Breakfast: 8:00 AM', 'Transfer: 9:00 AM', 'Albert Dock: 10:00 AM', 'Beatles Story: 11:30 AM', 'Lunch: 1:00 PM', 'City tour: 2:30 PM', 'Dinner: 7:00 PM', 'Bollywood Night: 9:00 PM'],
+                        sellingPoints: ['Liverpool waterfront featured in Bollywood dances', 'Beatles Story — India loves The Beatles', 'Panoramic 34 views', 'Liverpool desi scene'],
+                        photoOps: ['Albert Dock waterfront', 'With Beatles memorabilia', 'Panoramic 34 view', 'Dancing in Liverpool'],
+                        dontMiss: 'The Beatles Story museum — Indian audiences love The Beatles (especially because of their India connection), and this museum is world-class',
+                        optionalExtras: ['Beatles Magical Mystery Tour', 'Ferry across the Mersey', 'Liverpool FC stadium tour']
+                    },
+                    { 
+                        day: 8, 
+                        title: 'Birmingham Jewellery Quarter & Castle Finale', 
+                        location: 'Thornbury', 
+                        meals: ['Breakfast', 'Lunch', 'Dinner'], 
+                        activities: ['Jewellery Quarter tour', 'Bollywood jewelry shopping', 'Bullring', 'Transfer to Thornbury Castle', 'Grand Bollywood Gala Night'], 
+                        description: 'Breakfast and checkout. BIRMINGHAM JEWELLERY QUARTER: Tour jewellery workshops, Bollywood jewelry connections (many pieces made here), shopping at Bullring (Selfridges, high street brands). Lunch at local Indian restaurant. Afternoon: Transfer to Thornbury Castle (2 hours). Check-in. GRAND FINALE BOLLYWOOD NIGHT #5 — THORNBURY CASTLE CELEBRATION: Castle exterior spectacularly lit, red carpet arrival, professional Bollywood dancers performing, live band, dhol players, fireworks display, grand banquet dinner, awards ceremony: "Best Dancer," "Best Dressed," "Movie Trivia Champion," group photo Bollywood-style pose with castle backdrop, karaoke, dancing until late.',
+                        timings: ['Breakfast: 8:00 AM', 'Jewellery Quarter: 9:30 AM', 'Lunch: 1:00 PM', 'Transfer: 2:30 PM', 'Check-in: 4:30 PM', 'Gala Night: 7:00 PM'],
+                        sellingPoints: ['Jewellery Quarter — buy gold at trade prices', 'Grand finale at Thornbury Castle', 'Professional dancers', 'Fireworks', 'Awards ceremony', 'Ultimate Bollywood celebration'],
+                        photoOps: ['Jewellery shopping', 'Castle gala setup', 'With professional dancers', 'Fireworks', 'Awards ceremony'],
+                        dontMiss: 'The grand finale Bollywood night at Thornbury Castle — professional dancers, fireworks, and a banquet in a real castle. This is the ultimate Bollywood experience in the UK.',
+                        optionalExtras: ['Jewellery custom making', 'Professional photography package', 'Fireworks display upgrade']
+                    },
+                    { 
+                        day: 9, 
+                        title: 'Cotswolds & Departure — The Closing Credits', 
+                        location: 'London', 
+                        meals: ['Breakfast', 'Lunch'], 
+                        activities: ['Cotswolds villages', 'Bibury', 'Bourton-on-the-Water', 'Heathrow transfer'], 
+                        description: 'Breakfast at castle. Scenic drive through Cotswolds villages featured in Bollywood films. Bibury and Bourton-on-the-Water. Last minute shopping and photos. Lunch at local pub or packed Indian lunch. Transfer to Heathrow (2 hours). Departure flights. Bollywood playlist on coach for final journey. Farewell gifts: photo USB, movie location map, Bollywood UK trivia book. End of 9-day cinematic journey.',
+                        timings: ['Breakfast: 8:00 AM', 'Cotswolds: 9:30 AM', 'Lunch: 12:30 PM', 'Transfer: 1:30 PM'],
+                        sellingPoints: ['Final Cotswolds scenery', 'Photo USB with all memories', 'Bollywood playlist farewell', 'Movie location map gift'],
+                        photoOps: ['Final Cotswolds photos', 'Group farewell', 'Heathrow departure'],
+                        dontMiss: 'The photo USB — we\'ve captured your entire Bollywood journey, from Westminster Bridge to the castle gala',
+                        optionalExtras: ['Extra night in castle', 'London shopping stop', 'Airport lounge access']
+                    }
                 ]
             }
         ];
@@ -609,9 +1482,9 @@
                         </div>
                         <ul class="text-sm text-gray-300 space-y-1">
                             <li>• Expert guides with movie trivia at every location</li>
-                            <li>• 4 Bollywood nights with DJs, dhol players, live singers</li>
+                            <li>• 4-5 Bollywood nights with DJs, dhol players, live singers</li>
                             <li>• Southall Broadway full immersion experience</li>
-                            <li>• Castle Bollywood nights at Thornbury & Rosslea Hall</li>
+                            <li>• Castle Bollywood nights at Thornbury with professional dancers</li>
                         </ul>
                     </div>
                 `;
@@ -643,6 +1516,7 @@
                             ${tour.dietaryInfo.prasad ? '<span class="prasad-badge">Temple Prasad</span>' : ''}
                             ${tour.dietaryInfo.temple ? '<span class="temple-badge">Temple-Standard</span>' : ''}
                             ${tour.dietaryInfo.kids ? '<span class="kids-badge">Kids Menu</span>' : ''}
+                            ${tour.dietaryInfo.bollywood ? '<span class="bollywood-badge">Themed Dining</span>' : ''}
                         </div>
                     </div>
 
@@ -679,7 +1553,11 @@
                                     </div>
                                     <div class="day-content px-4" id="day-content-${index}">
                                         <div class="pb-4 space-y-3">
-                                            ${day.hotel ? `<div class="flex items-center space-x-2 text-sm"><i class="fas fa-bed text-amber-400"></i><span class="text-gray-300">${day.hotel}</span></div>` : ''}
+                                            ${day.timings ? `
+                                                <div class="flex flex-wrap gap-2">
+                                                    ${day.timings.map(t => `<span class="timing-badge"><i class="fas fa-clock mr-1"></i>${t}</span>`).join('')}
+                                                </div>
+                                            ` : ''}
                                             
                                             <p class="text-gray-300 text-sm">${day.description}</p>
 
@@ -689,6 +1567,35 @@
                                                     ${day.activities.map(a => `<span class="activity-tag"><i class="fas fa-check mr-1"></i>${a}</span>`).join('')}
                                                 </div>
                                             </div>
+
+                                            ${day.sellingPoints ? `
+                                                <div class="selling-point">
+                                                    <p class="text-xs font-semibold text-cyan-400 mb-1"><i class="fas fa-star mr-1"></i>SELLING POINTS</p>
+                                                    <ul class="text-sm text-gray-300 space-y-1">
+                                                        ${day.sellingPoints.map(sp => `<li>• ${sp}</li>`).join('')}
+                                                    </ul>
+                                                </div>
+                                            ` : ''}
+
+                                            ${day.photoOps ? `
+                                                <div class="photo-op">
+                                                    <i class="fas fa-camera mr-2"></i>${day.photoOps.join(' • ')}
+                                                </div>
+                                            ` : ''}
+
+                                            ${day.dontMiss ? `
+                                                <div class="dont-miss">
+                                                    <div class="dont-miss-title"><i class="fas fa-exclamation-circle mr-1"></i>DON'T MISS</div>
+                                                    <p class="text-sm text-gray-300">${day.dontMiss}</p>
+                                                </div>
+                                            ` : ''}
+
+                                            ${day.optionalExtras ? `
+                                                <div class="mt-2">
+                                                    <p class="text-xs font-semibold text-gray-400 mb-1">OPTIONAL EXTRAS</p>
+                                                    <p class="text-xs text-gray-500">${day.optionalExtras.join(' • ')}</p>
+                                                </div>
+                                            ` : ''}
                                         </div>
                                     </div>
                                 </div>
