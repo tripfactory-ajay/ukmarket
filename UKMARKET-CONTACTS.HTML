@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacts - TripFactory UK Market</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        tf: { navy: '#1e3a5f', blue: '#2563eb', cyan: '#06b6d4', lime: '#84cc16', yellow: '#eab308', red: '#ef4444', dark: '#0f172a', card: '#1e293b' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background: #0f172a; color: #e2e8f0; font-family: 'Segoe UI', system-ui, sans-serif; }
+        .glass { background: rgba(30, 41, 59, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); }
+        .gradient-text { background: linear-gradient(135deg, #06b6d4, #2563eb); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .nav-item { position: relative; }
+        .nav-item::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: #06b6d4; transition: width 0.3s; }
+        .nav-item:hover::after { width: 100%; }
+        .nav-item.active::after { width: 100%; }
+        .category-badge { padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
+        .contact-card { transition: all 0.3s ease; }
+        .contact-card:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .logo-container { background: rgba(255,255,255,0.95); padding: 8px 16px; border-radius: 8px; }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Navigation -->
+    <nav class="glass fixed w-full z-50 top-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <!-- Left: TripFactory Logo -->
+                <div class="flex items-center space-x-4">
+                    <div class="logo-container">
+                        <img src="tripfactory-logo.png" alt="TripFactory" class="h-10 w-auto" onerror="this.style.display='none'">
+                        <span class="text-tf-navy font-bold text-xl" id="tf-logo-fallback">TripFactory</span>
+                    </div>
+                </div>
+
+                <!-- Center: Navigation -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="ukmarket.html" class="nav-item text-gray-300 hover:text-white transition">Dashboard</a>
+                    <a href="ukmarket-contacts.html" class="nav-item active text-tf-cyan font-medium">Contacts</a>
+                    <a href="ukmarket-hotels.html" class="nav-item text-gray-300 hover:text-white transition">Hotels</a>
+                    <a href="ukmarket-tours.html" class="nav-item text-gray-300 hover:text-white transition">Tours</a>
+                    <a href="ukmarket-tasks.html" class="nav-item text-gray-300 hover:text-white transition">Tasks</a>
+                    <a href="ukmarket-wiki.html" class="nav-item text-gray-300 hover:text-white transition">Wiki</a>
+                </div>
+
+                <!-- Right: ORN Logo -->
+                <div class="flex items-center space-x-3">
+                    <div class="logo-container hidden sm:block">
+                        <img src="orn-logo.png" alt="ORN" class="h-8 w-auto" onerror="this.style.display='none'">
+                        <span class="text-tf-navy font-semibold text-sm" id="orn-logo-fallback">ORN</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-24 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+            <div>
+                <h2 class="text-3xl font-bold mb-2">Supplier & Partner Contacts</h2>
+                <p class="text-gray-400">25 operational contacts: Attractions, restaurants, guides, and vendors</p>
+            </div>
+            <button onclick="openAddModal()" class="px-6 py-3 bg-tf-cyan text-tf-dark font-semibold rounded-lg hover:bg-cyan-400 transition flex items-center">
+                <i class="fas fa-plus mr-2"></i>Add Contact
+            </button>
+        </div>
+
+        <!-- Statistics -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            <div class="glass rounded-lg p-4 text-center">
+                <div class="text-2xl font-bold text-tf-cyan" id="totalContacts">25</div>
+                <div class="text-sm text-gray-400">Total Contacts</div>
+            </div>
+            <div class="glass rounded-lg p-4 text-center">
+                <div class="text-2xl font-bold text-tf-blue" id="attractionCount">12</div>
+                <div class="text-sm text-gray-400">Attractions</div>
+            </div>
+            <div class="glass rounded-lg p-4 text-center">
+                <div class="text-2xl font-bold text-tf-lime" id="restaurantCount">11</div>
+                <div class="text-sm text-gray-400">Restaurants</div>
+            </div>
+            <div class="glass rounded-lg p-4 text-center">
+                <div class="text-2xl font-bold text-tf-yellow" id="guideCount">2</div>
+                <div class="text-sm text-gray-400">Tour Guides</div>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="glass rounded-xl p-4 mb-6">
+            <div class="flex flex-col md:flex-row gap-4">
+                <div class="flex-1">
+                    <div class="relative">
+                        <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                        <input type="text" id="searchInput" placeholder="Search by name, company, or email..." 
+                            class="w-full bg-tf-navy/50 border border-gray-600 rounded-lg pl-10 pr-4 py-2 text-white focus:border-tf-cyan focus:outline-none"
+                            onkeyup="filterContacts()">
+                    </div>
+                </div>
+                <div class="flex gap-2 flex-wrap">
+                    <select id="categoryFilter" onchange="filterContacts()" class="bg-tf-navy/50 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-tf-cyan focus:outline-none">
+                        <option value="">All Categories</option>
+                        <option value="attraction">Attractions</option>
+                        <option value="restaurant">Restaurants</option>
+                        <option value="guide">Tour Guides</option>
+                        <option value="hotel">Hotels</option>
+                        <option value="transport">Transport</option>
+                        <option value="dmc">DMC</option>
+                    </select>
+                    <select id="cityFilter" onchange="filterContacts()" class="bg-tf-navy/50 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-tf-cyan focus:outline-none">
+                        <option value="">All Cities</option>
+                        <option value="London">London</option>
+                        <option value="Manchester">Manchester</option>
+                        <option value="Windermere">Windermere</option>
+                        <option value="Glasgow">Glasgow</option>
+                        <option value="Edinburgh">Edinburgh</option>
+                        <option value="Birmingham">Birmingham</option>
+                    </select>
+                    <button onclick="exportContacts()" class="px-4 py-2 border border-gray-600 rounded-lg hover:bg-gray-700 transition">
+                        <i class="fas fa-download mr-2"></i>Export
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contacts Grid -->
+        <div id="contactsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Contacts populated by JavaScript -->
+        </div>
+    </main>
+
+    <!-- Add/Edit Modal -->
+    <div id="contactModal" class="fixed inset-0 bg-black/80 hidden z-50 flex items-center justify-center p-4">
+        <div class="glass rounded-xl p-6 w-full max-w-lg max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold" id="modalTitle">Add Contact</h3>
+                <button onclick="closeModal()" class="text-gray-400 hover:text-white">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <form id="contactForm" class="space-y-4">
+                <input type="hidden" id="contactId">
+                <div>
+                    <label class="block text-sm text-gray-400 mb-1">Name *</label>
+                    <input type="text" id="formName" required class="w-full bg-tf-navy/50 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-tf-cyan focus:outline-none">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm text-gray-400 mb-1">Company</label>
+                        <input type="text" id="formCompany" class="w-full bg-tf-navy/50 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-tf-cyan focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-400 mb-1">Position</label>
+                        <input type="text" id="formPosition" class="w-full bg-tf-navy/50 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-tf-cyan focus:outline-none">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm text-gray-400 mb-1">Email</label>
+                        <input type="email" id="formEmail" class="w-full bg-tf-navy/50 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-tf-cyan focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-400 mb-1">Phone</label>
+                        <input type="tel" id="formPhone" class="w-full bg-tf-navy/50 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-tf-cyan focus:outline-none">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm text-gray-400 mb-1">Category *</label>
+                        <select id="formCategory" required class="w-full bg-tf-navy/50 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-tf-cyan focus:outline-none">
+                            <option value="attraction">Attraction</option>
+                            <option value="restaurant">Restaurant</option>
+                            <option value="guide">Tour Guide</option>
+                            <option value="hotel">Hotel</option>
+                            <option value="transport">Transport</option>
+                            <option value="dmc">DMC</option>
+                            <option value="partner">Partner</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-400 mb-1">City</label>
+                        <input type="text" id="formCity" class="w-full bg-tf-navy/50 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-tf-cyan focus:outline-none">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm text-gray-400 mb-1">Services / Description</label>
+                    <textarea id="formDescription" rows="3" class="w-full bg-tf-navy/50 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-tf-cyan focus:outline-none"></textarea>
+                </div>
+                <div class="flex space-x-3 pt-4">
+                    <button type="button" onclick="closeModal()" class="flex-1 px-4 py-2 rounded-lg border border-gray-600 text-gray-300 hover:bg-gray-700 transition">Cancel</button>
+                    <button type="submit" class="flex-1 px-4 py-2 rounded-lg bg-tf-cyan text-tf-dark font-semibold hover:bg-cyan-400 transition">Save Contact</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Pre-loaded operational data from your team
+        const defaultContacts = [
+            // Attractions & Activities
+            { id: 1, name: "Neha", company: "Zozo DMC", position: "London Eye Contact", email: "neha@zozodmc.com", phone: "", category: "attraction", city: "London", description: "London Eye bookings and coordination" },
+            { id: 2, name: "Deepika", company: "Zozo DMC", position: "Madame Tussauds Contact", email: "deepika@zozodmc.com", phone: "", category: "attraction", city: "London", description: "Madame Tussauds reservations" },
+            { id: 3, name: "Deepak Yadav", company: "Tower of London", position: "Group Bookings", email: "deepak_byadav@ymail.com", phone: "", category: "attraction", city: "London", description: "Tower of London group reservations" },
+            { id: 4, name: "Ashita", company: "Zozo DMC", position: "Lord's Cricket Ground", email: "ashita@zozodmc.com", phone: "", category: "attraction", city: "London", description: "Lord's Cricket Ground tours" },
+            { id: 5, name: "Golden Tours", company: "Golden Tours", position: "Windsor Castle Portal", email: "", phone: "", category: "attraction", city: "Windsor", description: "https://portal.goldentours.com/en/login/agent" },
+            { id: 6, name: "Irish Ferries", company: "Irish Ferries", position: "Group Bookings", email: "groups@irishferries.co.uk", phone: "", category: "transport", city: "Dover", description: "Dover-Calais ferry services" },
+            { id: 7, name: "Stena Line", company: "Stena Line", position: "Harwich Ferry", email: "", phone: "", category: "transport", city: "Harwich", description: "https://www.stenaline.co.uk - Harwich-Hook of Holland" },
+            { id: 8, name: "Manchester United", company: "Manchester United", position: "Old Trafford Tours", email: "", phone: "", category: "attraction", city: "Manchester", description: "https://tickets.manutd.com - Stadium tours" },
+            { id: 9, name: "Windermere Lake Cruises", company: "WLC", position: "Lake Cruise Bookings", email: "mail@wlc.co.uk", phone: "", category: "attraction", city: "Windermere", description: "Lake Windermere cruise services" },
+            { id: 10, name: "Katie", company: "Raer", position: "Jackton Distillery", email: "katie@raer.co.uk", phone: "", category: "attraction", city: "Scotland", description: "Scottish distillery tours" },
+            { id: 11, name: "Cadbury World", company: "Cadbury", position: "Visitor Attraction", email: "", phone: "", category: "attraction", city: "Birmingham", description: "Chocolate factory tours" },
+            { id: 12, name: "Little Fish Tours", company: "Little Fish Tours", position: "Edinburgh Castle", email: "info@littlefishtours.co.uk", phone: "", category: "attraction", city: "Edinburgh", description: "Edinburgh Castle and Scotland tours" },
+
+            // Restaurants (Indian/Veg Friendly)
+            { id: 13, name: "Wok and Rolls", company: "Wok and Rolls", position: "Restaurant", email: "zenkhan7@gmail.com", phone: "+39 351 266 1852", category: "restaurant", city: "London", description: "Indian/Asian cuisine" },
+            { id: 14, name: "Bangalore Express", company: "Bangalore Express", position: "Restaurant", email: "tours@bangaloreuk.com", phone: "+44 7741 994018", category: "restaurant", city: "London", description: "South Indian cuisine, group friendly" },
+            { id: 15, name: "Mumtaz London", company: "Mumtaz", position: "Restaurant", email: "mumtazlondon1@gmail.com", phone: "+44 7960 919669", category: "restaurant", city: "London", description: "Premium Indian dining" },
+            { id: 16, name: "Sakonis", company: "Sakonis", position: "Pure Vegetarian", email: "sakonis.restaurant@gmail.com", phone: "+44 7435 789407", category: "restaurant", city: "London", description: "100% Pure Vegetarian Indian" },
+            { id: 17, name: "Rasoi Ghar", company: "Rasoi Ghar", position: "Restaurant", email: "rasoighar.co.uk@gmail.com", phone: "+44 7958 487590", category: "restaurant", city: "London", description: "Home-style Indian cooking" },
+            { id: 18, name: "Ziya Restaurant", company: "Ziya", position: "Restaurant", email: "enquiries@ziyarestaurant.co.uk", phone: "+44 161 257 2010", category: "restaurant", city: "Manchester", description: "Fine dining Indian" },
+            { id: 19, name: "Bombay Flavors", company: "Bombay Flavors", position: "Restaurant", email: "", phone: "+44 161 860 7878", category: "restaurant", city: "Manchester", description: "Indian cuisine" },
+            { id: 20, name: "Lake Raj", company: "Lake Raj", position: "Restaurant", email: "", phone: "+44 15394 45900", category: "restaurant", city: "Windermere", description: "Indian cuisine in Lake District" },
+            { id: 21, name: "Bombay Blues", company: "Bombay Blues", position: "Restaurant", email: "", phone: "+44 141 221 0817", category: "restaurant", city: "Glasgow", description: "Scottish Indian fusion" },
+            { id: 22, name: "Chaska Indian", company: "Chaska", position: "Restaurant", email: "", phone: "+44 131 228 3838", category: "restaurant", city: "Edinburgh", description: "Authentic Indian" },
+            { id: 23, name: "Mr Basray", company: "Mr Basray", position: "Restaurant", email: "", phone: "+44 131 228 3838", category: "restaurant", city: "Edinburgh", description: "Indian cuisine" },
+            { id: 24, name: "Jilabi", company: "Jilabi", position: "Restaurant", email: "", phone: "+44 121 722 3205", category: "restaurant", city: "Birmingham", description: "Indian sweets and cuisine" },
+
+            // Tour Guides
+            { id: 25, name: "Fia Shroff", company: "Independent", position: "UK Tour Guide", email: "", phone: "+44 7494 642190", category: "guide", city: "London", description: "Professional UK tour guide, English/Hindi speaking" },
+            { id: 26, name: "Zarir Shroff", company: "Independent", position: "UK Tour Guide", email: "", phone: "+44 7958 575116", category: "guide", city: "London", description: "Experienced UK guide, specializes in Indian groups" }
+        ];
+
+        let contacts = [];
+        let editingId = null;
+
+        const categoryColors = {
+            attraction: 'bg-tf-blue/20 text-tf-blue',
+            restaurant: 'bg-tf-lime/20 text-tf-lime',
+            guide: 'bg-tf-yellow/20 text-tf-yellow',
+            hotel: 'bg-tf-cyan/20 text-tf-cyan',
+            transport: 'bg-tf-red/20 text-tf-red',
+            dmc: 'bg-purple-500/20 text-purple-400',
+            partner: 'bg-gray-500/20 text-gray-400'
+        };
+
+        const categoryIcons = {
+            attraction: 'fa-ticket',
+            restaurant: 'fa-utensils',
+            guide: 'fa-user-tie',
+            hotel: 'fa-hotel',
+            transport: 'fa-ship',
+            dmc: 'fa-handshake',
+            partner: 'fa-briefcase'
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadContacts();
+            renderContacts();
+            updateStats();
+        });
+
+        function loadContacts() {
+            const stored = localStorage.getItem('ukmarket_contacts');
+            if (stored) {
+                contacts = JSON.parse(stored);
+            } else {
+                contacts = [...defaultContacts];
+                localStorage.setItem('ukmarket_contacts', JSON.stringify(contacts));
+            }
+        }
+
+        function renderContacts(filtered = contacts) {
+            const grid = document.getElementById('contactsGrid');
+            
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full text-center py-12">
+                        <i class="fas fa-search text-4xl text-gray-600 mb-4"></i>
+                        <p class="text-gray-400">No contacts found matching your criteria</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = filtered.map(contact => `
+                <div class="contact-card glass rounded-lg p-5 border border-gray-700">
+                    <div class="flex justify-between items-start mb-3">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 ${categoryColors[contact.category] || 'bg-gray-700'} rounded-lg flex items-center justify-center mr-3">
+                                <i class="fas ${categoryIcons[contact.category] || 'fa-user'}"></i>
+                            </div>
+                            <div>
+                                <span class="category-badge ${categoryColors[contact.category] || 'bg-gray-700'} uppercase">${contact.category}</span>
+                                ${contact.city ? `<span class="text-xs text-gray-400 ml-2"><i class="fas fa-map-marker-alt mr-1"></i>${contact.city}</span>` : ''}
+                            </div>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button onclick="editContact(${contact.id})" class="p-2 rounded-lg hover:bg-gray-700 transition text-gray-400 hover:text-white">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button onclick="deleteContact(${contact.id})" class="p-2 rounded-lg hover:bg-red-900/30 transition text-gray-400 hover:text-red-400">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <h3 class="font-semibold text-lg mb-1">${contact.name}</h3>
+                    ${contact.company ? `<p class="text-sm text-gray-400 mb-2">${contact.company}${contact.position ? ` • ${contact.position}` : ''}</p>` : ''}
+                    
+                    <div class="space-y-2 mt-3">
+                        ${contact.email ? `
+                            <div class="flex items-center text-sm">
+                                <i class="fas fa-envelope text-gray-500 w-5"></i>
+                                <a href="mailto:${contact.email}" class="text-tf-cyan hover:underline truncate">${contact.email}</a>
+                            </div>
+                        ` : ''}
+                        ${contact.phone ? `
+                            <div class="flex items-center text-sm">
+                                <i class="fas fa-phone text-gray-500 w-5"></i>
+                                <a href="tel:${contact.phone}" class="text-gray-300 hover:text-white">${contact.phone}</a>
+                            </div>
+                        ` : ''}
+                    </div>
+                    
+                    ${contact.description ? `
+                        <div class="mt-3 pt-3 border-t border-gray-700">
+                            <p class="text-sm text-gray-400 line-clamp-2">${contact.description}</p>
+                        </div>
+                    ` : ''}
+                </div>
+            `).join('');
+        }
+
+        function filterContacts() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const category = document.getElementById('categoryFilter').value;
+            const city = document.getElementById('cityFilter').value;
+
+            const filtered = contacts.filter(contact => {
+                const matchesSearch = !search || 
+                    contact.name.toLowerCase().includes(search) ||
+                    (contact.company && contact.company.toLowerCase().includes(search)) ||
+                    (contact.email && contact.email.toLowerCase().includes(search)) ||
+                    (contact.description && contact.description.toLowerCase().includes(search));
+                
+                const matchesCategory = !category || contact.category === category;
+                const matchesCity = !city || contact.city === city;
+
+                return matchesSearch && matchesCategory && matchesCity;
+            });
+
+            renderContacts(filtered);
+        }
+
+        function updateStats() {
+            document.getElementById('totalContacts').textContent = contacts.length;
+            document.getElementById('attractionCount').textContent = contacts.filter(c => c.category === 'attraction').length;
+            document.getElementById('restaurantCount').textContent = contacts.filter(c => c.category === 'restaurant').length;
+            document.getElementById('guideCount').textContent = contacts.filter(c => c.category === 'guide').length;
+        }
+
+        function openAddModal() {
+            editingId = null;
+            document.getElementById('modalTitle').textContent = 'Add Contact';
+            document.getElementById('contactForm').reset();
+            document.getElementById('contactModal').classList.remove('hidden');
+        }
+
+        function editContact(id) {
+            const contact = contacts.find(c => c.id === id);
+            if (!contact) return;
+
+            editingId = id;
+            document.getElementById('modalTitle').textContent = 'Edit Contact';
+            document.getElementById('formName').value = contact.name;
+            document.getElementById('formCompany').value = contact.company || '';
+            document.getElementById('formPosition').value = contact.position || '';
+            document.getElementById('formEmail').value = contact.email || '';
+            document.getElementById('formPhone').value = contact.phone || '';
+            document.getElementById('formCategory').value = contact.category;
+            document.getElementById('formCity').value = contact.city || '';
+            document.getElementById('formDescription').value = contact.description || '';
+            
+            document.getElementById('contactModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('contactModal').classList.add('hidden');
+            editingId = null;
+        }
+
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const contactData = {
+                id: editingId || Date.now(),
+                name: document.getElementById('formName').value,
+                company: document.getElementById('formCompany').value,
+                position: document.getElementById('formPosition').value,
+                email: document.getElementById('formEmail').value,
+                phone: document.getElementById('formPhone').value,
+                category: document.getElementById('formCategory').value,
+                city: document.getElementById('formCity').value,
+                description: document.getElementById('formDescription').value,
+                updatedAt: new Date().toISOString()
+            };
+
+            if (editingId) {
+                const index = contacts.findIndex(c => c.id === editingId);
+                contacts[index] = { ...contacts[index], ...contactData };
+            } else {
+                contactData.createdAt = new Date().toISOString();
+                contacts.push(contactData);
+            }
+
+            localStorage.setItem('ukmarket_contacts', JSON.stringify(contacts));
+            renderContacts();
+            updateStats();
+            closeModal();
+            alert(editingId ? 'Contact updated successfully' : 'Contact added successfully');
+        });
+
+        function deleteContact(id) {
+            if (!confirm('Are you sure you want to delete this contact?')) return;
+            
+            contacts = contacts.filter(c => c.id !== id);
+            localStorage.setItem('ukmarket_contacts', JSON.stringify(contacts));
+            renderContacts();
+            updateStats();
+        }
+
+        function exportContacts() {
+            const csv = [
+                ['Name', 'Company', 'Position', 'Email', 'Phone', 'Category', 'City', 'Description'].join(','),
+                ...contacts.map(c => [
+                    `"${c.name}"`,
+                    `"${c.company || ''}"`,
+                    `"${c.position || ''}"`,
+                    `"${c.email || ''}"`,
+                    `"${c.phone || ''}"`,
+                    c.category,
+                    `"${c.city || ''}"`,
+                    `"${c.description || ''}"`
+                ].join(','))
+            ].join('\n');
+
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `tripfactory-uk-contacts-${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+        }
+
+        window.onclick = function(event) {
+            if (event.target.id === 'contactModal') {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>
