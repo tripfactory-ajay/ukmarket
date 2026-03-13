@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TripFactory UK - Complete Tour Collection 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: #f8fafc; }
+        .font-display { font-family: 'Playfair Display', serif; }
+        .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        #map { height: 600px; width: 100%; border-radius: 12px; z-index: 1; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #1e293b; }
+        ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 4px; }
+        .tour-card { transition: all 0.3s ease; cursor: pointer; }
+        .tour-card:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(59, 130, 246, 0.15); border-color: #3b82f6; }
+        .tour-card.active { border-color: #f59e0b; box-shadow: 0 0 0 2px #f59e0b; background: rgba(245, 158, 11, 0.1); }
+        .day-accordion { border-left: 3px solid #3b82f6; transition: all 0.3s ease; }
+        .day-accordion:hover { border-left-color: #f59e0b; background: rgba(255, 255, 255, 0.02); }
+        .day-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; }
+        .day-content.expanded { max-height: 3000px; }
+        .day-header { cursor: pointer; display: flex; align-items: center; }
+        .hotel-badge { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; }
+        .castle-badge { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
+        .manor-badge { background: linear-gradient(135deg, #10b981, #059669); }
+        .stat-card { background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.05)); border: 1px solid rgba(59, 130, 246, 0.3); }
+        .meal-tag { display: inline-flex; align-items: center; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; margin-right: 0.5rem; margin-bottom: 0.25rem; }
+        .meal-breakfast { background: rgba(251, 191, 36, 0.2); color: #fbbf24; }
+        .meal-lunch { background: rgba(34, 197, 94, 0.2); color: #22c55e; }
+        .meal-dinner { background: rgba(168, 85, 247, 0.2); color: #a855f7; }
+        .activity-tag { background: rgba(59, 130, 246, 0.15); color: #60a5fa; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; margin-right: 0.5rem; margin-bottom: 0.25rem; display: inline-flex; align-items: center; }
+        .filter-btn { transition: all 0.2s ease; }
+        .filter-btn.active { background: #3b82f6; color: white; }
+        .veg-badge { background: rgba(34, 197, 94, 0.2); color: #22c55e; padding: 0.125rem 0.5rem; border-radius: 4px; font-size: 0.7rem; font-weight: 600; }
+        .jain-badge { background: rgba(245, 158, 11, 0.2); color: #f59e0b; padding: 0.125rem 0.5rem; border-radius: 4px; font-size: 0.7rem; font-weight: 600; }
+        .restaurant-card { background: rgba(255, 255, 255, 0.05); border-left: 3px solid #22c55e; padding: 0.75rem; margin: 0.5rem 0; border-radius: 0 8px 8px 0; }
+        .prasad-badge { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.7rem; }
+        .temple-badge { background: linear-gradient(135deg, #ff6b6b, #ee5a5a); color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.7rem; }
+        .kids-badge { background: linear-gradient(135deg, #4ecdc4, #44a08d); color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.7rem; }
+        .bollywood-badge { background: linear-gradient(135deg, #ff006e, #8338ec); color: white; padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.7rem; }
+        @media print { .no-print { display: none !important; } #map { height: 400px; } .day-content { max-height: none !important; } }
+    </style>
+</head>
+<body class="min-h-screen">
+    <header class="glass-card sticky top-0 z-50 border-b border-white/10">
+        <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-4">
+                    <a href="ukmarket.html" class="flex items-center space-x-3">
+                        <img src="tripfactory-logo.png" alt="TripFactory" class="h-10 w-auto" onerror="this.style.display='none'">
+                        <div class="flex flex-col">
+                            <span class="text-xl font-bold text-white">TripFactory</span>
+                            <span class="text-xs text-blue-400">UK Market</span>
+                        </div>
+                    </a>
+                </div>
+                <nav class="hidden md:flex items-center space-x-6">
+                    <a href="ukmarket.html" class="text-gray-300 hover:text-white transition">Dashboard</a>
+                    <a href="ukmarket-newtours.html" class="text-white font-medium border-b-2 border-amber-500">Tours</a>
+                    <a href="ukmarket-hotels.html" class="text-gray-300 hover:text-white transition">Hotels</a>
+                    <a href="ukmarket-contacts.html" class="text-gray-300 hover:text-white transition">Contacts</a>
+                    <a href="ukmarket-wiki.html" class="text-gray-300 hover:text-white transition">Wiki</a>
+                </nav>
+                <div class="flex items-center space-x-4">
+                    <img src="orn-logo.png" alt="ORN" class="h-8 w-auto opacity-80" onerror="this.style.display='none'">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div class="text-center mb-6">
+            <h1 class="font-display text-4xl md:text-5xl font-bold text-white mb-3">UK Tour Collection 2026</h1>
+            <p class="text-lg text-gray-400 max-w-3xl mx-auto">7 curated journeys featuring our exclusive Esteem Group & 7 Hospitality portfolio with <span class="text-green-400 font-semibold">100% Indian Vegetarian</span> meals, <span class="text-amber-400 font-semibold">Jain options</span>, and unique <span class="text-purple-400 font-semibold">castle stays</span></p>
+        </div>
+
+        <div class="glass-card rounded-xl p-4 mb-6 no-print">
+            <div class="flex flex-wrap items-center gap-3">
+                <span class="text-gray-400 font-medium">Filter:</span>
+                <button class="filter-btn active px-4 py-2 rounded-lg bg-white/10 text-sm font-medium" data-filter="all">All Tours</button>
+                <button class="filter-btn px-4 py-2 rounded-lg bg-white/10 text-sm font-medium hover:bg-white/20" data-filter="heritage"><i class="fas fa-landmark mr-2"></i>Heritage</button>
+                <button class="filter-btn px-4 py-2 rounded-lg bg-white/10 text-sm font-medium hover:bg-white/20" data-filter="family"><i class="fas fa-users mr-2"></i>Family</button>
+                <button class="filter-btn px-4 py-2 rounded-lg bg-white/10 text-sm font-medium hover:bg-white/20" data-filter="spiritual"><i class="fas fa-pray mr-2"></i>Spiritual</button>
+                <button class="filter-btn px-4 py-2 rounded-lg bg-white/10 text-sm font-medium hover:bg-white/20" data-filter="bollywood"><i class="fas fa-film mr-2"></i>Bollywood</button>
+                <button class="filter-btn px-4 py-2 rounded-lg bg-white/10 text-sm font-medium hover:bg-white/20" data-filter="whisky"><i class="fas fa-wine-glass mr-2"></i>Whisky</button>
+                <button class="filter-btn px-4 py-2 rounded-lg bg-white/10 text-sm font-medium hover:bg-white/20" data-filter="short"><i class="fas fa-clock mr-2"></i>Short Breaks</button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 xl:grid-cols-4 gap-6">
+            <div class="xl:col-span-1 space-y-3 max-h-[300px] xl:max-h-[800px] overflow-y-auto pr-2" id="tourList"></div>
+            <div class="xl:col-span-2 space-y-4">
+                <div id="itineraryPanel" class="glass-card rounded-xl p-6">
+                    <div class="text-center text-gray-500 py-12">
+                        <i class="fas fa-route text-5xl mb-4 opacity-50"></i>
+                        <p class="text-lg">Select a tour to view detailed day-by-day itinerary</p>
+                        <p class="text-sm text-gray-400 mt-2">All tours include Indian vegetarian meals, Jain options & temple-standard food</p>
+                    </div>
+                </div>
+            </div>
+            <div class="xl:col-span-1">
+                <div class="sticky top-20 space-y-4">
+                    <div class="glass-card rounded-xl p-1">
+                        <div id="map"></div>
+                        <div class="p-3 flex items-center justify-between text-xs text-gray-400">
+                            <div class="flex items-center space-x-3">
+                                <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-blue-500 mr-1"></span>Start</span>
+                                <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-amber-500 mr-1"></span>Hotel</span>
+                                <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-purple-500 mr-1"></span>Castle</span>
+                                <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-red-500 mr-1"></span>Temple</span>
+                            </div>
+                            <button onclick="resetMap()" class="text-blue-400 hover:text-blue-300"><i class="fas fa-expand"></i></button>
+                        </div>
+                    </div>
+                    <div id="quickStats" class="hidden glass-card rounded-xl p-4"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // City coordinates for map
+        const cityCoords = {
+            'London': [51.5074, -0.1278], 'Heathrow': [51.4700, -0.4543], 'Wembley': [51.5520, -0.2970], 
+            'Southall': [51.5110, -0.3770], 'Neasden': [51.5536, -0.2494], 'Watford': [51.6565, -0.3903],
+            'Windsor': [51.4839, -0.6044], 'Thornbury': [51.6080, -2.5253], 'Bath': [51.3819, -2.3597], 
+            'Birmingham': [52.4862, -1.8904], 'Stratford': [52.1917, -1.7083], 'Tividale': [52.5167, -2.0500],
+            'Leeds': [53.8008, -1.5491], 'York': [53.9591, -1.0812], 'Windermere': [54.3807, -2.9068],
+            'Bowness': [54.3647, -2.9180], 'Ambleside': [54.4287, -2.9610], 'Grasmere': [54.4596, -3.0243], 
+            'Keswick': [54.6013, -3.1347], 'Haweswater': [54.5050, -2.8000], 'Carlisle': [54.8925, -2.9329],
+            'Glasgow': [55.8609, -4.2514], 'Helensburgh': [56.0033, -4.7333], 'Loch Lomond': [56.0700, -4.5800], 
+            'Edinburgh': [55.9533, -3.1883], 'Oxford': [51.7520, -1.2577], 'Manchester': [53.4808, -2.2426],
+            'Leicester': [52.6369, -1.1398], 'Cotswolds': [51.8330, -1.8433], 'Scottish Highlands': [57.0000, -4.5000], 
+            'Islay': [55.7500, -6.2500], 'Elgin': [57.6500, -3.3200], 'Paris': [48.8566, 2.3522],
+            'Skipton': [53.9614, -2.0161], 'Bradford': [53.7960, -1.7590], 'Glencoe': [56.6826, -5.1023],
+            'Gretna Green': [55.0017, -3.0636], 'Luss': [56.1000, -4.6333], 'Balloch': [56.0000, -4.5833],
+            'Longleat': [51.1858, -2.2759], 'Alton': [52.9877, -1.8922], 'Brighton': [50.8225, -0.1372],
+            'Cardiff': [51.4816, -3.1791], 'Bristol': [51.4545, -2.5879], 'Derby': [52.9225, -1.4746],
+            'Warwick': [52.2819, -1.5849], 'Fort William': [56.8198, -5.1052], 'Inverness': [57.4778, -4.2247]
+        };
+
+        // Complete tour data - all 7 tours
+        const tours = [
+            // TOUR 1: Grand British Isles Explorer (16 Days)
+            {
+                id: 'grand-british-isles',
+                title: 'Grand British Isles Explorer',
+                subtitle: '16 Days | London to Edinburgh | The Ultimate UK Heritage Journey',
+                category: 'heritage',
+                duration: 16,
+                price: '£2,850',
+                highlights: ['Thornbury Castle', 'Dalhousie Castle', 'Lake District', 'Scottish Highlands', 'Indian Veg Every Meal'],
+                route: ['London', 'Thornbury', 'Birmingham', 'Leeds', 'Windermere', 'Haweswater', 'Helensburgh', 'Edinburgh'],
+                hotels: [
+                    { nights: 3, location: 'London', hotel: 'Kingston Lodge Hotel', type: '4-star', features: 'Indian veg meals available' },
+                    { nights: 2, location: 'Thornbury', hotel: 'Thornbury Castle', type: 'Castle', features: 'Tudor castle, royal heritage' },
+                    { nights: 1, location: 'Birmingham', hotel: 'Delta Hotels Marriott', type: '4-star', features: 'City centre location' },
+                    { nights: 2, location: 'Leeds', hotel: 'Weetwood Hall Estate', type: 'Manor', features: '17th-century manor' },
+                    { nights: 3, location: 'Windermere', hotel: 'The Ro Hotel', type: '4-star', features: 'Lake views' },
+                    { nights: 1, location: 'Haweswater', hotel: 'The Haweswater Hotel', type: 'Country', features: 'Remote rural location' },
+                    { nights: 2, location: 'Helensburgh', hotel: 'Rosslea Hall Hotel', type: '4-star', features: 'Scottish west coast' },
+                    { nights: 2, location: 'Edinburgh', hotel: 'Dalhousie Castle', type: 'Castle', features: '13th-century castle, falconry' }
+                ],
+                description: 'The ultimate UK heritage journey featuring authentic castle stays at Thornbury and Dalhousie. Experience the Lake District, Scottish Highlands, and historic cities with comprehensive Indian vegetarian cuisine throughout.',
+                idealFor: 'Families, heritage enthusiasts, first-time UK visitors',
+                color: '#3b82f6',
+                stats: { days: 16, cities: 8, activities: 24, attractions: 18, meals: 45, restaurants: 22 },
+                dietaryInfo: {
+                    standard: '100% Indian Vegetarian (no meat, fish, eggs)',
+                    jain: 'Jain options available (no onion, garlic)',
+                    temple: 'Temple-standard meals at religious sites',
+                    prasad: 'Prasad provided at temple visits'
+                },
+                itinerary: [
+                    { day: 1, title: 'Arrival in London', location: 'London', meals: ['Dinner'], activities: ['Heathrow arrival', 'Hotel check-in', 'Welcome dinner at Chokhi Dhani'], description: 'Traditional Indian welcome at London Heathrow. Transfer to hotel. Welcome dinner with Rajasthani cuisine.' },
+                    { day: 2, title: 'Iconic London Tour', location: 'London', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Tower of London', 'Crown Jewels', 'London Eye', 'City tour'], description: 'Full day London sightseeing including Tower of London with Beefeater guide, Crown Jewels, and London Eye.' },
+                    { day: 3, title: 'Lords Cricket & Madame Tussauds', location: 'London', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Lords Stadium tour', 'Madame Tussauds', 'Bicester Village shopping'], description: 'Visit Lords Cricket Stadium, Madame Tussauds with Bollywood stars, and Bicester Village outlet shopping.' },
+                    { day: 4, title: 'Windsor & Thornbury Castle', location: 'Thornbury', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Windsor Castle', 'Eton College', 'Castle check-in'], description: 'Visit Windsor Castle and Eton, then transfer to Thornbury Castle for Tudor castle experience.' },
+                    { day: 5, title: 'Cotswolds & Bath', location: 'Thornbury', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Cotswolds villages', 'Bibury', 'Roman Baths'], description: 'Explore Cotswolds AONB, Bibury, Bourton-on-the-Water, and Bath city with Roman Baths.' },
+                    { day: 6, title: 'Stratford & Birmingham', location: 'Birmingham', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Shakespeare Birthplace', 'Anne Hathaway Cottage', 'Birmingham tour'], description: 'Visit Shakespeare sites in Stratford, then transfer to Birmingham for city orientation.' },
+                    { day: 7, title: 'Peak District & Yorkshire', location: 'Leeds', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Chatsworth House', 'Peak District', 'Weetwood Hall'], description: 'Drive through Peak District, visit Chatsworth House, continue to Leeds and Weetwood Hall Estate.' },
+                    { day: 8, title: 'York Minster & Dales', location: 'Leeds', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['York Minster', 'Medieval walls', 'Yorkshire Dales'], description: 'Explore York Minster, walk medieval walls, visit Shambles, and tour Yorkshire Dales.' },
+                    { day: 9, title: 'Lake District Arrival', location: 'Windermere', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Scenic drive', 'Windermere cruise', 'Beatrix Potter'], description: 'Transfer to Lake District, Windermere Lake cruise, visit Beatrix Potter Hill Top Farm.' },
+                    { day: 10, title: 'Full Day Lake District', location: 'Windermere', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Ambleside', 'Grasmere', 'Wordsworth Cottage', 'Castlerigg Stone Circle'], description: 'Visit Ambleside, Grasmere, Dove Cottage, and ancient Castlerigg Stone Circle.' },
+                    { day: 11, title: 'Ullswater & Haweswater', location: 'Haweswater', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Ullswater Steamers', 'Aira Force waterfall', 'Wildlife spotting'], description: 'Cruise on Ullswater, hike to Aira Force, check-in at remote Haweswater Hotel.' },
+                    { day: 12, title: 'Hadrian Wall & Scotland', location: 'Helensburgh', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Hadrian Wall', 'Roman forts', 'Transfer to Scotland'], description: 'Visit Hadrian Wall UNESCO site, Housesteads Roman Fort, transfer to Glasgow area.' },
+                    { day: 13, title: 'Loch Lomond & Glengoyne', location: 'Helensburgh', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Loch Lomond cruise', 'Luss Village', 'Glengoyne Distillery'], description: 'Cruise on Loch Lomond, visit Luss Village, tour Glengoyne Distillery.' },
+                    { day: 14, title: 'Edinburgh Castle', location: 'Edinburgh', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Dalhousie Castle check-in', 'Edinburgh Castle', 'Royal Mile', 'Falconry'], description: 'Check-in at Dalhousie Castle, visit Edinburgh Castle, walk Royal Mile, falconry display.' },
+                    { day: 15, title: 'Edinburgh Exploration', location: 'Edinburgh', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Arthur Seat', 'New Town', 'Spa', 'Farewell dinner'], description: 'Hike Arthur Seat, explore New Town, optional spa treatment, farewell dinner at The Kitchin.' },
+                    { day: 16, title: 'Departure', location: 'Edinburgh', meals: ['Breakfast'], activities: ['Airport transfer'], description: 'Breakfast at castle, transfer to Edinburgh Airport for departure.' }
+                ]
+            },
+            
+            // TOUR 2: Scottish Castles & Whisky Heritage (8 Days)
+            {
+                id: 'scottish-whisky',
+                title: 'Scottish Castles & Whisky Heritage',
+                subtitle: '8 Days | Glasgow to Edinburgh | Exclusive Castle Experience',
+                category: 'whisky',
+                duration: 8,
+                price: '£1,950',
+                highlights: ['Dalhousie Castle', 'Islay House', 'Speyside Whisky Trail', 'Loch Lomond', 'Falconry'],
+                route: ['Glasgow', 'Loch Lomond', 'Islay', 'Elgin', 'Edinburgh'],
+                hotels: [
+                    { nights: 2, location: 'Helensburgh', hotel: 'Rosslea Hall Hotel', type: '4-star', features: 'Coastal location, sea views' },
+                    { nights: 2, location: 'Islay', hotel: 'Islay House', type: 'Manor', features: 'Scottish island estate, whisky country' },
+                    { nights: 2, location: 'Elgin', hotel: 'Eight Acres Hotel', type: '4-star', features: 'Speyside whisky region base' },
+                    { nights: 2, location: 'Edinburgh', hotel: 'Dalhousie Castle', type: 'Castle', features: '13th-century castle, falconry, spa' }
+                ],
+                description: 'Discover Scotland through an exclusive 8-day journey combining dramatic Highland landscapes with authentic castle living. Visit legendary distilleries including Lagavulin, Laphroaig, Ardbeg, Glenfiddich, and Macallan.',
+                idealFor: 'Couples, whisky enthusiasts, heritage lovers',
+                color: '#8b5cf6',
+                stats: { days: 8, cities: 5, activities: 12, attractions: 10, meals: 21, restaurants: 8 },
+                dietaryInfo: { standard: '100% Indian Vegetarian', jain: 'Jain options available', whisky: 'Non-alcoholic options at all distilleries' },
+                itinerary: [
+                    { day: 1, title: 'Arrival Glasgow', location: 'Helensburgh', meals: ['Dinner'], activities: ['Airport transfer', 'Rosslea Hall check-in', 'Orientation walk'], description: 'Arrive at Glasgow Airport, transfer to Rosslea Hall Hotel in Helensburgh.' },
+                    { day: 2, title: 'Loch Lomond & Glengoyne', location: 'Helensburgh', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Loch Lomond cruise', 'Trossachs National Park', 'Glengoyne Distillery'], description: 'Cruise on Loch Lomond, drive through Trossachs, visit Glengoyne Distillery.' },
+                    { day: 3, title: 'Transfer to Islay', location: 'Islay', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Ferry crossing', 'Islay House check-in', 'Island exploration'], description: 'Scenic drive to Kennacraig, ferry to Islay (2 hours), check-in at Islay House.' },
+                    { day: 4, title: 'Islay Whisky Trail', location: 'Islay', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Lagavulin Distillery', 'Laphroaig Distillery', 'Ardbeg Distillery', 'Kildalton Cross'], description: 'Full day Islay whisky trail: Lagavulin, Laphroaig, Ardbeg with tastings.' },
+                    { day: 5, title: 'Islay to Speyside', location: 'Elgin', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Ferry to mainland', 'Drive to Speyside', 'Elgin Cathedral'], description: 'Ferry back to mainland, drive to Elgin in Speyside whisky region.' },
+                    { day: 6, title: 'Speyside Whisky Trail', location: 'Elgin', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Glenfiddich Distillery', 'Macallan Distillery', 'Moray Coast'], description: 'Visit Glenfiddich and Macallan distilleries, Moray Coast scenic drive.' },
+                    { day: 7, title: 'Transfer to Edinburgh', location: 'Edinburgh', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Cairngorms National Park', 'Dalhousie Castle check-in', 'Falconry experience'], description: 'Scenic drive via Cairngorms, check-in at Dalhousie Castle, falconry experience.' },
+                    { day: 8, title: 'Edinburgh & Departure', location: 'Edinburgh', meals: ['Breakfast', 'Lunch'], activities: ['Edinburgh Castle', 'Royal Mile', 'Airport transfer'], description: 'Morning Edinburgh city tour, transfer to airport for departure.' }
+                ]
+            },
+
+            // TOUR 3: London, Paris & English Castles (7 Days)
+            {
+                id: 'london-paris-castles',
+                title: 'London, Paris & English Castles',
+                subtitle: '7 Days | Paris to London | Twin City Elegance',
+                category: 'short',
+                duration: 7,
+                price: '£1,650',
+                highlights: ['Eiffel Tower', 'Thornbury Castle', 'Windsor Castle', 'Eurostar', 'Disneyland Paris'],
+                route: ['Paris', 'Thornbury', 'London'],
+                hotels: [
+                    { nights: 3, location: 'Paris', hotel: 'The Jangle Hotel CDG', type: '4-star', features: 'Airport location' },
+                    { nights: 1, location: 'Thornbury', hotel: 'Thornbury Castle', type: 'Castle', features: 'Tudor castle, Henry VIII history' },
+                    { nights: 3, location: 'London', hotel: 'Kingston Lodge Hotel', type: '4-star', features: 'Southwest London base' }
+                ],
+                description: 'Experience continental romance and British heritage. Begin with 3 nights in Paris including Disneyland, then cross the Channel for your exclusive castle stay at Thornbury before concluding in London.',
+                idealFor: 'Couples, families with children, first-time Europe visitors',
+                color: '#ec4899',
+                stats: { days: 7, cities: 3, activities: 10, attractions: 8, meals: 18, restaurants: 6 },
+                dietaryInfo: { standard: '100% Indian Vegetarian', jain: 'Jain options available' },
+                itinerary: [
+                    { day: 1, title: 'Arrival Paris', location: 'Paris', meals: ['Dinner'], activities: ['CDG arrival', 'Hotel check-in', 'Welcome dinner'], description: 'Arrive at Charles de Gaulle, transfer to hotel, welcome dinner at Saravanaa Bhavan.' },
+                    { day: 2, title: 'Paris City Tour', location: 'Paris', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Eiffel Tower', 'Seine cruise', 'Champs-Élysées', 'Arc de Triomphe'], description: 'Paris city tour, Eiffel Tower ascent, Seine River cruise, major landmarks.' },
+                    { day: 3, title: 'Disneyland Paris', location: 'Paris', meals: ['Breakfast', 'Dinner'], activities: ['Disneyland Park', 'Walt Disney Studios', 'Character meets'], description: 'Full day at Disneyland Paris - both parks with Indian lunch options available.' },
+                    { day: 4, title: 'Paris to Thornbury Castle', location: 'Thornbury', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Eurostar to London', 'Transfer to castle', 'Castle check-in'], description: 'Eurostar to London, transfer to Thornbury Castle, explore grounds and wine cellar.' },
+                    { day: 5, title: 'Windsor & London', location: 'London', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Windsor Castle', 'State Apartments', 'London check-in'], description: 'Visit Windsor Castle, transfer to London hotel, dinner at Dishoom.' },
+                    { day: 6, title: 'Iconic London', location: 'London', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Tower of London', 'Crown Jewels', 'London Eye', 'City tour'], description: 'Full day London sightseeing including Tower of London and London Eye.' },
+                    { day: 7, title: 'Lords & Departure', location: 'London', meals: ['Breakfast', 'Lunch'], activities: ['Lords Cricket tour', 'Bicester Village', 'Heathrow transfer'], description: 'Lords Cricket Stadium tour, Bicester Village shopping, transfer to Heathrow.' }
+                ]
+            },
+            
+            // TOUR 4: Lake District & Yorkshire Dales Discovery (6 Days)
+            {
+                id: 'lake-district-yorkshire',
+                title: 'Lake District & Yorkshire Dales Discovery',
+                subtitle: '6 Days | Manchester to York | England\'s Natural Beauty',
+                category: 'short',
+                duration: 6,
+                price: '£1,450',
+                highlights: ['Lake District', 'Yorkshire Dales', 'Windermere', 'Wordsworth Country', 'Haweswater'],
+                route: ['Manchester', 'Leeds', 'Windermere', 'Haweswater', 'York'],
+                hotels: [
+                    { nights: 1, location: 'Leeds', hotel: 'Weetwood Hall Estate', type: 'Manor', features: '17th-century manor' },
+                    { nights: 3, location: 'Windermere', hotel: 'The Ro Hotel', type: '4-star', features: 'Lake views, Bowness location' },
+                    { nights: 1, location: 'Haweswater', hotel: 'The Haweswater Hotel', type: 'Country', features: 'Remote rural location' },
+                    { nights: 1, location: 'York', hotel: 'Judges Court York', type: '4-star', features: 'Historic city centre' }
+                ],
+                description: 'Escape to England\'s most beautiful landscapes. Cruise pristine lakes, hike fells with panoramic views, explore Wordsworth\'s cottage, and walk medieval city walls in York.',
+                idealFor: 'Nature lovers, walkers, photographers, relaxation seekers',
+                color: '#10b981',
+                stats: { days: 6, cities: 4, activities: 10, attractions: 8, meals: 15, restaurants: 6 },
+                dietaryInfo: { standard: '100% Indian Vegetarian', jain: 'Jain options available' },
+                itinerary: [
+                    { day: 1, title: 'Arrival Manchester', location: 'Leeds', meals: ['Dinner'], activities: ['Manchester arrival', 'Weetwood Hall check-in', 'Dinner at Aagrah'], description: 'Arrive Manchester Airport, transfer to Weetwood Hall Estate near Leeds.' },
+                    { day: 2, title: 'Yorkshire Dales', location: 'Windermere', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Bolton Abbey', 'Aysgarth Falls', 'Wensleydale cheese', 'Transfer to Lake District'], description: 'Yorkshire Dales tour: Bolton Abbey, Aysgarth Falls, cheese tasting, transfer to Windermere.' },
+                    { day: 3, title: 'Lake District Day 1', location: 'Windermere', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Windermere cruise', 'Ambleside', 'Grasmere', 'Wordsworth Cottage'], description: 'Windermere Lake cruise to Ambleside, visit Grasmere and Dove Cottage.' },
+                    { day: 4, title: 'Lake District Day 2', location: 'Windermere', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Ullswater', 'Aira Force', 'Keswick', 'Castlerigg Stone Circle'], description: 'Ullswater cruise, Aira Force waterfall, Keswick, Castlerigg Stone Circle.' },
+                    { day: 5, title: 'Haweswater Retreat', location: 'Haweswater', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Haweswater Hotel check-in', 'Wildlife spotting', 'Stargazing'], description: 'Check-in at remote Haweswater Hotel, red squirrel spotting, dark sky stargazing.' },
+                    { day: 6, title: 'York & Departure', location: 'York', meals: ['Breakfast', 'Lunch'], activities: ['York Minster', 'Medieval walls', 'Shambles', 'Airport transfer'], description: 'Visit York Minster, walk medieval walls, Shambles street, transfer to Manchester Airport.' }
+                ]
+            },
+            
+            // TOUR 5: Ultimate UK Heritage & Castles (10 Days)
+            {
+                id: 'ultimate-heritage',
+                title: 'Ultimate UK Heritage & Castles',
+                subtitle: '10 Days | London to Edinburgh | Castles, Cathedrals & Coast',
+                category: 'heritage',
+                duration: 10,
+                price: '£2,150',
+                highlights: ['Thornbury Castle', 'Dalhousie Castle', 'York Minster', 'Lake District', 'Edinburgh Castle'],
+                route: ['London', 'Thornbury', 'York', 'Windermere', 'Edinburgh'],
+                hotels: [
+                    { nights: 2, location: 'London', hotel: 'Kingston Lodge Hotel', type: '4-star', features: 'Southwest London base' },
+                    { nights: 2, location: 'Thornbury', hotel: 'Thornbury Castle', type: 'Castle', features: 'Tudor castle' },
+                    { nights: 2, location: 'York', hotel: 'Judges Court York', type: '4-star', features: 'Historic city centre' },
+                    { nights: 2, location: 'Windermere', hotel: 'The Ro Hotel', type: '4-star', features: 'Lake views' },
+                    { nights: 2, location: 'Edinburgh', hotel: 'Dalhousie Castle', type: 'Castle', features: '13th-century castle' }
+                ],
+                description: 'Step back in time on this extraordinary 10-day journey through Britain\'s most historic landscapes, staying exclusively in heritage properties.',
+                idealFor: 'History enthusiasts, heritage lovers, mature travellers',
+                color: '#f59e0b',
+                stats: { days: 10, cities: 5, activities: 15, attractions: 12, meals: 27, restaurants: 10 },
+                dietaryInfo: { standard: '100% Indian Vegetarian', jain: 'Jain options available' },
+                itinerary: [
+                    { day: 1, title: 'Arrival London', location: 'London', meals: ['Dinner'], activities: ['Heathrow arrival', 'Hotel check-in', 'Welcome dinner'], description: 'Arrive London Heathrow, check-in at Kingston Lodge Hotel, welcome dinner.' },
+                    { day: 2, title: 'Royal London', location: 'London', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Tower of London', 'Crown Jewels', 'Westminster Abbey', 'Thames walk'], description: 'Tower of London with Beefeater, Crown Jewels, Westminster Abbey tour.' },
+                    { day: 3, title: 'Windsor & Thornbury', location: 'Thornbury', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Windsor Castle', 'Transfer to castle', 'Castle exploration'], description: 'Windsor Castle State Apartments, transfer to Thornbury Castle.' },
+                    { day: 4, title: 'Cotswolds & Bath', location: 'Thornbury', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Cotswolds villages', 'Bibury', 'Roman Baths', 'Bath Abbey'], description: 'Cotswolds tour: Bibury, Bourton-on-the-Water, Bath city with Roman Baths.' },
+                    { day: 5, title: 'Stratford & York', location: 'York', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Shakespeare Birthplace', 'Anne Hathaway Cottage', 'Transfer to York'], description: 'Stratford-upon-Avon, Shakespeare sites, transfer to York.' },
+                    { day: 6, title: 'York Minster', location: 'York', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['York Minster', 'Medieval walls', 'Shambles', 'Railway Museum'], description: 'York Minster cathedral, medieval walls, Shambles, National Railway Museum.' },
+                    { day: 7, title: 'Yorkshire Dales & Lakes', location: 'Windermere', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Yorkshire Dales', 'Bolton Abbey', 'Transfer to Lake District'], description: 'Yorkshire Dales scenic drive, Bolton Abbey, transfer to Windermere.' },
+                    { day: 8, title: 'Lake District', location: 'Windermere', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Windermere cruise', 'Beatrix Potter', 'Wordsworth sites'], description: 'Lake Windermere cruise, Hill Top Farm, Grasmere, Dove Cottage.' },
+                    { day: 9, title: 'Hadrian Wall & Edinburgh', location: 'Edinburgh', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Hadrian Wall', 'Dalhousie Castle check-in', 'Falconry'], description: 'Hadrian Wall photo stop, transfer to Edinburgh, Dalhousie Castle check-in, falconry.' },
+                    { day: 10, title: 'Edinburgh & Departure', location: 'Edinburgh', meals: ['Breakfast', 'Lunch'], activities: ['Edinburgh Castle', 'Royal Mile', 'Airport transfer'], description: 'Edinburgh Castle, Royal Mile walk, transfer to airport.' }
+                ]
+            },
+            // TOUR 6: UK Family Adventure (12 Days)
+            {
+                id: 'family-adventure',
+                title: 'UK Family Adventure: Castles, Wizards & Wildlife',
+                subtitle: '12 Days | London to Edinburgh | Ultimate Family Vacation',
+                category: 'family',
+                duration: 12,
+                price: '£2,450',
+                highlights: ['Harry Potter Studio Tour', 'Legoland', 'Cadbury World', 'Alton Towers', 'Thornbury Castle', 'Longleat Safari', 'Dalhousie Castle'],
+                route: ['London', 'Windsor', 'Birmingham', 'Thornbury', 'Longleat', 'Manchester', 'Windermere', 'Edinburgh'],
+                hotels: [
+                    { nights: 3, location: 'London', hotel: 'Kingston Lodge Hotel', type: '4-star', features: 'Family rooms, Indian veg meals' },
+                    { nights: 2, location: 'Birmingham', hotel: 'Delta Hotels Marriott', type: '4-star', features: 'Swimming pool, family rooms' },
+                    { nights: 1, location: 'Thornbury', hotel: 'Thornbury Castle', type: 'Castle', features: 'Castle adventure for kids' },
+                    { nights: 1, location: 'Longleat', hotel: 'Longleat area hotel', type: '4-star', features: 'Safari location' },
+                    { nights: 2, location: 'Leeds', hotel: 'Weetwood Hall Estate', type: 'Manor', features: 'Family rooms, grounds' },
+                    { nights: 2, location: 'Windermere', hotel: 'The Ro Hotel', type: '4-star', features: 'Lake activities' },
+                    { nights: 1, location: 'Edinburgh', hotel: 'Dalhousie Castle', type: 'Castle', features: 'Falconry for kids' }
+                ],
+                description: 'The ultimate family holiday with Harry Potter Studio Tour, Legoland Windsor, Cadbury World, Alton Towers, Longleat Safari Park, and castle stays. Designed for children aged 5-15 with kid-approved Indian meals.',
+                idealFor: 'Families with children 5-15, multi-generational travel',
+                color: '#06b6d4',
+                stats: { days: 12, cities: 8, activities: 20, attractions: 15, meals: 33, restaurants: 12 },
+                dietaryInfo: { standard: '100% Indian Vegetarian', jain: 'Jain options', kids: 'Kids portions, mild curries, high chairs' },
+                itinerary: [
+                    { day: 1, title: 'Arrival London', location: 'London', meals: ['Dinner'], activities: ['Airport welcome', 'Hotel check-in', 'Welcome dinner'], description: 'Traditional Indian welcome with flower garlands. Kids receive activity packs.' },
+                    { day: 2, title: 'Harry Potter Studio Tour', location: 'London', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Warner Bros Studio', 'Great Hall', 'Hogwarts Express', 'Diagon Alley', 'Butterbeer'], description: 'Full day at Harry Potter Studio Tour - Making of Harry Potter. Walk through Great Hall, board Hogwarts Express, see Diagon Alley. Indian lunch options available.' },
+                    { day: 3, title: 'London Eye & Natural History Museum', location: 'London', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['London Eye', 'Sea Life Aquarium', 'Natural History Museum', 'Diana Playground'], description: 'London Eye, Sea Life Aquarium with sharks, Natural History Museum with dinosaurs, Diana Memorial Playground.' },
+                    { day: 4, title: 'Legoland Windsor', location: 'Birmingham', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Legoland Windsor', 'Miniland', 'Driving School', 'Water rides', 'Transfer to Birmingham'], description: 'Full day at Legoland Windsor with 55+ rides. Miniland, Driving School, water rides. Transfer to Birmingham.' },
+                    { day: 5, title: 'Cadbury World & Thinktank', location: 'Birmingham', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Cadbury World', '4D Chocolate Adventure', 'Thinktank Science Museum', 'Interactive exhibits'], description: 'Cadbury World - 4D cinema, chocolate making, free samples. Thinktank Science Museum with hands-on exhibits.' },
+                    { day: 6, title: 'Cotswold Wildlife Park & Castle', location: 'Thornbury', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Cotswold Wildlife Park', 'Thornbury Castle check-in', 'Treasure hunt', 'Junior Knight certificates'], description: 'Cotswold Wildlife Park with lions, giraffes, train ride. Check-in at Thornbury Castle with treasure hunt for kids.' },
+                    { day: 7, title: 'Longleat Safari Park', location: 'Longleat', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Longleat Safari', 'Lions, tigers, elephants', 'Adventure Castle', 'Postman Pat Village'], description: 'Longleat Safari Park - drive-through safari with lions and tigers, Adventure Castle playground, maze.' },
+                    { day: 8, title: 'Transfer to Manchester', location: 'Leeds', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Science Museum Manchester', 'Hotel check-in', 'Grounds exploration'], description: 'Transfer to Manchester area, Science and Industry Museum with steam engines and aircraft.' },
+                    { day: 9, title: 'Alton Towers', location: 'Windermere', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Alton Towers', 'CBeebies Land', 'Thrill rides', 'Waterpark'], description: 'Full day at Alton Towers - UK\'s biggest theme park. CBeebies Land for younger kids, thrill rides for older children.' },
+                    { day: 10, title: 'Lake District Adventure', location: 'Windermere', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Windermere cruise', 'Beatrix Potter Attraction', 'Gruffalo Trail', 'Beach time'], description: 'Windermere Lake cruise, World of Beatrix Potter, Gruffalo Trail at Whinlatter Forest, beach time at Bowness Bay.' },
+                    { day: 11, title: 'Edinburgh Castle & Falconry', location: 'Edinburgh', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Dalhousie Castle check-in', 'Edinburgh Castle', 'Falconry for kids', 'Royal Mile'], description: 'Check-in at Dalhousie Castle, Edinburgh Castle, falconry experience with gentle birds for children.' },
+                    { day: 12, title: 'Edinburgh Zoo & Departure', location: 'Edinburgh', meals: ['Breakfast', 'Lunch'], activities: ['Edinburgh Zoo', 'Penguin Parade', 'Airport transfer'], description: 'Edinburgh Zoo with Giant Pandas and Penguin Parade, transfer to airport.' }
+                ]
+            },
+            
+            // TOUR 7: Towers and Temples (12 Days)
+            {
+                id: 'towers-temples',
+                title: 'Towers and Temples: UK Heritage & Hindu Spiritual Journey',
+                subtitle: '12 Days | London to Edinburgh | Ancient Stones & Sacred Sanctums',
+                category: 'spiritual',
+                duration: 12,
+                price: '£2,650',
+                highlights: ['Neasden Temple', 'Bhaktivedanta Manor', 'Balaji Temple Birmingham', 'Leicester Swaminarayan Mandir', 'Thornbury Castle', 'Stonehenge', 'Edinburgh Castle'],
+                route: ['London', 'Neasden', 'Watford', 'Birmingham', 'Leicester', 'Manchester', 'Windermere', 'Edinburgh'],
+                hotels: [
+                    { nights: 2, location: 'London', hotel: 'Kingston Lodge Hotel', type: '4-star', features: '45 min to Neasden Temple' },
+                    { nights: 2, location: 'Wembley', hotel: 'Hilton London Wembley', type: '4-star', features: 'Walking distance to Neasden' },
+                    { nights: 2, location: 'Birmingham', hotel: 'Delta Hotels Marriott', type: '4-star', features: '20 min to Balaji Temple' },
+                    { nights: 1, location: 'Thornbury', hotel: 'Thornbury Castle', type: 'Castle', features: 'Countryside retreat' },
+                    { nights: 2, location: 'Leicester', hotel: 'Marriott Leicester', type: '4-star', features: '15 min to Swaminarayan Mandir' },
+                    { nights: 2, location: 'Leeds', hotel: 'Weetwood Hall Estate', type: 'Manor', features: '30 min to Manchester temples' },
+                    { nights: 1, location: 'Edinburgh', hotel: 'Dalhousie Castle', type: 'Castle', features: '45 min to Edinburgh temples' }
+                ],
+                description: 'A transformative journey weaving Britain\'s architectural heritage with dedicated time at Hindu temples. Full mornings/afternoons at temples for darshan, aarti participation, and prasad.',
+                idealFor: 'Hindu families, spiritual seekers, NRIs, multi-generational groups',
+                color: '#ef4444',
+                stats: { days: 12, cities: 8, activities: 18, attractions: 12, meals: 33, restaurants: 10 },
+                dietaryInfo: { standard: '100% Indian Vegetarian (strictly no eggs)', jain: 'Jain options (no onion/garlic)', temple: 'Temple-standard meals', prasad: 'Prasad at all temples' },
+                itinerary: [
+                    { day: 1, title: 'Arrival London', location: 'London', meals: ['Dinner'], activities: ['Heathrow arrival', 'Hotel check-in', 'Welcome dinner at Sagar'], description: 'Traditional Indian welcome. Dinner at Sagar (South Indian pure veg).' },
+                    { day: 2, title: 'London Sightseeing', location: 'London', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['London city tour', 'Westminster Abbey', 'London Eye', 'Tower Bridge'], description: 'London city tour, Westminster Abbey exterior, London Eye, Tower of London exterior.' },
+                    { day: 3, title: 'Neasden Temple - Full Day', location: 'Wembley', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Mangla Arti 7:30AM', 'Abhishek ceremony', 'Darshan of all deities', 'Understanding Hinduism exhibition', 'Sandhya Arti 6PM', 'Shayona restaurant'], description: 'Full day at BAPS Shri Swaminarayan Mandir, Neasden - largest Hindu temple outside India. Mangla Arti, Abhishek, darshan of 7 shrines, museum. Shayona restaurant for lunch and dinner.' },
+                    { day: 4, title: 'Bhaktivedanta Manor & Birmingham', location: 'Birmingham', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['ISKCON temple', 'George Harrison garden', 'Goshala visit', 'Govindas restaurant', 'Transfer to Birmingham'], description: 'Bhaktivedanta Manor - ISKCON UK headquarters, George Harrison\'s former home. Cow protection centre, Govindas prasadam lunch.' },
+                    { day: 5, title: 'Shri Venkateshwara (Balaji) Temple - Full Day', location: 'Birmingham', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Suprabhatam 8AM', 'Thomala Seva', 'Archana', 'Abhishekam', 'Rajbhog Arti', 'Evening arti', 'Special blessings'], description: 'Full day at Shri Venkateshwara (Balaji) Temple, Tividale. Suprabhatam, Thomala Seva, Abhishekam viewing, evening arti with special group blessings.' },
+                    { day: 6, title: 'Warwick, Stratford & Castle', location: 'Thornbury', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Warwick Castle', 'Shakespeare Birthplace', 'Thornbury Castle check-in', 'Meditation session'], description: 'Warwick Castle medieval fortress, Stratford-upon-Avon Shakespeare sites, check-in at Thornbury Castle with chapel meditation.' },
+                    { day: 7, title: 'Stonehenge, Bath & Leicester', location: 'Leicester', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Stonehenge', 'Roman Baths', 'Bath Abbey', 'Transfer to Leicester'], description: 'Stonehenge ancient stone circle, Bath city with Roman Baths, transfer to Leicester.' },
+                    { day: 8, title: 'Shree Swaminarayan Mandir Leicester - Full Day', location: 'Leicester', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Mangla Arti', 'Architectural tour', 'Haveli complex', 'Satsang session', 'Sandhya Arti', 'Shayona thali'], description: 'Full day at Shree Swaminarayan Mandir Leicester - architectural marvel built without steel. Satsang, volunteer activities, Shayona thali meals.' },
+                    { day: 9, title: 'Manchester Temples', location: 'Leeds', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Shri Geeta Bhavan Manchester', 'Shri Lakshmi Narayan Temple Bradford', 'Evening arti'], description: 'Shri Geeta Bhavan Hindu Temple Manchester, Shri Lakshmi Narayan Temple Bradford with evening arti.' },
+                    { day: 10, title: 'Yorkshire Dales & Lake District', location: 'Windermere', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Shakti Temple Skipton', 'Yorkshire Dales', 'Transfer to Lake District'], description: 'Shakti Temple Skipton darshan, Yorkshire Dales scenic drive, transfer to Windermere.' },
+                    { day: 11, title: 'Lake District & Edinburgh Castle', location: 'Edinburgh', meals: ['Breakfast', 'Lunch', 'Dinner'], activities: ['Windermere cruise', 'Hadrian Wall', 'Dalhousie Castle check-in', 'Meditation'], description: 'Lake Windermere morning cruise, Hadrian Wall photo stop, check-in at Dalhousie Castle with meditation session.' },
+                    { day: 12, title: 'Edinburgh Temple & Departure', location: 'Edinburgh', meals: ['Breakfast', 'Lunch'], activities: ['Edinburgh Hindu Mandir', 'Final darshan', 'Prasad for flight', 'Airport transfer'], description: 'Final darshan at Edinburgh Hindu Mandir & Cultural Centre, prasad for journey, transfer to airport.' }
+                ]
+            }
+        ];
+
+        let map;
+        let currentRouteLayer = null;
+        let currentMarkers = [];
+
+        function initMap() {
+            map = L.map('map').setView([54.5, -3.5], 6);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors',
+                maxZoom: 18
+            }).addTo(map);
+        }
+
+        function renderTourList(filter = 'all') {
+            const container = document.getElementById('tourList');
+            container.innerHTML = '';
+            const filteredTours = filter === 'all' ? tours : tours.filter(t => t.category === filter);
+
+            filteredTours.forEach(tour => {
+                const card = document.createElement('div');
+                card.className = 'tour-card glass-card rounded-xl p-4 border border-white/10';
+                card.onclick = () => selectTour(tour.id);
+                card.id = `tour-${tour.id}`;
+
+                const categoryIcons = { 
+                    'heritage': 'fa-landmark', 
+                    'family': 'fa-users', 
+                    'spiritual': 'fa-pray', 
+                    'bollywood': 'fa-film',
+                    'whisky': 'fa-wine-glass',
+                    'short': 'fa-clock'
+                };
+                
+                const categoryColors = {
+                    'heritage': 'blue',
+                    'family': 'cyan',
+                    'spiritual': 'red',
+                    'bollywood': 'pink',
+                    'whisky': 'purple',
+                    'short': 'orange'
+                };
+
+                let specialBadges = '';
+                if (tour.category === 'spiritual') specialBadges += '<span class="temple-badge mr-1">TEMPLES</span>';
+                if (tour.category === 'family') specialBadges += '<span class="kids-badge mr-1">KIDS</span>';
+                if (tour.category === 'bollywood') specialBadges += '<span class="bollywood-badge mr-1">BOLLYWOOD</span>';
+
+                card.innerHTML = `
+                    <div class="flex items-start justify-between mb-2">
+                        <div class="flex-1">
+                            <div class="flex items-center space-x-2 mb-1">
+                                <span class="text-xs px-2 py-0.5 rounded-full bg-white/10 text-${categoryColors[tour.category] || 'blue'}-400">
+                                    <i class="fas ${categoryIcons[tour.category] || 'fa-map-marker-alt'} mr-1 text-xs"></i>${tour.category.charAt(0).toUpperCase() + tour.category.slice(1)}
+                                </span>
+                                <span class="veg-badge">100% VEG</span>
+                                ${specialBadges}
+                            </div>
+                            <h3 class="font-display text-base font-bold text-white leading-tight">${tour.title}</h3>
+                            <p class="text-xs text-gray-400">${tour.duration} Days | ${tour.price}</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap gap-1">
+                        ${tour.highlights.slice(0, 3).map(h => `<span class="text-xs px-2 py-0.5 rounded bg-white/5 text-gray-300">${h}</span>`).join('')}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function selectTour(tourId) {
+            const tour = tours.find(t => t.id === tourId);
+            if (!tour) return;
+            document.querySelectorAll('.tour-card').forEach(c => c.classList.remove('active'));
+            document.getElementById(`tour-${tourId}`).classList.add('active');
+            updateMapRoute(tour);
+            updateItineraryPanel(tour);
+            updateQuickStats(tour);
+        }
+
+        function updateMapRoute(tour) {
+            if (currentRouteLayer) map.removeLayer(currentRouteLayer);
+            currentMarkers.forEach(m => map.removeLayer(m));
+            currentMarkers = [];
+
+            const coords = tour.route.map(city => cityCoords[city]).filter(c => c);
+            if (coords.length < 2) return;
+
+            currentRouteLayer = L.polyline(coords, {
+                color: tour.color, weight: 4, opacity: 0.8, dashArray: '10, 10', lineCap: 'round'
+            }).addTo(map);
+
+            tour.route.forEach((city, index) => {
+                const coord = cityCoords[city];
+                if (!coord) return;
+                const isStart = index === 0;
+                const isEnd = index === tour.route.length - 1;
+                const isCastle = tour.hotels.find(h => h.location === city)?.type === 'Castle';
+                const isTemple = tour.category === 'spiritual' && (city === 'Neasden' || city === 'Watford' || city === 'Tividale' || city === 'Leicester' || city === 'Manchester' || city === 'Edinburgh');
+                
+                let iconColor = isStart ? '#3b82f6' : isEnd ? '#ef4444' : isCastle ? '#8b5cf6' : isTemple ? '#ff6b6b' : '#f59e0b';
+                let iconClass = isStart ? 'fa-play' : isEnd ? 'fa-flag-checkered' : isCastle ? 'fa-chess-rook' : isTemple ? 'fa-pray' : 'fa-bed';
+
+                const customIcon = L.divIcon({
+                    className: 'custom-marker',
+                    html: `<div style="background: ${iconColor}; width: 32px; height: 32px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; color: white; font-size: 12px;"><i class="fas ${iconClass}"></i></div>`,
+                    iconSize: [32, 32], iconAnchor: [16, 16]
+                });
+
+                const marker = L.marker(coord, { icon: customIcon }).addTo(map).bindPopup(`
+                    <div style="min-width: 200px;">
+                        <h4 style="margin: 0 0 8px 0; color: #1e3a8a; font-weight: bold;">${city}</h4>
+                        <p style="margin: 0; color: #666; font-size: 12px;">${isStart ? 'Tour Start' : isEnd ? 'Tour End' : `Stop ${index + 1}`}</p>
+                        ${tour.hotels.find(h => h.location === city) ? `<p style="margin: 4px 0 0 0; color: #059669; font-size: 11px;"><i class="fas fa-bed mr-1"></i>${tour.hotels.find(h => h.location === city).hotel}</p>` : ''}
+                    </div>
+                `);
+                currentMarkers.push(marker);
+            });
+            map.fitBounds(currentRouteLayer.getBounds(), { padding: [50, 50] });
+        }
+
+        function updateItineraryPanel(tour) {
+            const container = document.getElementById('itineraryPanel');
+            const categoryLabels = { 
+                'heritage': 'Heritage Tour', 
+                'family': 'Family Adventure', 
+                'spiritual': 'Spiritual Journey', 
+                'bollywood': 'Bollywood Experience',
+                'whisky': 'Whisky Heritage',
+                'short': 'Short Break'
+            };
+
+            let specialFeatures = '';
+            if (tour.category === 'spiritual') {
+                specialFeatures = `
+                    <div class="bg-red-500/10 border border-red-500/30 rounded-lg p-4 mb-4">
+                        <div class="flex items-center space-x-2 mb-2">
+                            <i class="fas fa-pray text-red-400"></i>
+                            <span class="text-red-400 font-semibold">Spiritual Journey Features</span>
+                        </div>
+                        <ul class="text-sm text-gray-300 space-y-1">
+                            <li>• Full days at temples with Mangla Arti & Sandhya Arti participation</li>
+                            <li>• Prasad at all temples: Neasden, Bhaktivedanta Manor, Balaji Birmingham, Leicester Swaminarayan</li>
+                            <li>• Temple-standard meals (strictly no eggs, onion/garlic on request)</li>
+                            <li>• Blessing ceremonies for couples/families</li>
+                        </ul>
+                    </div>
+                `;
+            } else if (tour.category === 'family') {
+                specialFeatures = `
+                    <div class="bg-cyan-500/10 border border-cyan-500/30 rounded-lg p-4 mb-4">
+                        <div class="flex items-center space-x-2 mb-2">
+                            <i class="fas fa-child text-cyan-400"></i>
+                            <span class="text-cyan-400 font-semibold">Family Features</span>
+                        </div>
+                        <ul class="text-sm text-gray-300 space-y-1">
+                            <li>• Kids activity packs on arrival (colouring, games, UK facts)</li>
+                            <li>• Family rooms guaranteed (interconnecting/triple/quad)</li>
+                            <li>• Early dining for children (5:30-6:00 PM)</li>
+                            <li>• Mild curry options, high chairs, packed lunches for theme parks</li>
+                        </ul>
+                    </div>
+                `;
+            } else if (tour.category === 'bollywood') {
+                specialFeatures = `
+                    <div class="bg-pink-500/10 border border-pink-500/30 rounded-lg p-4 mb-4">
+                        <div class="flex items-center space-x-2 mb-2">
+                            <i class="fas fa-film text-pink-400"></i>
+                            <span class="text-pink-400 font-semibold">Bollywood Experience</span>
+                        </div>
+                        <ul class="text-sm text-gray-300 space-y-1">
+                            <li>• Expert guides with movie trivia at every location</li>
+                            <li>• 4 Bollywood nights with DJs, dhol players, live singers</li>
+                            <li>• Southall Broadway full immersion experience</li>
+                            <li>• Castle Bollywood nights at Thornbury & Rosslea Hall</li>
+                        </ul>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = `
+                <div class="space-y-6">
+                    <div class="border-b border-white/10 pb-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center space-x-3">
+                                <span class="px-3 py-1 rounded-full text-sm font-medium" style="background: ${tour.color}20; color: ${tour.color};">${categoryLabels[tour.category]}</span>
+                                <span class="text-gray-400 text-sm">${tour.duration} Days / ${tour.duration - 1} Nights</span>
+                            </div>
+                            <span class="text-2xl font-bold text-amber-400">${tour.price}</span>
+                        </div>
+                        <h2 class="font-display text-3xl font-bold text-white mb-2">${tour.title}</h2>
+                        <p class="text-gray-400">${tour.subtitle}</p>
+                    </div>
+
+                    <div class="bg-green-500/10 border border-green-500/30 rounded-lg p-4">
+                        <div class="flex items-center space-x-2 mb-2">
+                            <i class="fas fa-leaf text-green-400"></i>
+                            <span class="text-green-400 font-semibold">Indian Vegetarian Dining Guarantee</span>
+                        </div>
+                        <p class="text-sm text-gray-300">${tour.dietaryInfo.standard}</p>
+                        <div class="flex flex-wrap gap-2 mt-2">
+                            ${tour.dietaryInfo.jain ? '<span class="jain-badge">Jain Options</span>' : ''}
+                            <span class="veg-badge">No Eggs</span>
+                            ${tour.dietaryInfo.prasad ? '<span class="prasad-badge">Temple Prasad</span>' : ''}
+                            ${tour.dietaryInfo.temple ? '<span class="temple-badge">Temple-Standard</span>' : ''}
+                            ${tour.dietaryInfo.kids ? '<span class="kids-badge">Kids Menu</span>' : ''}
+                        </div>
+                    </div>
+
+                    ${specialFeatures}
+
+                    <div class="grid grid-cols-4 gap-4">
+                        <div class="stat-card rounded-lg p-3 text-center"><p class="text-2xl font-bold text-blue-400">${tour.stats.days}</p><p class="text-xs text-gray-400">Days</p></div>
+                        <div class="stat-card rounded-lg p-3 text-center"><p class="text-2xl font-bold text-green-400">${tour.stats.cities}</p><p class="text-xs text-gray-400">Cities</p></div>
+                        <div class="stat-card rounded-lg p-3 text-center"><p class="text-2xl font-bold text-purple-400">${tour.stats.activities}</p><p class="text-xs text-gray-400">Activities</p></div>
+                        <div class="stat-card rounded-lg p-3 text-center"><p class="text-2xl font-bold text-amber-400">${tour.stats.restaurants}</p><p class="text-xs text-gray-400">Restaurants</p></div>
+                    </div>
+
+                    <div class="bg-white/5 rounded-lg p-4">
+                        <p class="text-gray-300 leading-relaxed">${tour.description}</p>
+                        <p class="text-sm text-gray-400 mt-2"><strong>Ideal For:</strong> ${tour.idealFor}</p>
+                    </div>
+
+                    <div>
+                        <h3 class="font-display text-xl font-bold text-white mb-4">Day-by-Day Itinerary</h3>
+                        <div class="space-y-3">
+                            ${tour.itinerary.map((day, index) => `
+                                <div class="day-accordion bg-white/5 rounded-lg overflow-hidden" data-day="${index}">
+                                    <div class="day-header p-4" onclick="toggleDay(${index})">
+                                        <div class="flex items-center space-x-3 flex-1 min-w-0">
+                                            <span class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-sm font-bold flex-shrink-0">${day.day}</span>
+                                            <div class="min-w-0 flex-1">
+                                                <p class="text-white font-medium truncate">${day.title}</p>
+                                                <p class="text-xs text-gray-400">${day.location}</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center space-x-2 ml-2 flex-shrink-0">
+                                            ${day.meals.map(m => `<span class="meal-tag meal-${m.toLowerCase()}"><i class="fas fa-utensils mr-1"></i>${m}</span>`).join('')}
+                                        </div>
+                                    </div>
+                                    <div class="day-content px-4" id="day-content-${index}">
+                                        <div class="pb-4 space-y-3">
+                                            ${day.hotel ? `<div class="flex items-center space-x-2 text-sm"><i class="fas fa-bed text-amber-400"></i><span class="text-gray-300">${day.hotel}</span></div>` : ''}
+                                            
+                                            ${day.restaurant ? `
+                                                <div class="restaurant-card">
+                                                    <div class="flex items-center justify-between mb-1">
+                                                        <span class="text-green-400 font-semibold text-sm"><i class="fas fa-utensils mr-2"></i>${day.restaurant}</span>
+                                                        ${day.dietary ? day.dietary.map(d => `<span class="text-xs px-2 py-0.5 rounded bg-white/10">${d}</span>`).join('') : ''}
+                                                    </div>
+                                                    ${day.cuisine ? `<p class="text-xs text-gray-400">${day.cuisine}</p>` : ''}
+                                                    ${day.foodDetails ? `<p class="text-xs text-gray-500 mt-1 italic">${day.foodDetails}</p>` : ''}
+                                                </div>
+                                            ` : ''}
+
+                                            ${day.breakfast || day.lunch || day.dinner ? `
+                                                <div class="space-y-1 text-sm">
+                                                    ${day.breakfast ? `<div class="flex items-center space-x-2"><span class="meal-tag meal-breakfast">Breakfast</span><span class="text-gray-400">${day.breakfast}</span></div>` : ''}
+                                                    ${day.lunch ? `<div class="flex items-center space-x-2"><span class="meal-tag meal-lunch">Lunch</span><span class="text-gray-400">${day.lunch}</span></div>` : ''}
+                                                    ${day.dinner ? `<div class="flex items-center space-x-2"><span class="meal-tag meal-dinner">Dinner</span><span class="text-gray-400">${day.dinner}</span></div>` : ''}
+                                                </div>
+                                            ` : ''}
+
+                                            <p class="text-gray-300 text-sm">${day.description}</p>
+
+                                            <div>
+                                                <p class="text-xs font-semibold text-gray-400 mb-2">ACTIVITIES</p>
+                                                <div class="flex flex-wrap">
+                                                    ${day.activities.map(a => `<span class="activity-tag"><i class="fas fa-check mr-1"></i>${a}</span>`).join('')}
+                                                </div>
+                                            </div>
+
+                                            ${day.highlights ? `
+                                                <div>
+                                                    <p class="text-xs font-semibold text-gray-400 mb-2">HIGHLIGHTS</p>
+                                                    <div class="flex flex-wrap gap-2">
+                                                        ${day.highlights.map(h => `<span class="text-xs px-2 py-1 rounded bg-amber-500/20 text-amber-400"><i class="fas fa-star mr-1"></i>${h}</span>`).join('')}
+                                                    </div>
+                                                </div>
+                                            ` : ''}
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="font-display text-xl font-bold text-white mb-4">Accommodation</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            ${tour.hotels.map(h => `
+                                <div class="flex items-center justify-between bg-white/5 rounded-lg p-3">
+                                    <div class="flex items-center space-x-3">
+                                        <span class="text-2xl font-bold text-gray-600">${h.nights}</span>
+                                        <div>
+                                            <p class="text-white font-medium text-sm">${h.hotel}</p>
+                                            <p class="text-xs text-gray-400">${h.location}</p>
+                                            ${h.features ? `<p class="text-xs text-green-400 mt-0.5">${h.features}</p>` : ''}
+                                        </div>
+                                    </div>
+                                    <span class="${h.type === 'Castle' ? 'castle-badge' : h.type === 'Manor' ? 'manor-badge' : 'hotel-badge'} text-xs">${h.type}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between pt-4 border-t border-white/10">
+                        <button onclick="window.print()" class="px-4 py-2 rounded-lg bg-white/10 text-white hover:bg-white/20 transition text-sm"><i class="fas fa-print mr-2"></i>Print Itinerary</button>
+                        <button class="px-6 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition font-medium">Enquire Now</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function toggleDay(index) {
+            const content = document.getElementById(`day-content-${index}`);
+            const header = content.previousElementSibling;
+            if (content.classList.contains('expanded')) {
+                content.classList.remove('expanded');
+                header.classList.remove('expanded');
+            } else {
+                document.querySelectorAll('.day-content').forEach(c => c.classList.remove('expanded'));
+                document.querySelectorAll('.day-header').forEach(h => h.classList.remove('expanded'));
+                content.classList.add('expanded');
+                header.classList.add('expanded');
+            }
+        }
+
+        function updateQuickStats(tour) {
+            const container = document.getElementById('quickStats');
+            container.classList.remove('hidden');
+            container.innerHTML = `
+                <h4 class="text-sm font-semibold text-gray-400 mb-3">TOUR SUMMARY</h4>
+                <div class="space-y-2 text-sm">
+                    <div class="flex justify-between"><span class="text-gray-400">Duration</span><span class="text-white font-medium">${tour.duration} Days</span></div>
+                    <div class="flex justify-between"><span class="text-gray-400">Cities</span><span class="text-white font-medium">${tour.stats.cities}</span></div>
+                    <div class="flex justify-between"><span class="text-gray-400">Meals</span><span class="text-white font-medium">${tour.stats.meals}+</span></div>
+                    <div class="flex justify-between"><span class="text-gray-400">Restaurants</span><span class="text-white font-medium">${tour.stats.restaurants}</span></div>
+                    <div class="flex justify-between pt-2 border-t border-white/10"><span class="text-gray-400">Starting Price</span><span class="text-amber-400 font-bold">${tour.price}</span></div>
+                </div>
+            `;
+        }
+
+        function resetMap() { map.setView([54.5, -3.5], 6); }
+
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                renderTourList(this.dataset.filter);
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initMap();
+            renderTourList();
+        });
+    </script>
+</body>
+</html>
+
