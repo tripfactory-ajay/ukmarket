@@ -27,8 +27,11 @@
         .nav-item::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: #06b6d4; transition: width 0.3s; }
         .nav-item:hover::after { width: 100%; }
         .nav-item.active::after { width: 100%; }
+        .kpi-card { background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.9)); border-left: 4px solid; }
+        .card-hover { transition: all 0.3s ease; }
+        .card-hover:hover { transform: translateY(-4px); box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
     </style>
-
+<base target="_blank">
 </head>
 <body class="min-h-screen bg-tf-dark">
     <!-- Navigation -->
@@ -37,7 +40,7 @@
             <div class="flex justify-between h-16 items-center">
                 <!-- Left: Brand -->
                 <div class="flex items-center">
-                    <a href="ukmarket.html" class="text-2xl font-bold text-white">
+                    <a href="index.html" class="text-2xl font-bold text-white">
                         <span class="text-tf-cyan">Trip</span>Factory
                         <span class="text-sm font-normal text-gray-400 ml-2">UK Market</span>
                     </a>
@@ -45,7 +48,7 @@
 
                 <!-- Center: Navigation -->
                 <div class="hidden md:flex space-x-6">
-                    <a href="ukmarket.html" class="nav-item active text-tf-cyan font-medium">Dashboard</a>
+                    <a href="index.html" class="nav-item active text-tf-cyan font-medium">Dashboard</a>
                     <a href="ukmarket-contacts.html" class="nav-item text-gray-300 hover:text-white transition">Contacts</a>
                     <a href="ukmarket-hotels.html" class="nav-item text-gray-300 hover:text-white transition">Hotels</a>
                     <a href="ukmarket-tours.html" class="nav-item text-gray-300 hover:text-white transition">Tours</a>
@@ -65,8 +68,7 @@
         </div>
     </nav>
 
-
-<main class="pt-24 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+    <main class="pt-24 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <!-- Header Section -->
         <div class="mb-8">
             <h2 class="text-3xl font-bold mb-2">UK Market Operations Dashboard</h2>
@@ -263,27 +265,6 @@
         </div>
     </main>
 
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        tf: {
-                            navy: '#1e3a5f',
-                            blue: '#2563eb',
-                            cyan: '#06b6d4',
-                            lime: '#84cc16',
-                            yellow: '#eab308',
-                            red: '#ef4444',
-                            dark: '#0f172a',
-                            card: '#1e293b'
-                        }
-                    }
-                }
-            }
-        }
-    </script>
 <script>
         // Pre-loaded Tour Data
         const toursData = [
@@ -376,21 +357,11 @@
             const tasks = JSON.parse(localStorage.getItem('ukmarket_tasks') || '[]');
             const openTasks = tasks.filter(t => t.status !== 'completed');
             const urgentTasks = openTasks.filter(t => t.priority === 'high' || (t.dueDate && new Date(t.dueDate) < new Date()));
-            
+
             document.getElementById('openTasksCount').textContent = openTasks.length;
             document.getElementById('urgentTasksText').textContent = urgentTasks.length > 0 ? 
                 `${urgentTasks.length} require attention` : 'All on track';
         }
-
-        // Hide logo fallbacks if images load
-        window.addEventListener('load', function() {
-            document.querySelectorAll('img').forEach(img => {
-                if (img.complete && img.naturalHeight !== 0) {
-                    const fallback = document.getElementById(img.alt.toLowerCase() + '-logo-fallback');
-                    if (fallback) fallback.style.display = 'none';
-                }
-            });
-        });
     </script>
 </body>
 </html>
