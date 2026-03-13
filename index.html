@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indian Market Wiki - TripFactory UK Market</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        tf: { navy: '#1e3a5f', blue: '#2563eb', cyan: '#06b6d4', lime: '#84cc16', yellow: '#eab308', red: '#ef4444', dark: '#0f172a', card: '#1e293b' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background: #0f172a; color: #e2e8f0; font-family: 'Segoe UI', system-ui, sans-serif; }
+        .glass { background: rgba(30, 41, 59, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); }
+        .gradient-text { background: linear-gradient(135deg, #06b6d4, #2563eb); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .nav-item { position: relative; }
+        .nav-item::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: #06b6d4; transition: width 0.3s; }
+        .nav-item:hover::after { width: 100%; }
+        .nav-item.active::after { width: 100%; }
+        .wiki-section { scroll-margin-top: 120px; }
+        .wiki-nav-item { transition: all 0.3s; }
+        .wiki-nav-item:hover { background: rgba(6, 182, 212, 0.1); border-left: 3px solid #06b6d4; }
+        .wiki-nav-item.active { background: rgba(6, 182, 212, 0.2); border-left: 3px solid #06b6d4; }
+        .logo-container { background: rgba(255,255,255,0.95); padding: 8px 16px; border-radius: 8px; }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Navigation -->
+    <nav class="glass fixed w-full z-50 top-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <!-- Left: TripFactory Logo -->
+                <div class="flex items-center space-x-4">
+                    <div class="logo-container">
+                        <img src="tripfactory-logo.png" alt="TripFactory" class="h-10 w-auto" onerror="this.style.display='none'">
+                        <span class="text-tf-navy font-bold text-xl" id="tf-logo-fallback">TripFactory</span>
+                    </div>
+                </div>
+
+                <!-- Center: Navigation -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="ukmarket.html" class="nav-item text-gray-300 hover:text-white transition">Dashboard</a>
+                    <a href="ukmarket-contacts.html" class="nav-item text-gray-300 hover:text-white transition">Contacts</a>
+                    <a href="ukmarket-hotels.html" class="nav-item text-gray-300 hover:text-white transition">Hotels</a>
+                    <a href="ukmarket-tours.html" class="nav-item text-gray-300 hover:text-white transition">Tours</a>
+                    <a href="ukmarket-tasks.html" class="nav-item text-gray-300 hover:text-white transition">Tasks</a>
+                    <a href="ukmarket-wiki.html" class="nav-item active text-tf-cyan font-medium">Wiki</a>
+                </div>
+
+                <!-- Right: ORN Logo -->
+                <div class="flex items-center space-x-3">
+                    <div class="logo-container hidden sm:block">
+                        <img src="orn-logo.png" alt="ORN" class="h-8 w-auto" onerror="this.style.display='none'">
+                        <span class="text-tf-navy font-semibold text-sm" id="orn-logo-fallback">ORN</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-24 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Sidebar Navigation -->
+            <aside class="lg:w-64 flex-shrink-0">
+                <div class="glass rounded-xl p-4 sticky top-28">
+                    <h3 class="font-semibold mb-4 text-tf-cyan">Indian Market Guide</h3>
+                    <nav class="space-y-1">
+                        <a href="#traveller-types" class="wiki-nav-item block px-3 py-2 rounded-lg text-sm text-gray-300 hover:text-white">Traveller Types</a>
+                        <a href="#food-requirements" class="wiki-nav-item block px-3 py-2 rounded-lg text-sm text-gray-300 hover:text-white">Food Requirements</a>
+                        <a href="#visa-requirements" class="wiki-nav-item block px-3 py-2 rounded-lg text-sm text-gray-300 hover:text-white">UK Visa Requirements</a>
+                        <a href="#cultural-notes" class="wiki-nav-item block px-3 py-2 rounded-lg text-sm text-gray-300 hover:text-white">Cultural Considerations</a>
+                        <a href="#booking-patterns" class="wiki-nav-item block px-3 py-2 rounded-lg text-sm text-gray-300 hover:text-white">Booking Patterns</a>
+                        <a href="#seasonality" class="wiki-nav-item block px-3 py-2 rounded-lg text-sm text-gray-300 hover:text-white">Seasonality</a>
+                    </nav>
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <div class="flex-1 space-y-8">
+                <!-- Header -->
+                <div>
+                    <h2 class="text-3xl font-bold mb-2">Indian Traveller Market Intelligence</h2>
+                    <p class="text-gray-400">Essential guide for serving Indian tourists in the UK market</p>
+                </div>
+
+                <!-- Traveller Types -->
+                <section id="traveller-types" class="wiki-section glass rounded-xl p-6">
+                    <h3 class="text-xl font-semibold mb-4 flex items-center text-tf-cyan">
+                        <i class="fas fa-users mr-3"></i>Indian Traveller Types
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="p-4 rounded-lg bg-tf-navy/30 border-l-4 border-tf-cyan">
+                            <h4 class="font-semibold mb-2">FIT (Free Independent Travellers)</h4>
+                            <ul class="text-sm text-gray-400 space-y-1">
+                                <li>• Young professionals, couples, small families</li>
+                                <li>• Prefer flexibility and personalised experiences</li>
+                                <li>• Book 2-4 weeks in advance</li>
+                                <li>• Higher spend per person</li>
+                                <li>• Use online booking platforms</li>
+                            </ul>
+                        </div>
+                        <div class="p-4 rounded-lg bg-tf-navy/30 border-l-4 border-tf-blue">
+                            <h4 class="font-semibold mb-2">Group Tours</h4>
+                            <ul class="text-sm text-gray-400 space-y-1">
+                                <li>• Multi-generational families (6-15 people)</li>
+                                <li>• Friends groups celebrating milestones</li>
+                                <li>• Community/association groups</li>
+                                <li>• Book 1-3 months in advance</li>
+                                <li>• Price-sensitive, value-focused</li>
+                            </ul>
+                        </div>
+                        <div class="p-4 rounded-lg bg-tf-navy/30 border-l-4 border-tf-lime">
+                            <h4 class="font-semibold mb-2">MICE (Corporate)</h4>
+                            <ul class="text-sm text-gray-400 space-y-1">
+                                <li>• Incentive trips for top performers</li>
+                                <li>• Conference and convention groups</li>
+                                <li>• Company off-sites</li>
+                                <li>• Book 3-6 months in advance</li>
+                                <li>• Require premium services</li>
+                            </ul>
+                        </div>
+                        <div class="p-4 rounded-lg bg-tf-navy/30 border-l-4 border-tf-yellow">
+                            <h4 class="font-semibold mb-2">VFR (Visiting Friends & Relatives)</h4>
+                            <ul class="text-sm text-gray-400 space-y-1">
+                                <li>• Visiting family settled in UK</li>
+                                <li>• Longer stays (2-4 weeks)</li>
+                                <li>• Mix of independent and organised tours</li>
+                                <li>• Price-conscious on accommodation</li>
+                                <li>• High spending on shopping</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Food Requirements -->
+                <section id="food-requirements" class="wiki-section glass rounded-xl p-6">
+                    <h3 class="text-xl font-semibold mb-4 flex items-center text-tf-cyan">
+                        <i class="fas fa-utensils mr-3"></i>Food & Dietary Requirements
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <div class="p-4 rounded-lg bg-tf-navy/30">
+                            <h4 class="font-semibold mb-3 text-tf-lime">Dietary Preferences</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="text-center p-3 rounded-lg bg-tf-dark/50">
+                                    <i class="fas fa-leaf text-tf-lime text-2xl mb-2"></i>
+                                    <h5 class="font-medium mb-1">Vegetarian</h5>
+                                    <p class="text-xs text-gray-400">~30-40% of Indian travellers</p>
+                                    <p class="text-xs text-gray-500 mt-1">Strict lacto-vegetarian (no eggs, meat, fish)</p>
+                                </div>
+                                <div class="text-center p-3 rounded-lg bg-tf-dark/50">
+                                    <i class="fas fa-drumstick-bite text-tf-yellow text-2xl mb-2"></i>
+                                    <h5 class="font-medium mb-1">Halal/Non-Veg</h5>
+                                    <p class="text-xs text-gray-400">~40-50% of Indian travellers</p>
+                                    <p class="text-xs text-gray-500 mt-1">Prefer halal-certified meat</p>
+                                </div>
+                                <div class="text-center p-3 rounded-lg bg-tf-dark/50">
+                                    <i class="fas fa-ban text-tf-red text-2xl mb-2"></i>
+                                    <h5 class="font-medium mb-1">Jain/Vegan</h5>
+                                    <p class="text-xs text-gray-400">~10-15% of Indian travellers</p>
+                                    <p class="text-xs text-gray-500 mt-1">No root vegetables, strict purity</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-4 rounded-lg bg-tf-navy/30">
+                            <h4 class="font-semibold mb-3 text-tf-cyan">Key Requirements for Hotels</h4>
+                            <ul class="space-y-2 text-sm text-gray-300">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-tf-lime mr-2 mt-1"></i>
+                                    <span><strong>Halal Kitchen:</strong> Separate preparation areas for halal meat preferred</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-tf-lime mr-2 mt-1"></i>
+                                    <span><strong>Vegetarian Options:</strong> Minimum 2-3 veg mains at every meal</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-tf-lime mr-2 mt-1"></i>
+                                    <span><strong>No Beef/Pork:</strong> Absolutely essential - cultural and religious prohibition</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-tf-lime mr-2 mt-1"></i>
+                                    <span><strong>Spice Levels:</strong> Medium to hot preferred; mild options for elderly</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-tf-lime mr-2 mt-1"></i>
+                                    <span><strong>Breakfast:</strong> Hot breakfast essential (parathas, dosas, idli preferred)</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-tf-lime mr-2 mt-1"></i>
+                                    <span><strong>Chai:</strong> Indian tea with milk available throughout day</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="p-4 rounded-lg bg-tf-yellow/10 border border-tf-yellow/30">
+                            <h4 class="font-semibold mb-2 text-tf-yellow"><i class="fas fa-lightbulb mr-2"></i>Restaurant Recommendations</h4>
+                            <p class="text-sm text-gray-300">See <a href="ukmarket-contacts.html" class="text-tf-cyan hover:underline">Contacts page</a> for approved Indian restaurants in London, Manchester, Windermere, Glasgow, Edinburgh, and Birmingham. All verified for group handling and authentic cuisine.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Visa Requirements -->
+                <section id="visa-requirements" class="wiki-section glass rounded-xl p-6">
+                    <h3 class="text-xl font-semibold mb-4 flex items-center text-tf-cyan">
+                        <i class="fas fa-passport mr-3"></i>UK Visa Requirements for Indian Nationals
+                    </h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-4">
+                            <div class="p-4 rounded-lg bg-tf-navy/30">
+                                <h4 class="font-semibold mb-3 text-tf-blue">Standard Visitor Visa</h4>
+                                <ul class="space-y-2 text-sm text-gray-300">
+                                    <li><strong>Duration:</strong> Up to 6 months</li>
+                                    <li><strong>Cost:</strong> £100 (approx ₹10,500)</li>
+                                    <li><strong>Processing:</strong> 3 weeks standard, 5 working days priority (+£500)</li>
+                                    <li><strong>Validity:</strong> 6 months, 2 years, 5 years, or 10 years</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="p-4 rounded-lg bg-tf-navy/30">
+                                <h4 class="font-semibold mb-3 text-tf-lime">Required Documents</h4>
+                                <ul class="space-y-1 text-sm text-gray-400">
+                                    <li>• Valid passport (min 6 months validity)</li>
+                                    <li>• Proof of funds (bank statements 6 months)</li>
+                                    <li>• Employment/business proof</li>
+                                    <li>• Hotel bookings or invitation letter</li>
+                                    <li>• Return flight tickets</li>
+                                    <li>• Travel itinerary</li>
+                                    <li>• Travel insurance (recommended)</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div class="p-4 rounded-lg bg-tf-navy/30">
+                                <h4 class="font-semibold mb-3 text-tf-yellow">Application Process</h4>
+                                <ol class="space-y-2 text-sm text-gray-300 list-decimal list-inside">
+                                    <li>Complete online application on gov.uk</li>
+                                    <li>Pay visa fee online</li>
+                                    <li>Book biometric appointment at VFS Global</li>
+                                    <li>Attend appointment (Delhi, Mumbai, Bangalore, etc.)</li>
+                                    <li>Submit documents and biometrics</li>
+                                    <li>Wait for decision (track online)</li>
+                                    <li>Collect passport or courier delivery</li>
+                                </ol>
+                            </div>
+
+                            <div class="p-4 rounded-lg bg-tf-red/10 border border-tf-red/30">
+                                <h4 class="font-semibold mb-2 text-tf-red"><i class="fas fa-exclamation-triangle mr-2"></i>Common Rejection Reasons</h4>
+                                <ul class="space-y-1 text-sm text-gray-400">
+                                    <li>• Insufficient funds proof</li>
+                                    <li>• Inconsistent travel history</li>
+                                    <li>• Weak ties to India (employment/family)</li>
+                                    <li>• Previous visa violations</li>
+                                    <li>• Incomplete documentation</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 p-4 rounded-lg bg-tf-cyan/10 border border-tf-cyan/30">
+                        <p class="text-sm text-gray-300"><strong>Agent Tip:</strong> Advise clients to apply at least 6-8 weeks before travel. Priority service available for last-minute bookings at additional cost. Group applications can be processed together but each applicant needs individual appointment.</p>
+                    </div>
+                </section>
+
+                <!-- Cultural Considerations -->
+                <section id="cultural-notes" class="wiki-section glass rounded-xl p-6">
+                    <h3 class="text-xl font-semibold mb-4 flex items-center text-tf-cyan">
+                        <i class="fas fa-heart mr-3"></i>Cultural Considerations
+                    </h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="p-4 rounded-lg bg-tf-navy/30">
+                            <h4 class="font-semibold mb-3 text-tf-lime">Language & Communication</h4>
+                            <ul class="space-y-2 text-sm text-gray-300">
+                                <li>• <strong>English:</strong> Widely spoken among target demographic</li>
+                                <li>• <strong>Hindi:</strong> Prefer guides who speak Hindi</li>
+                                <li>• <strong>Regional:</strong> Gujarati, Punjabi, Tamil speakers in specific groups</li>
+                                <li>• <strong>Communication:</strong> WhatsApp preferred over email for updates</li>
+                            </ul>
+                        </div>
+
+                        <div class="p-4 rounded-lg bg-tf-navy/30">
+                            <h4 class="font-semibold mb-3 text-tf-blue">Photography</h4>
+                            <ul class="space-y-2 text-sm text-gray-300">
+                                <li>• Photography is <strong>extremely important</strong></li>
+                                <li>• Allow extra time at photo-worthy locations</li>
+                                <li>• Group photos at iconic landmarks essential</li>
+                                <li>• Consider photography permissions in advance</li>
+                                <li>• Suggest best photo spots to guides</li>
+                            </ul>
+                        </div>
+
+                        <div class="p-4 rounded-lg bg-tf-navy/30">
+                            <h4 class="font-semibold mb-3 text-tf-yellow">Shopping Preferences</h4>
+                            <ul class="space-y-2 text-sm text-gray-300">
+                                <li>• <strong>Souvenirs:</strong> Magnets, keychains, local crafts</li>
+                                <li>• <strong>Luxury:</strong> Watches, handbags, chocolates</li>
+                                <li>• <strong>Department Stores:</strong> Selfridges, Harrods popular</li>
+                                <li>• <strong>Outlet Villages:</strong> Bicester Village always requested</li>
+                                <li>• Allow dedicated shopping time in itinerary</li>
+                            </ul>
+                        </div>
+
+                        <div class="p-4 rounded-lg bg-tf-navy/30">
+                            <h4 class="font-semibold mb-3 text-tf-cyan">Religious Considerations</h4>
+                            <ul class="space-y-2 text-sm text-gray-300">
+                                <li>• <strong>Prayer Times:</strong> Muslim clients need prayer break awareness</li>
+                                <li>• <strong>Temple Visits:</strong> Some may want to visit Hindu temples</li>
+                                <li>• <strong>Modest Dress:</strong> Important for religious sites and some clients</li>
+                                <li>• <strong>Religious Holidays:</strong> Avoid tour departures during Diwali, Eid if possible</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Booking Patterns -->
+                <section id="booking-patterns" class="wiki-section glass rounded-xl p-6">
+                    <h3 class="text-xl font-semibold mb-4 flex items-center text-tf-cyan">
+                        <i class="fas fa-chart-line mr-3"></i>Booking Patterns & Preferences
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="p-4 rounded-lg bg-tf-navy/30 text-center">
+                                <i class="fas fa-calendar-alt text-tf-cyan text-2xl mb-2"></i>
+                                <h4 class="font-semibold mb-1">Lead Time</h4>
+                                <p class="text-2xl font-bold text-white">45-60</p>
+                                <p class="text-xs text-gray-400">Days average</p>
+                            </div>
+                            <div class="p-4 rounded-lg bg-tf-navy/30 text-center">
+                                <i class="fas fa-users text-tf-lime text-2xl mb-2"></i>
+                                <h4 class="font-semibold mb-1">Group Size</h4>
+                                <p class="text-2xl font-bold text-white">6-15</p>
+                                <p class="text-xs text-gray-400">People typical</p>
+                            </div>
+                            <div class="p-4 rounded-lg bg-tf-navy/30 text-center">
+                                <i class="fas fa-pound-sign text-tf-yellow text-2xl mb-2"></i>
+                                <h4 class="font-semibold mb-1">Budget Range</h4>
+                                <p class="text-2xl font-bold text-white">£1,500-3,000</p>
+                                <p class="text-xs text-gray-400">Per person</p>
+                            </div>
+                        </div>
+
+                        <div class="p-4 rounded-lg bg-tf-navy/30">
+                            <h4 class="font-semibold mb-3">Payment Preferences</h4>
+                            <ul class="space-y-2 text-sm text-gray-300">
+                                <li>• <strong>Deposit:</strong> 25-30% to confirm booking</li>
+                                <li>• <strong>Balance:</strong> Due 30 days before departure</li>
+                                <li>• <strong>Methods:</strong> Bank transfer preferred, credit cards accepted</li>
+                                <li>• <strong>Currency:</strong> INR or GBP accepted</li>
+                                <li>• <strong>EMI:</strong> Installment options increase conversion</li>
+                            </ul>
+                        </div>
+
+                        <div class="p-4 rounded-lg bg-tf-navy/30">
+                            <h4 class="font-semibold mb-3">Cancellation Policy Recommendations</h4>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-sm text-left text-gray-300">
+                                    <thead class="text-xs text-gray-400 uppercase bg-tf-dark/50">
+                                        <tr>
+                                            <th class="px-4 py-2">Timing</th>
+                                            <th class="px-4 py-2">Recommended Policy</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="border-b border-gray-700">
+                                            <td class="px-4 py-2">60+ days before</td>
+                                            <td class="px-4 py-2">Full refund minus admin fee (£50)</td>
+                                        </tr>
+                                        <tr class="border-b border-gray-700">
+                                            <td class="px-4 py-2">30-59 days before</td>
+                                            <td class="px-4 py-2">50% refund or credit note</td>
+                                        </tr>
+                                        <tr class="border-b border-gray-700">
+                                            <td class="px-4 py-2">15-29 days before</td>
+                                            <td class="px-4 py-2">25% refund or credit note</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="px-4 py-2">0-14 days before</td>
+                                            <td class="px-4 py-2">No refund (insurance recommended)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Seasonality -->
+                <section id="seasonality" class="wiki-section glass rounded-xl p-6">
+                    <h3 class="text-xl font-semibold mb-4 flex items-center text-tf-cyan">
+                        <i class="fas fa-sun mr-3"></i>Seasonality & Peak Periods
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="p-4 rounded-lg bg-tf-lime/10 border border-tf-lime/30">
+                                <h4 class="font-semibold mb-2 text-tf-lime"><i class="fas fa-star mr-2"></i>Peak Season (Jun-Aug)</h4>
+                                <ul class="space-y-1 text-sm text-gray-300">
+                                    <li>• School holidays in India</li>
+                                    <li>• Best weather in UK</li>
+                                    <li>• Highest demand and prices</li>
+                                    <li>• Book hotels 3-4 months ahead</li>
+                                    <li>• Longer daylight hours for sightseeing</li>
+                                </ul>
+                            </div>
+
+                            <div class="p-4 rounded-lg bg-tf-blue/10 border border-tf-blue/30">
+                                <h4 class="font-semibold mb-2 text-tf-blue"><i class="fas fa-cloud-sun mr-2"></i>Shoulder Season (Apr-May, Sep-Oct)</h4>
+                                <ul class="space-y-1 text-sm text-gray-300">
+                                    <li>• Good weather, fewer crowds</li>
+                                    <li>• Better hotel rates</li>
+                                    <li>• Ideal for Scotland (midges gone in Sep)</li>
+                                    <li>• Book 2 months ahead</li>
+                                    <li>• Good balance of value and experience</li>
+                                </ul>
+                            </div>
+
+                            <div class="p-4 rounded-lg bg-tf-yellow/10 border border-tf-yellow/30">
+                                <h4 class="font-semibold mb-2 text-tf-yellow"><i class="fas fa-snowflake mr-2"></i>Low Season (Nov-Mar)</h4>
+                                <ul class="space-y-1 text-sm text-gray-300">
+                                    <li>• Cold weather, short days</li>
+                                    <li>• Lowest prices</li>
+                                    <li>• Christmas markets (Nov-Dec)</li>
+                                    <li>• Limited departures</li>
+                                    <li>• Focus on London city breaks</li>
+                                </ul>
+                            </div>
+
+                            <div class="p-4 rounded-lg bg-tf-red/10 border border-tf-red/30">
+                                <h4 class="font-semibold mb-2 text-tf-red"><i class="fas fa-ban mr-2"></i>Avoid Periods</h4>
+                                <ul class="space-y-1 text-sm text-gray-300">
+                                    <li>• <strong>Diwali:</strong> Oct/Nov - 1 week</li>
+                                    <li>• <strong>Christmas:</strong> Dec 20 - Jan 5</li>
+                                    <li>• <strong>UK Bank Holidays:</strong> Expensive hotels</li>
+                                    <li>• <strong>Edinburgh Festival:</strong> Aug - Hotel shortages</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="p-4 rounded-lg bg-tf-cyan/10 border border-tf-cyan/30">
+                            <h4 class="font-semibold mb-2">Recommended Departure Months</h4>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 rounded-full bg-tf-lime/20 text-tf-lime text-sm">May</span>
+                                <span class="px-3 py-1 rounded-full bg-tf-lime/20 text-tf-lime text-sm">June</span>
+                                <span class="px-3 py-1 rounded-full bg-tf-lime/20 text-tf-lime text-sm">July</span>
+                                <span class="px-3 py-1 rounded-full bg-tf-lime/20 text-tf-lime text-sm">August</span>
+                                <span class="px-3 py-1 rounded-full bg-tf-blue/20 text-tf-blue text-sm">September</span>
+                                <span class="px-3 py-1 rounded-full bg-tf-blue/20 text-tf-blue text-sm">October</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Quick Reference Card -->
+                <div class="glass rounded-xl p-6 border-2 border-tf-cyan/30">
+                    <h3 class="text-lg font-semibold mb-4 text-center">Quick Reference: Indian Traveller Profile</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                        <div>
+                            <p class="text-2xl font-bold text-tf-cyan">English/Hindi</p>
+                            <p class="text-xs text-gray-400">Preferred Language</p>
+                        </div>
+                        <div>
+                            <p class="text-2xl font-bold text-tf-lime">Vegetarian</p>
+                            <p class="text-xs text-gray-400">Dietary Preference</p>
+                        </div>
+                        <div>
+                            <p class="text-2xl font-bold text-tf-yellow">45-60 Days</p>
+                            <p class="text-xs text-gray-400">Booking Lead Time</p>
+                        </div>
+                        <div>
+                            <p class="text-2xl font-bold text-tf-blue">WhatsApp</p>
+                            <p class="text-xs text-gray-400">Communication</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Highlight active section in sidebar
+        const sections = document.querySelectorAll('.wiki-section');
+        const navItems = document.querySelectorAll('.wiki-nav-item');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('href').slice(1) === current) {
+                    item.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
