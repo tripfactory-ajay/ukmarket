@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>7H Hotels FIT Rates 2026 - TripFactory UK Market</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        tf: { navy: '#1e3a5f', blue: '#2563eb', cyan: '#06b6d4', lime: '#84cc16', yellow: '#eab308', red: '#ef4444', dark: '#0f172a', card: '#1e293b' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background: #0f172a; color: #e2e8f0; font-family: 'Segoe UI', system-ui, sans-serif; }
+        .glass { background: rgba(30, 41, 59, 0.9); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .glass-card { background: rgba(30, 41, 59, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); }
+        .nav-item { position: relative; padding: 0.5rem 0; }
+        .nav-item::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: #06b6d4; transition: width 0.3s; }
+        .nav-item:hover::after { width: 100%; }
+        .nav-item.active::after { width: 100%; }
+        .rate-card { transition: all 0.3s ease; }
+        .rate-card:hover { transform: translateY(-2px); box-shadow: 0 10px 40px rgba(6, 182, 212, 0.1); }
+        .season-badge { padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+        .season-low { background: rgba(34, 197, 94, 0.2); color: #4ade80; }
+        .season-high { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
+        .region-header { background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(59, 130, 246, 0.1)); border-left: 4px solid #06b6d4; }
+        .price-highlight { font-family: 'Courier New', monospace; font-weight: 700; }
+        .filter-btn { transition: all 0.3s; }
+        .filter-btn.active { background: rgba(6, 182, 212, 0.3); color: #22d3ee; border-color: #06b6d4; }
+        .table-row:hover { background: rgba(255,255,255,0.05); }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.3); }
+    </style>
+</head>
+<body class="min-h-screen bg-tf-dark">
+    <nav class="glass fixed w-full z-50 top-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center">
+                    <a href="ukmarket.html" class="text-2xl font-bold text-white">
+                        <span class="text-tf-cyan">Trip</span>Factory
+                        <span class="text-sm font-normal text-gray-400 ml-2">UK Market</span>
+                    </a>
+                </div>
+                <div class="hidden md:flex space-x-6">
+                    <a href="ukmarket.html" class="nav-item text-gray-300 hover:text-white transition">Dashboard</a>
+                    <a href="ukmarket-contacts.html" class="nav-item text-gray-300 hover:text-white transition">Contacts</a>
+                    <a href="ukmarket-hotels.html" class="nav-item text-gray-300 hover:text-white transition">Hotels</a>
+                    <a href="ukmarket-tours.html" class="nav-item text-gray-300 hover:text-white transition">Tours</a>
+                    <a href="ukmarket-newtours-2026.html" class="nav-item text-gray-300 hover:text-white transition">Tour Collection 2026</a>
+                    <a href="ukmarket-tasks.html" class="nav-item text-gray-300 hover:text-white transition">Tasks</a>
+                    <a href="ukmarket-wiki.html" class="nav-item text-gray-300 hover:text-white transition">Wiki</a>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <div class="text-right hidden sm:block">
+                        <p class="text-sm font-medium text-white">Ajay Kawa</p>
+                        <p class="text-xs text-gray-400">Head of Global Business Development</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 pt-20">
+        <!-- Header -->
+        <div class="mb-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="font-display text-4xl font-bold text-white mb-2">7H Hotels FIT Rates 2026</h1>
+                    <p class="text-gray-400">Net FIT rates for 7 Hospitality portfolio properties across England and Scotland</p>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <button onclick="exportToCSV()" class="px-4 py-2 rounded-lg bg-white/10 text-white hover:bg-white/20 transition text-sm">
+                        <i class="fas fa-download mr-2"></i>Export CSV
+                    </button>
+                    <button onclick="window.print()" class="px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition text-sm">
+                        <i class="fas fa-print mr-2"></i>Print
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <div class="glass-card rounded-xl p-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-400">Total Hotels</p>
+                        <p class="text-2xl font-bold text-white" id="totalHotels">19</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center">
+                        <i class="fas fa-hotel text-blue-400"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="glass-card rounded-xl p-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-400">England Properties</p>
+                        <p class="text-2xl font-bold text-white" id="englandCount">11</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-full bg-green-500/20 flex items-center justify-center">
+                        <i class="fas fa-flag text-green-400"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="glass-card rounded-xl p-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-400">Scotland Properties</p>
+                        <p class="text-2xl font-bold text-white" id="scotlandCount">8</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-full bg-purple-500/20 flex items-center justify-center">
+                        <i class="fas fa-flag text-purple-400"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="glass-card rounded-xl p-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-400">Castle Properties</p>
+                        <p class="text-2xl font-bold text-white" id="castleCount">4</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-full bg-amber-500/20 flex items-center justify-center">
+                        <i class="fas fa-chess-rook text-amber-400"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="glass-card rounded-xl p-4 mb-6">
+            <div class="flex flex-wrap items-center gap-4">
+                <div class="flex items-center space-x-2">
+                    <span class="text-gray-400 text-sm">Region:</span>
+                    <button class="filter-btn active px-4 py-2 rounded-lg bg-white/10 text-sm font-medium" onclick="filterRegion('all')" id="filter-all">All</button>
+                    <button class="filter-btn px-4 py-2 rounded-lg bg-white/10 text-sm font-medium hover:bg-white/20" onclick="filterRegion('england')" id="filter-england">England</button>
+                    <button class="filter-btn px-4 py-2 rounded-lg bg-white/10 text-sm font-medium hover:bg-white/20" onclick="filterRegion('scotland')" id="filter-scotland">Scotland</button>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="text-gray-400 text-sm">Type:</span>
+                    <button class="filter-btn px-4 py-2 rounded-lg bg-white/10 text-sm font-medium hover:bg-white/20" onclick="filterType('castle')" id="filter-castle">Castles</button>
+                    <button class="filter-btn px-4 py-2 rounded-lg bg-white/10 text-sm font-medium hover:bg-white/20" onclick="filterType('city')" id="filter-city">City Hotels</button>
+                </div>
+                <div class="flex-1"></div>
+                <div class="relative">
+                    <input type="text" id="searchInput" placeholder="Search hotels..." class="bg-white/10 border border-white/20 rounded-lg px-4 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500 w-64">
+                    <i class="fas fa-search absolute right-3 top-2.5 text-gray-500"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- England Section -->
+        <div id="england-section" class="mb-8">
+            <div class="region-header rounded-xl p-4 mb-4 flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <i class="fas fa-flag text-green-400 text-xl"></i>
+                    <h2 class="text-xl font-bold text-white">England</h2>
+                    <span class="text-sm text-gray-400" id="england-subtitle">11 Properties</span>
+                </div>
+                <div class="flex items-center space-x-4 text-sm">
+                    <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-green-400/20 mr-2"></span>Low Season: Nov-Feb</span>
+                    <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-amber-400/20 mr-2"></span>High Season: Apr-Oct</span>
+                </div>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="text-gray-400 text-sm border-b border-white/10">
+                            <th class="pb-3 pl-4 font-medium">Hotel Name</th>
+                            <th class="pb-3 font-medium">Location</th>
+                            <th class="pb-3 font-medium text-center">Type</th>
+                            <th class="pb-3 font-medium text-right">Low Season<br><span class="text-xs text-gray-500">Nov-Feb</span></th>
+                            <th class="pb-3 font-medium text-right">High Season<br><span class="text-xs text-gray-500">Apr-Oct</span></th>
+                            <th class="pb-3 font-medium text-right">Single Rate<br><span class="text-xs text-gray-500">Year Round</span></th>
+                            <th class="pb-3 font-medium text-right pr-4">Dinner Supp.<br><span class="text-xs text-gray-500">Per Person</span></th>
+                        </tr>
+                    </thead>
+                    <tbody id="england-table">
+                        <!-- England hotels populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Scotland Section -->
+        <div id="scotland-section" class="mb-8">
+            <div class="region-header rounded-xl p-4 mb-4 flex items-center justify-between" style="border-left-color: #a855f7;">
+                <div class="flex items-center space-x-3">
+                    <i class="fas fa-flag text-purple-400 text-xl"></i>
+                    <h2 class="text-xl font-bold text-white">Scotland</h2>
+                    <span class="text-sm text-gray-400" id="scotland-subtitle">8 Properties</span>
+                </div>
+                <div class="flex items-center space-x-4 text-sm">
+                    <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-green-400/20 mr-2"></span>Low Season: Nov-Feb</span>
+                    <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-amber-400/20 mr-2"></span>High Season: Apr-Oct</span>
+                </div>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="text-gray-400 text-sm border-b border-white/10">
+                            <th class="pb-3 pl-4 font-medium">Hotel Name</th>
+                            <th class="pb-3 font-medium">Location</th>
+                            <th class="pb-3 font-medium text-center">Type</th>
+                            <th class="pb-3 font-medium text-right">Low Season<br><span class="text-xs text-gray-500">Nov-Feb</span></th>
+                            <th class="pb-3 font-medium text-right">High Season<br><span class="text-xs text-gray-500">Apr-Oct</span></th>
+                            <th class="pb-3 font-medium text-right">Single Rate<br><span class="text-xs text-gray-500">Year Round</span></th>
+                            <th class="pb-3 font-medium text-right pr-4">Dinner Supp.<br><span class="text-xs text-gray-500">Per Person</span></th>
+                        </tr>
+                    </thead>
+                    <tbody id="scotland-table">
+                        <!-- Scotland hotels populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Rate Comparison Tool -->
+        <div class="glass-card rounded-xl p-6 mb-8">
+            <h3 class="text-lg font-bold text-white mb-4"><i class="fas fa-calculator mr-2 text-cyan-400"></i>Quick Rate Calculator</h3>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div>
+                    <label class="block text-sm text-gray-400 mb-2">Select Hotel</label>
+                    <select id="calc-hotel" class="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-cyan-500">
+                        <option value="">Choose hotel...</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm text-gray-400 mb-2">Season</label>
+                    <select id="calc-season" class="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-cyan-500">
+                        <option value="low">Low Season (Nov-Feb)</option>
+                        <option value="high">High Season (Apr-Oct)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm text-gray-400 mb-2">Nights</label>
+                    <input type="number" id="calc-nights" value="1" min="1" class="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-cyan-500">
+                </div>
+                <div>
+                    <label class="block text-sm text-gray-400 mb-2">Include Dinner?</label>
+                    <select id="calc-dinner" class="w-full bg-white/10 border border-white/20 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:border-cyan-500">
+                        <option value="no">Room Only</option>
+                        <option value="yes">Half Board (+Dinner)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="mt-4 p-4 bg-white/5 rounded-lg flex items-center justify-between">
+                <span class="text-gray-400">Estimated Total:</span>
+                <span class="text-2xl font-bold text-cyan-400" id="calc-total">£0.00</span>
+            </div>
+        </div>
+
+        <!-- Key Information -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="glass-card rounded-xl p-4">
+                <h4 class="font-bold text-white mb-3"><i class="fas fa-info-circle mr-2 text-blue-400"></i>Rate Information</h4>
+                <ul class="text-sm text-gray-400 space-y-2">
+                    <li>• All rates are NET FIT (non-commissionable)</li>
+                    <li>• Rates include VAT at current rate</li>
+                    <li>• Subject to availability at time of booking</li>
+                    <li>• Single rate applies year-round where specified</li>
+                </ul>
+            </div>
+            <div class="glass-card rounded-xl p-4">
+                <h4 class="font-bold text-white mb-3"><i class="fas fa-utensils mr-2 text-green-400"></i>Dinner Supplement</h4>
+                <ul class="text-sm text-gray-400 space-y-2">
+                    <li>• Per person, per night</li>
+                    <li>• Indian vegetarian options available</li>
+                    <li>• Jain options available on request</li>
+                    <li>• "X" indicates dinner not available</li>
+                </ul>
+            </div>
+            <div class="glass-card rounded-xl p-4">
+                <h4 class="font-bold text-white mb-3"><i class="fas fa-calendar-alt mr-2 text-amber-400"></i>Season Dates</h4>
+                <ul class="text-sm text-gray-400 space-y-2">
+                    <li>• <strong>Low Season:</strong> November - February</li>
+                    <li>• <strong>High Season:</strong> April - October</li>
+                    <li>• March rates on request</li>
+                    <li>• Christmas/New Year supplements apply</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Hotel data from Excel
+        const hotels = [
+            // England
+            { name: 'Thornbury Castle', location: 'Nr Bristol', region: 'england', type: 'castle', lowSeason: 250, highSeason: 350, singleRate: null, dinner: 70, notes: 'Tudor castle, Henry VIII history' },
+            { name: 'Whitehouse Worcester', location: 'Worcester', region: 'england', type: 'hotel', lowSeason: 60, highSeason: 80, singleRate: 70, dinner: 30, notes: '' },
+            { name: 'Judges Court', location: 'York', region: 'england', type: 'hotel', lowSeason: 100, highSeason: 150, singleRate: 100, dinner: null, notes: 'Historic city centre' },
+            { name: 'Weetwood Hall', location: 'Leeds', region: 'england', type: 'manor', lowSeason: 90, highSeason: 120, singleRate: 90, dinner: 30, notes: '17th-century manor' },
+            { name: 'Marston Farm', location: 'Birmingham', region: 'england', type: 'hotel', lowSeason: 80, highSeason: 120, singleRate: 90, dinner: 30, notes: '' },
+            { name: 'Haweswater', location: 'Lake District', region: 'england', type: 'country', lowSeason: 100, highSeason: 130, singleRate: 100, dinner: 40, notes: 'Remote, red squirrels' },
+            { name: 'The Ro', location: 'Windermere', region: 'england', type: 'hotel', lowSeason: 90, highSeason: 150, singleRate: 110, dinner: 30, notes: 'Lake views' },
+            { name: 'Holiday Inn', location: 'Leicester', region: 'england', type: 'hotel', lowSeason: 60, highSeason: 90, singleRate: 75, dinner: 25, notes: '' },
+            { name: 'Delta Marriott', location: 'Birmingham', region: 'england', type: 'hotel', lowSeason: 75, highSeason: 100, singleRate: 80, dinner: 30, notes: 'City centre' },
+            { name: 'Brandon Hall', location: 'Coventry', region: 'england', type: 'hotel', lowSeason: 70, highSeason: 100, singleRate: 80, dinner: 30, notes: '' },
+            { name: 'Wiltshire Golf Hotel', location: 'Wooten Basset', region: 'england', type: 'hotel', lowSeason: 70, highSeason: 90, singleRate: 80, dinner: 30, notes: '' },
+            
+            // Scotland
+            { name: 'Rosslea Hall', location: 'Helensburgh', region: 'scotland', type: 'hotel', lowSeason: 70, highSeason: 90, singleRate: 70, dinner: 30, notes: 'Firth of Clyde views' },
+            { name: 'Grosvenor Hotel', location: 'Glasgow', region: 'scotland', type: 'hotel', lowSeason: 80, highSeason: 120, singleRate: 80, dinner: 40, notes: 'City centre' },
+            { name: 'Braid Hills', location: 'Edinburgh', region: 'scotland', type: 'hotel', lowSeason: 90, highSeason: 150, singleRate: 110, dinner: 30, notes: 'City views' },
+            { name: 'Dalhousie Castle', location: 'Edinburgh', region: 'scotland', type: 'castle', lowSeason: 210, highSeason: 350, singleRate: 275, dinner: 50, notes: '13th-century, falconry' },
+            { name: 'Ardoe House', location: 'Aberdeen', region: 'scotland', type: 'hotel', lowSeason: 80, highSeason: 110, singleRate: 90, dinner: 40, notes: '' },
+            { name: 'Islay House', location: 'Islay', region: 'scotland', type: 'manor', lowSeason: 90, highSeason: 180, singleRate: 150, dinner: null, notes: 'Whisky island' },
+            { name: 'Kilchoman House', location: 'Islay', region: 'scotland', type: 'hotel', lowSeason: 90, highSeason: 150, singleRate: 150, dinner: null, notes: '' },
+            { name: 'Killochan Castle', location: 'Ayrshire', region: 'scotland', type: 'castle', lowSeason: 200, highSeason: 350, singleRate: null, dinner: null, notes: 'Private castle' }
+        ];
+
+        let currentFilter = 'all';
+
+        function formatPrice(price) {
+            if (price === null || price === undefined) return '<span class="text-gray-600">X</span>';
+            return `<span class="price-highlight text-cyan-400">£${price}</span>`;
+        }
+
+        function getTypeBadge(type) {
+            const badges = {
+                'castle': '<span class="px-2 py-1 rounded bg-purple-500/20 text-purple-400 text-xs font-medium">Castle</span>',
+                'manor': '<span class="px-2 py-1 rounded bg-amber-500/20 text-amber-400 text-xs font-medium">Manor</span>',
+                'country': '<span class="px-2 py-1 rounded bg-green-500/20 text-green-400 text-xs font-medium">Country</span>',
+                'hotel': '<span class="px-2 py-1 rounded bg-blue-500/20 text-blue-400 text-xs font-medium">Hotel</span>'
+            };
+            return badges[type] || badges['hotel'];
+        }
+
+        function renderTable(region) {
+            const tbody = document.getElementById(`${region}-table`);
+            tbody.innerHTML = '';
+            
+            const filtered = hotels.filter(h => {
+                if (region === 'all') return true;
+                if (region === 'castle') return h.type === 'castle';
+                if (region === 'city') return h.type === 'hotel';
+                return h.region === region;
+            });
+
+            filtered.forEach(hotel => {
+                const row = document.createElement('tr');
+                row.className = 'table-row border-b border-white/5 text-sm';
+                row.innerHTML = `
+                    <td class="py-4 pl-4">
+                        <div class="font-medium text-white">${hotel.name}</div>
+                        ${hotel.notes ? `<div class="text-xs text-gray-500 mt-1">${hotel.notes}</div>` : ''}
+                    </td>
+                    <td class="py-4 text-gray-400">${hotel.location}</td>
+                    <td class="py-4 text-center">${getTypeBadge(hotel.type)}</td>
+                    <td class="py-4 text-right">${formatPrice(hotel.lowSeason)}</td>
+                    <td class="py-4 text-right">${formatPrice(hotel.highSeason)}</td>
+                    <td class="py-4 text-right">${formatPrice(hotel.singleRate)}</td>
+                    <td class="py-4 text-right pr-4">${formatPrice(hotel.dinner)}</td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            // Update subtitle
+            const count = filtered.length;
+            document.getElementById(`${region}-subtitle`).textContent = `${count} Propert${count === 1 ? 'y' : 'ies'}`;
+        }
+
+        function filterRegion(region) {
+            currentFilter = region;
+            
+            // Update button states
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`filter-${region}`).classList.add('active');
+            
+            // Show/hide sections
+            const englandSection = document.getElementById('england-section');
+            const scotlandSection = document.getElementById('scotland-section');
+            
+            if (region === 'all') {
+                englandSection.style.display = 'block';
+                scotlandSection.style.display = 'block';
+                renderTable('england');
+                renderTable('scotland');
+            } else if (region === 'england') {
+                englandSection.style.display = 'block';
+                scotlandSection.style.display = 'none';
+                renderTable('england');
+            } else if (region === 'scotland') {
+                englandSection.style.display = 'none';
+                scotlandSection.style.display = 'block';
+                renderTable('scotland');
+            }
+        }
+
+        function filterType(type) {
+            const englandSection = document.getElementById('england-section');
+            const scotlandSection = document.getElementById('scotland-section');
+            
+            // Update button states
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                if (btn.id !== 'filter-all' && btn.id !== 'filter-england' && btn.id !== 'filter-scotland') {
+                    btn.classList.remove('active');
+                }
+            });
+            document.getElementById(`filter-${type}`).classList.add('active');
+            
+            // Filter by type across both regions
+            const filtered = hotels.filter(h => h.type === type);
+            
+            // Clear and rebuild tables with filtered data
+            const englandTable = document.getElementById('england-table');
+            const scotlandTable = document.getElementById('scotland-table');
+            
+            englandTable.innerHTML = '';
+            scotlandTable.innerHTML = '';
+            
+            filtered.forEach(hotel => {
+                const row = document.createElement('tr');
+                row.className = 'table-row border-b border-white/5 text-sm';
+                row.innerHTML = `
+                    <td class="py-4 pl-4">
+                        <div class="font-medium text-white">${hotel.name}</div>
+                        ${hotel.notes ? `<div class="text-xs text-gray-500 mt-1">${hotel.notes}</div>` : ''}
+                    </td>
+                    <td class="py-4 text-gray-400">${hotel.location}</td>
+                    <td class="py-4 text-center">${getTypeBadge(hotel.type)}</td>
+                    <td class="py-4 text-right">${formatPrice(hotel.lowSeason)}</td>
+                    <td class="py-4 text-right">${formatPrice(hotel.highSeason)}</td>
+                    <td class="py-4 text-right">${formatPrice(hotel.singleRate)}</td>
+                    <td class="py-4 text-right pr-4">${formatPrice(hotel.dinner)}</td>
+                `;
+                
+                if (hotel.region === 'england') {
+                    englandTable.appendChild(row);
+                } else {
+                    scotlandTable.appendChild(row);
+                }
+            });
+            
+            // Show both sections but they may be empty
+            englandSection.style.display = 'block';
+            scotlandSection.style.display = 'block';
+            
+            // Update subtitles
+            const englandCount = filtered.filter(h => h.region === 'england').length;
+            const scotlandCount = filtered.filter(h => h.region === 'scotland').length;
+            document.getElementById('england-subtitle').textContent = `${englandCount} Properties`;
+            document.getElementById('scotland-subtitle').textContent = `${scotlandCount} Properties`;
+        }
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const search = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('.table-row');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(search) ? '' : 'none';
+            });
+        });
+
+        // Calculator
+        function populateCalculator() {
+            const select = document.getElementById('calc-hotel');
+            hotels.forEach(hotel => {
+                const option = document.createElement('option');
+                option.value = JSON.stringify(hotel);
+                option.textContent = `${hotel.name} (${hotel.location})`;
+                select.appendChild(option);
+            });
+        }
+
+        function calculateTotal() {
+            const hotelSelect = document.getElementById('calc-hotel');
+            const season = document.getElementById('calc-season').value;
+            const nights = parseInt(document.getElementById('calc-nights').value) || 1;
+            const dinner = document.getElementById('calc-dinner').value;
+            
+            if (!hotelSelect.value) {
+                document.getElementById('calc-total').textContent = '£0.00';
+                return;
+            }
+            
+            const hotel = JSON.parse(hotelSelect.value);
+            let rate = season === 'low' ? hotel.lowSeason : hotel.highSeason;
+            let total = rate * nights;
+            
+            if (dinner === 'yes' && hotel.dinner) {
+                total += hotel.dinner * 2 * nights; // 2 people per room
+            }
+            
+            document.getElementById('calc-total').textContent = `£${total.toFixed(2)}`;
+        }
+
+        ['calc-hotel', 'calc-season', 'calc-nights', 'calc-dinner'].forEach(id => {
+            document.getElementById(id).addEventListener('change', calculateTotal);
+        });
+
+        function exportToCSV() {
+            let csv = 'Hotel,Location,Region,Type,Low Season (Nov-Feb),High Season (Apr-Oct),Single Rate,Dinner Supplement,Notes\n';
+            
+            hotels.forEach(h => {
+                csv += `"${h.name}","${h.location}","${h.region}","${h.type}",${h.lowSeason || 'N/A'},${h.highSeason || 'N/A'},${h.singleRate || 'N/A'},${h.dinner || 'N/A'},"${h.notes}"\n`;
+            });
+            
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = '7H_HOTELS_FIT_RATES_2026.csv';
+            a.click();
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            renderTable('england');
+            renderTable('scotland');
+            populateCalculator();
+            
+            // Update stats
+            document.getElementById('totalHotels').textContent = hotels.length;
+            document.getElementById('englandCount').textContent = hotels.filter(h => h.region === 'england').length;
+            document.getElementById('scotlandCount').textContent = hotels.filter(h => h.region === 'scotland').length;
+            document.getElementById('castleCount').textContent = hotels.filter(h => h.type === 'castle').length;
+        });
+    </script>
+</body>
+</html>
