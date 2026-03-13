@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UK Market Dashboard - TripFactory</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        tf: {
+                            navy: '#1e3a5f',
+                            blue: '#2563eb',
+                            cyan: '#06b6d4',
+                            lime: '#84cc16',
+                            yellow: '#eab308',
+                            red: '#ef4444',
+                            dark: '#0f172a',
+                            card: '#1e293b'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background: #0f172a; color: #e2e8f0; font-family: 'Segoe UI', system-ui, sans-serif; }
+        .glass { background: rgba(30, 41, 59, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); }
+        .gradient-text { background: linear-gradient(135deg, #06b6d4, #2563eb); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .nav-item { position: relative; }
+        .nav-item::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: #06b6d4; transition: width 0.3s; }
+        .nav-item:hover::after { width: 100%; }
+        .nav-item.active::after { width: 100%; }
+        .kpi-card { background: linear-gradient(135deg, rgba(30,41,59,0.9), rgba(15,23,42,0.9)); border-left: 4px solid; }
+        .card-hover { transition: all 0.3s ease; }
+        .card-hover:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+        .logo-container { background: rgba(255,255,255,0.95); padding: 8px 16px; border-radius: 8px; }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Navigation -->
+    <nav class="glass fixed w-full z-50 top-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <!-- Left: TripFactory Logo -->
+                <div class="flex items-center space-x-4">
+                    <div class="logo-container">
+                        <img src="tripfactory-logo.png" alt="TripFactory" class="h-10 w-auto" onerror="this.style.display='none'">
+                        <span class="text-tf-navy font-bold text-xl" id="tf-logo-fallback">TripFactory</span>
+                    </div>
+                </div>
+
+                <!-- Center: Navigation -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="ukmarket.html" class="nav-item active text-tf-cyan font-medium">Dashboard</a>
+                    <a href="ukmarket-contacts.html" class="nav-item text-gray-300 hover:text-white transition">Contacts</a>
+                    <a href="ukmarket-hotels.html" class="nav-item text-gray-300 hover:text-white transition">Hotels</a>
+                    <a href="ukmarket-tours.html" class="nav-item text-gray-300 hover:text-white transition">Tours</a>
+                    <a href="ukmarket-tasks.html" class="nav-item text-gray-300 hover:text-white transition">Tasks</a>
+                    <a href="ukmarket-wiki.html" class="nav-item text-gray-300 hover:text-white transition">Wiki</a>
+                </div>
+
+                <!-- Right: ORN/Nexus Logo -->
+                <div class="flex items-center space-x-3">
+                    <div class="logo-container hidden sm:block">
+                        <img src="orn-logo.png" alt="ORN" class="h-8 w-auto" onerror="this.style.display='none'">
+                        <span class="text-tf-navy font-semibold text-sm" id="orn-logo-fallback">ORN</span>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-sm font-medium">Ajay Kawa</p>
+                        <p class="text-xs text-gray-400">Head of Global Business Development</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-24 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <!-- Header Section -->
+        <div class="mb-8">
+            <h2 class="text-3xl font-bold mb-2">UK Market Operations Dashboard</h2>
+            <p class="text-gray-400">Manage UK coach trips, suppliers, and market intelligence</p>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="kpi-card border-tf-cyan rounded-xl p-6 card-hover">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <p class="text-gray-400 text-sm">Active Tours</p>
+                        <h3 class="text-3xl font-bold text-white">6</h3>
+                    </div>
+                    <div class="w-12 h-12 bg-tf-cyan/20 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-route text-tf-cyan text-xl"></i>
+                    </div>
+                </div>
+                <p class="text-sm text-tf-cyan"><i class="fas fa-arrow-up mr-1"></i>Grand Tour of Europe leading</p>
+            </div>
+
+            <div class="kpi-card border-tf-blue rounded-xl p-6 card-hover">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <p class="text-gray-400 text-sm">Supplier Contacts</p>
+                        <h3 class="text-3xl font-bold text-white">25</h3>
+                    </div>
+                    <div class="w-12 h-12 bg-tf-blue/20 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-address-book text-tf-blue text-xl"></i>
+                    </div>
+                </div>
+                <p class="text-sm text-tf-blue">12 Attractions • 11 Restaurants • 2 Guides</p>
+            </div>
+
+            <div class="kpi-card border-tf-lime rounded-xl p-6 card-hover">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <p class="text-gray-400 text-sm">Contracted Hotels</p>
+                        <h3 class="text-3xl font-bold text-white">3</h3>
+                    </div>
+                    <div class="w-12 h-12 bg-tf-lime/20 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-hotel text-tf-lime text-xl"></i>
+                    </div>
+                </div>
+                <p class="text-sm text-tf-lime">London Heathrow • Slough Area</p>
+            </div>
+
+            <div class="kpi-card border-tf-yellow rounded-xl p-6 card-hover">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <p class="text-gray-400 text-sm">Open Tasks</p>
+                        <h3 class="text-3xl font-bold text-white" id="openTasksCount">0</h3>
+                    </div>
+                    <div class="w-12 h-12 bg-tf-yellow/20 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-tasks text-tf-yellow text-xl"></i>
+                    </div>
+                </div>
+                <p class="text-sm text-tf-yellow" id="urgentTasksText">Loading...</p>
+            </div>
+        </div>
+
+        <!-- Portfolio Hotels Summary -->
+        <div class="glass rounded-xl p-6 mb-8">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold flex items-center">
+                    <i class="fas fa-building text-tf-cyan mr-2"></i>
+                    Hotel Portfolio Summary
+                </h3>
+                <a href="ukmarket-hotels.html" class="text-sm text-tf-cyan hover:underline">View All 24 Hotels <i class="fas fa-arrow-right ml-1"></i></a>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="p-4 rounded-lg bg-tf-navy/30 border-l-4 border-tf-cyan">
+                    <h4 class="font-semibold text-tf-cyan mb-1">Contracted</h4>
+                    <p class="text-2xl font-bold">3</p>
+                    <p class="text-sm text-gray-400">Renaissance Heathrow, Moxy Slough, Copthorne Slough</p>
+                </div>
+                <div class="p-4 rounded-lg bg-tf-navy/30 border-l-4 border-tf-blue">
+                    <h4 class="font-semibold text-tf-blue mb-1">Estee Group</h4>
+                    <p class="text-2xl font-bold">6</p>
+                    <p class="text-sm text-gray-400">Mercure & Holiday Inn across UK</p>
+                </div>
+                <div class="p-4 rounded-lg bg-tf-navy/30 border-l-4 border-tf-lime">
+                    <h4 class="font-semibold text-tf-lime mb-1">7 Hospitality</h4>
+                    <p class="text-2xl font-bold">15</p>
+                    <p class="text-sm text-gray-400">Boutique, castles & character properties</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions & Recent Activity -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <!-- Quick Actions -->
+            <div class="glass rounded-xl p-6 lg:col-span-1">
+                <h3 class="text-lg font-semibold mb-4 flex items-center">
+                    <i class="fas fa-bolt text-tf-cyan mr-2"></i>
+                    Quick Actions
+                </h3>
+                <div class="space-y-3">
+                    <button onclick="location.href='ukmarket-contacts.html'" class="w-full flex items-center p-3 rounded-lg bg-tf-navy/50 hover:bg-tf-navy transition group">
+                        <div class="w-10 h-10 bg-tf-cyan/20 rounded-lg flex items-center justify-center mr-3 group-hover:bg-tf-cyan/30">
+                            <i class="fas fa-user-plus text-tf-cyan"></i>
+                        </div>
+                        <div class="text-left">
+                            <p class="font-medium">Add Contact</p>
+                            <p class="text-xs text-gray-400">New supplier or partner</p>
+                        </div>
+                    </button>
+                    <button onclick="location.href='ukmarket-tasks.html'" class="w-full flex items-center p-3 rounded-lg bg-tf-navy/50 hover:bg-tf-navy transition group">
+                        <div class="w-10 h-10 bg-tf-blue/20 rounded-lg flex items-center justify-center mr-3 group-hover:bg-tf-blue/30">
+                            <i class="fas fa-plus-circle text-tf-blue"></i>
+                        </div>
+                        <div class="text-left">
+                            <p class="font-medium">Create Task</p>
+                            <p class="text-xs text-gray-400">Track operational work</p>
+                        </div>
+                    </button>
+                    <button onclick="location.href='ukmarket-hotels.html'" class="w-full flex items-center p-3 rounded-lg bg-tf-navy/50 hover:bg-tf-navy transition group">
+                        <div class="w-10 h-10 bg-tf-lime/20 rounded-lg flex items-center justify-center mr-3 group-hover:bg-tf-lime/30">
+                            <i class="fas fa-bed text-tf-lime"></i>
+                        </div>
+                        <div class="text-left">
+                            <p class="font-medium">Check Hotel Availability</p>
+                            <p class="text-xs text-gray-400">Portfolio & chain hotels</p>
+                        </div>
+                    </button>
+                    <button onclick="location.href='ukmarket-wiki.html'" class="w-full flex items-center p-3 rounded-lg bg-tf-navy/50 hover:bg-tf-navy transition group">
+                        <div class="w-10 h-10 bg-tf-yellow/20 rounded-lg flex items-center justify-center mr-3 group-hover:bg-tf-yellow/30">
+                            <i class="fas fa-book text-tf-yellow"></i>
+                        </div>
+                        <div class="text-left">
+                            <p class="font-medium">Indian Market Guide</p>
+                            <p class="text-xs text-gray-400">Visa, food, traveller info</p>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Current Tours -->
+            <div class="glass rounded-xl p-6 lg:col-span-2">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-semibold flex items-center">
+                        <i class="fas fa-map-marked-alt text-tf-cyan mr-2"></i>
+                        Current UK & Europe Tours
+                    </h3>
+                    <a href="ukmarket-tours.html" class="text-sm text-tf-cyan hover:underline">View All <i class="fas fa-arrow-right ml-1"></i></a>
+                </div>
+                <div class="space-y-3" id="toursList">
+                    <!-- Tours populated by JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Team Section -->
+        <div class="glass rounded-xl p-6">
+            <h3 class="text-lg font-semibold mb-4 flex items-center">
+                <i class="fas fa-users text-tf-cyan mr-2"></i>
+                UK Market Team
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="flex items-center p-4 rounded-lg bg-tf-navy/30">
+                    <div class="w-12 h-12 bg-gradient-to-br from-tf-cyan to-tf-blue rounded-full flex items-center justify-center mr-4">
+                        <span class="text-white font-bold">AK</span>
+                    </div>
+                    <div>
+                        <p class="font-medium">Ajay Kawa</p>
+                        <p class="text-sm text-gray-400">Head of Global Business Development</p>
+                        <p class="text-xs text-tf-cyan">UK & India Operations</p>
+                        <p class="text-xs text-gray-500">ajay.kawa@tripfactory.com</p>
+                    </div>
+                </div>
+                <div class="flex items-center p-4 rounded-lg bg-tf-navy/30">
+                    <div class="w-12 h-12 bg-gradient-to-br from-tf-lime to-tf-cyan rounded-full flex items-center justify-center mr-4">
+                        <span class="text-white font-bold">SK</span>
+                    </div>
+                    <div>
+                        <p class="font-medium">Saif Khan</p>
+                        <p class="text-sm text-gray-400">Product Manager</p>
+                        <p class="text-xs text-tf-lime">UK Product Development</p>
+                        <p class="text-xs text-gray-500">India Operations</p>
+                    </div>
+                </div>
+                <div class="flex items-center p-4 rounded-lg bg-tf-navy/30">
+                    <div class="w-12 h-12 bg-gradient-to-br from-tf-blue to-tf-navy rounded-full flex items-center justify-center mr-4">
+                        <span class="text-white font-bold">RS</span>
+                    </div>
+                    <div>
+                        <p class="font-medium">Ronak S</p>
+                        <p class="text-sm text-gray-400">UK Tours Specialist</p>
+                        <p class="text-xs text-tf-blue">India-UK Operations</p>
+                        <p class="text-xs text-gray-500">India Operations</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Pre-loaded Tour Data
+        const toursData = [
+            {
+                id: 1,
+                name: "Grand Tour of Europe (GTE)",
+                url: "https://www.tripfactory.com/package/grand-tour-of-europe---2026-6696289",
+                region: "Europe",
+                duration: "Multi-country",
+                type: "Coach Tour",
+                status: "Active",
+                highlights: ["France", "Switzerland", "Italy", "Germany"]
+            },
+            {
+                id: 2,
+                name: "Grand Europe Highlights with Eurostar",
+                url: "https://www.tripfactory.com/package/grand-europe-highlights-with-eurostar-7035171",
+                region: "Europe",
+                duration: "Multi-country",
+                type: "Coach + Rail",
+                status: "Active",
+                highlights: ["Eurostar", "Paris", "Swiss Alps"]
+            },
+            {
+                id: 3,
+                name: "European Splendor – 2026",
+                url: "https://www.tripfactory.com/package/european-splendor---2026-6700583",
+                region: "Europe",
+                duration: "Multi-country",
+                type: "Coach Tour",
+                status: "Active",
+                highlights: ["Premium hotels", "Scenic routes"]
+            },
+            {
+                id: 4,
+                name: "Europe at a Glance",
+                url: "https://www.tripfactory.com/package/europe-at-a-glance-7034866",
+                region: "Europe",
+                duration: "Short break",
+                type: "Coach Tour",
+                status: "Active",
+                highlights: ["Quick overview", "Major cities"]
+            },
+            {
+                id: 5,
+                name: "Wonders of UK & Scotland",
+                url: "https://www.tripfactory.com/package/wonders-of-uk-and-scotland-1741438",
+                region: "UK",
+                duration: "7-10 days",
+                type: "Coach Tour",
+                status: "Active",
+                highlights: ["England", "Scotland", "Highlands", "Edinburgh"]
+            },
+            {
+                id: 6,
+                name: "Elegant Escapes – Paris & London",
+                url: "https://www.tripfactory.com/package/elegant-escapes-–-paris--london-7053821",
+                region: "UK/France",
+                duration: "5-7 days",
+                type: "City Break",
+                status: "Active",
+                highlights: ["Paris", "London", "Eurostar"]
+            }
+        ];
+
+        document.addEventListener('DOMContentLoaded', function() {
+            renderTours();
+            loadTasksCount();
+        });
+
+        function renderTours() {
+            const list = document.getElementById('toursList');
+            list.innerHTML = toursData.slice(0, 4).map(tour => `
+                <div class="flex justify-between items-center p-3 rounded-lg bg-tf-navy/30 hover:bg-tf-navy/50 transition">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs px-2 py-0.5 rounded ${tour.region === 'UK' ? 'bg-tf-blue/20 text-tf-blue' : 'bg-tf-cyan/20 text-tf-cyan'}">${tour.region}</span>
+                            <h4 class="font-medium">${tour.name}</h4>
+                        </div>
+                        <p class="text-sm text-gray-400 mt-1">${tour.duration} • ${tour.type}</p>
+                    </div>
+                    <a href="${tour.url}" target="_blank" class="text-tf-cyan hover:text-white transition">
+                        <i class="fas fa-external-link-alt"></i>
+                    </a>
+                </div>
+            `).join('');
+        }
+
+        function loadTasksCount() {
+            const tasks = JSON.parse(localStorage.getItem('ukmarket_tasks') || '[]');
+            const openTasks = tasks.filter(t => t.status !== 'completed');
+            const urgentTasks = openTasks.filter(t => t.priority === 'high' || (t.dueDate && new Date(t.dueDate) < new Date()));
+            
+            document.getElementById('openTasksCount').textContent = openTasks.length;
+            document.getElementById('urgentTasksText').textContent = urgentTasks.length > 0 ? 
+                `${urgentTasks.length} require attention` : 'All on track';
+        }
+
+        // Hide logo fallbacks if images load
+        window.addEventListener('load', function() {
+            document.querySelectorAll('img').forEach(img => {
+                if (img.complete && img.naturalHeight !== 0) {
+                    const fallback = document.getElementById(img.alt.toLowerCase() + '-logo-fallback');
+                    if (fallback) fallback.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
