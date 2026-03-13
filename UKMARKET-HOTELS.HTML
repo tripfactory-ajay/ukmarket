@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotels Directory - TripFactory UK Market</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        tf: { navy: '#1e3a5f', blue: '#2563eb', cyan: '#06b6d4', lime: '#84cc16', yellow: '#eab308', red: '#ef4444', dark: '#0f172a', card: '#1e293b' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background: #0f172a; color: #e2e8f0; font-family: 'Segoe UI', system-ui, sans-serif; }
+        .glass { background: rgba(30, 41, 59, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); }
+        .gradient-text { background: linear-gradient(135deg, #06b6d4, #2563eb); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .nav-item { position: relative; }
+        .nav-item::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: #06b6d4; transition: width 0.3s; }
+        .nav-item:hover::after { width: 100%; }
+        .nav-item.active::after { width: 100%; }
+        .hotel-card { transition: all 0.3s ease; }
+        .hotel-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+        .star-rating { color: #eab308; }
+        .logo-container { background: rgba(255,255,255,0.95); padding: 8px 16px; border-radius: 8px; }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Navigation -->
+    <nav class="glass fixed w-full z-50 top-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <!-- Left: TripFactory Logo -->
+                <div class="flex items-center space-x-4">
+                    <div class="logo-container">
+                        <img src="tripfactory-logo.png" alt="TripFactory" class="h-10 w-auto" onerror="this.style.display='none'">
+                        <span class="text-tf-navy font-bold text-xl" id="tf-logo-fallback">TripFactory</span>
+                    </div>
+                </div>
+
+                <!-- Center: Navigation -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="ukmarket.html" class="nav-item text-gray-300 hover:text-white transition">Dashboard</a>
+                    <a href="ukmarket-contacts.html" class="nav-item text-gray-300 hover:text-white transition">Contacts</a>
+                    <a href="ukmarket-hotels.html" class="nav-item active text-tf-cyan font-medium">Hotels</a>
+                    <a href="ukmarket-tours.html" class="nav-item text-gray-300 hover:text-white transition">Tours</a>
+                    <a href="ukmarket-tasks.html" class="nav-item text-gray-300 hover:text-white transition">Tasks</a>
+                    <a href="ukmarket-wiki.html" class="nav-item text-gray-300 hover:text-white transition">Wiki</a>
+                </div>
+
+                <!-- Right: ORN Logo -->
+                <div class="flex items-center space-x-3">
+                    <div class="logo-container hidden sm:block">
+                        <img src="orn-logo.png" alt="ORN" class="h-8 w-auto" onerror="this.style.display='none'">
+                        <span class="text-tf-navy font-semibold text-sm" id="orn-logo-fallback">ORN</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-24 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+            <div>
+                <h2 class="text-3xl font-bold mb-2">Hotel Directory</h2>
+                <p class="text-gray-400">24 Properties across UK - Contracted, Estee Group & 7 Hospitality Portfolios</p>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="openPortfolioModal()" class="px-4 py-2 bg-tf-cyan/20 text-tf-cyan rounded-lg hover:bg-tf-cyan/30 transition">
+                    <i class="fas fa-external-link-alt mr-2"></i>View Portfolios
+                </button>
+                <button onclick="openAddHotelModal()" class="px-6 py-3 bg-tf-cyan text-tf-dark font-semibold rounded-lg hover:bg-cyan-400 transition flex items-center">
+                    <i class="fas fa-plus mr-2"></i>Add Hotel
+                </button>
+            </div>
+        </div>
+
+        <!-- Hotel Type Tabs -->
+        <div class="glass rounded-xl p-2 mb-6">
+            <div class="flex flex-wrap gap-2">
+                <button onclick="filterHotels('all')" class="hotel-tab px-4 py-2 rounded-lg bg-tf-cyan text-tf-dark font-medium transition" data-type="all">
+                    All Hotels (24)
+                </button>
+                <button onclick="filterHotels('contracted')" class="hotel-tab px-4 py-2 rounded-lg hover:bg-gray-700 transition text-gray-300" data-type="contracted">
+                    <i class="fas fa-file-contract mr-2"></i>Contracted (3)
+                </button>
+                <button onclick="filterHotels('estee')" class="hotel-tab px-4 py-2 rounded-lg hover:bg-gray-700 transition text-gray-300" data-type="estee">
+                    <i class="fas fa-building mr-2"></i>Estee Group (6)
+                </button>
+                <button onclick="filterHotels('7hospitality')" class="hotel-tab px-4 py-2 rounded-lg hover:bg-gray-700 transition text-gray-300" data-type="7hospitality">
+                    <i class="fas fa-hotel mr-2"></i>7 Hospitality (15)
+                </button>
+            </div>
+        </div>
+
+        <!-- Portfolio Links Info -->
+        <div class="glass rounded-xl p-4 mb-6 border-l-4 border-tf-cyan">
+            <div class="flex items-start">
+                <i class="fas fa-info-circle text-tf-cyan mt-1 mr-3"></i>
+                <div>
+                    <h4 class="font-semibold mb-1">Portfolio References</h4>
+                    <p class="text-sm text-gray-400 mb-2">Access full hotel portfolios for supply chain setup:</p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="https://www.esteegroup.co.uk/our-portfolio" target="_blank" class="text-sm text-tf-cyan hover:underline flex items-center">
+                            <i class="fas fa-external-link-alt mr-1"></i> Estee Group Portfolio
+                        </a>
+                        <a href="https://www.7hospitality.co.uk/portfolio/" target="_blank" class="text-sm text-tf-cyan hover:underline flex items-center">
+                            <i class="fas fa-external-link-alt mr-1"></i> 7 Hospitality Portfolio
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="glass rounded-xl p-4 mb-6">
+            <div class="flex flex-col md:flex-row gap-4">
+                <div class="flex-1">
+                    <div class="relative">
+                        <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                        <input type="text" id="searchInput" placeholder="Search hotels..." 
+                            class="w-full bg-tf-navy/50 border border-gray-600 rounded-lg pl-10 pr-4 py-2 text-white focus:border-tf-cyan focus:outline-none"
+                            onkeyup="filterHotels(currentFilter)">
+                    </div>
+                </div>
+                <div class="flex gap-2 flex-wrap">
+                    <select id="cityFilter" onchange="filterHotels(currentFilter)" class="bg-tf-navy/50 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-tf-cyan focus:outline-none">
+                        <option value="">All Locations</option>
+                        <option value="London">London</option>
+                        <option value="Heathrow">Heathrow</option>
+                        <option value="Slough">Slough</option>
+                        <option value="Birmingham">Birmingham</option>
+                        <option value="Manchester">Manchester</option>
+                        <option value="Edinburgh">Edinburgh</option>
+                        <option value="Scotland">Scotland</option>
+                        <option value="Lake District">Lake District</option>
+                        <option value="Yorkshire">Yorkshire</option>
+                        <option value="York">York</option>
+                        <option value="Leeds">Leeds</option>
+                        <option value="Bristol">Bristol</option>
+                        <option value="Worcester">Worcester</option>
+                        <option value="Oxfordshire">Oxfordshire</option>
+                        <option value="Berkshire">Berkshire</option>
+                        <option value="Merseyside">Merseyside</option>
+                        <option value="County Durham">County Durham</option>
+                    </select>
+                    <select id="starFilter" onchange="filterHotels(currentFilter)" class="bg-tf-navy/50 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-tf-cyan focus:outline-none">
+                        <option value="">All Ratings</option>
+                        <option value="3">3 Star</option>
+                        <option value="4">4 Star</option>
+                        <option value="5">5 Star</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hotels Grid -->
+        <div id="hotelsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Hotels populated by JavaScript -->
+        </div>
+    </main>
+
+    <!-- Add/Edit Hotel Modal -->
+    <div id="hotelModal" class="fixed inset-0 bg-black/80 hidden z-50 flex items-center justify-center p-4">
+        <div class="glass rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold" id="modalTitle">Add Hotel</h3>
+                <button onclick="closeHotelModal()" class="text-gray-400 hover:text-white">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <form id="hotelForm" class="space-y-4">
+                <input type="hidden" id="hotelId">
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="col-span-2">
+                        <label class="block text-sm text-gray-400 mb-1">Hotel Name *</label>
+                        <input type="text" id="hotelName" required class="w-full bg-tf-navy/50 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-tf-cyan focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-400 mb-1">Type *</label>
+                        <select id="hotelType" required class="w-full bg-tf-navy/50 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-tf-cyan focus:outline-none">
+                            <option value="contracted">Contracted (Direct)</option>
+                            <option value="estee">Estee Group Portfolio</option>
+                            <option value="7hospitality">7 Hospitality Portfolio</option>
+                            <option value="chain">Chain Partner</option>
+                            <option value="supplier">Third Party Supplier</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-400 mb-1">Star Rating</label>
+                        <select id="hotelStars" class="w-full bg-tf-navy/50 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-tf-cyan focus:outline-none">
+                            <option value="3">3 Star</option>
+                            <option value="4">4 Star</option>
+                            <option value="5">5 Star</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm text-gray-400 mb-1">City *</label>
+                        <input type="text" id="hotelCity" required class="w-full bg-tf-navy/50 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-tf-cyan focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-400 mb-1">Location/Area</label>
+                        <input type="text" id="hotelArea" class="w-full bg-tf-navy/50 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-tf-cyan focus:outline-none">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm text-gray-400 mb-1">Email</label>
+                        <input type="email" id="hotelEmail" class="w-full bg-tf-navy/50 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-tf-cyan focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-400 mb-1">Phone</label>
+                        <input type="tel" id="hotelPhone" class="w-full bg-tf-navy/50 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-tf-cyan focus:outline-none">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm text-gray-400 mb-1">Contact Person</label>
+                    <input type="text" id="hotelContact" class="w-full bg-tf-navy/50 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-tf-cyan focus:outline-none">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm text-gray-400 mb-1">Room Count</label>
+                        <input type="number" id="hotelRooms" class="w-full bg-tf-navy/50 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-tf-cyan focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-sm text-gray-400 mb-1">Contract Status</label>
+                        <select id="hotelContract" class="w-full bg-tf-navy/50 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-tf-cyan focus:outline-none">
+                            <option value="contracted">Contracted</option>
+                            <option value="negotiating">In Negotiation</option>
+                            <option value="prospect">Prospect</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm text-gray-400 mb-1">Amenities</label>
+                    <div class="flex flex-wrap gap-2">
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="checkbox" value="wifi" class="hotel-amenity rounded bg-tf-navy/50 border-gray-600 text-tf-cyan">
+                            <span class="text-sm">WiFi</span>
+                        </label>
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="checkbox" value="parking" class="hotel-amenity rounded bg-tf-navy/50 border-gray-600 text-tf-cyan">
+                            <span class="text-sm">Parking</span>
+                        </label>
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="checkbox" value="restaurant" class="hotel-amenity rounded bg-tf-navy/50 border-gray-600 text-tf-cyan">
+                            <span class="text-sm">Restaurant</span>
+                        </label>
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="checkbox" value="gym" class="hotel-amenity rounded bg-tf-navy/50 border-gray-600 text-tf-cyan">
+                            <span class="text-sm">Gym</span>
+                        </label>
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="checkbox" value="spa" class="hotel-amenity rounded bg-tf-navy/50 border-gray-600 text-tf-cyan">
+                            <span class="text-sm">Spa</span>
+                        </label>
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            <input type="checkbox" value="airport-shuttle" class="hotel-amenity rounded bg-tf-navy/50 border-gray-600 text-tf-cyan">
+                            <span class="text-sm">Airport Shuttle</span>
+                        </label>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm text-gray-400 mb-1">Notes / Indian Group Facilities</label>
+                    <textarea id="hotelNotes" rows="3" class="w-full bg-tf-navy/50 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-tf-cyan focus:outline-none" placeholder="e.g., Halal kitchen available, Group check-in facilities, Hindi-speaking staff..."></textarea>
+                </div>
+                <div class="flex space-x-3 pt-4">
+                    <button type="button" onclick="closeHotelModal()" class="flex-1 px-4 py-2 rounded-lg border border-gray-600 text-gray-300 hover:bg-gray-700 transition">Cancel</button>
+                    <button type="submit" class="flex-1 px-4 py-2 rounded-lg bg-tf-cyan text-tf-dark font-semibold hover:bg-cyan-400 transition">Save Hotel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Portfolio Links Modal -->
+    <div id="portfolioModal" class="fixed inset-0 bg-black/80 hidden z-50 flex items-center justify-center p-4">
+        <div class="glass rounded-xl p-6 w-full max-w-lg">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold">Portfolio Access</h3>
+                <button onclick="closePortfolioModal()" class="text-gray-400 hover:text-white">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="space-y-4">
+                <div class="p-4 rounded-lg bg-tf-navy/30 border border-gray-700">
+                    <div class="flex items-center mb-2">
+                        <i class="fas fa-building text-tf-cyan mr-2"></i>
+                        <h4 class="font-semibold">Estee Group</h4>
+                    </div>
+                    <p class="text-sm text-gray-400 mb-3">6 hotels across UK - Mercure & Holiday Inn brands</p>
+                    <a href="https://www.esteegroup.co.uk/our-portfolio" target="_blank" class="inline-flex items-center px-4 py-2 bg-tf-cyan text-tf-dark rounded-lg text-sm font-medium hover:bg-cyan-400 transition">
+                        View Portfolio <i class="fas fa-external-link-alt ml-2"></i>
+                    </a>
+                </div>
+                <div class="p-4 rounded-lg bg-tf-navy/30 border border-gray-700">
+                    <div class="flex items-center mb-2">
+                        <i class="fas fa-hotel text-tf-lime mr-2"></i>
+                        <h4 class="font-semibold">7 Hospitality Management</h4>
+                    </div>
+                    <p class="text-sm text-gray-400 mb-3">15 properties across UK - Boutique & castle hotels</p>
+                    <a href="https://www.7hospitality.co.uk/portfolio/" target="_blank" class="inline-flex items-center px-4 py-2 bg-tf-lime text-tf-dark rounded-lg text-sm font-medium hover:bg-lime-400 transition">
+                        View Portfolio <i class="fas fa-external-link-alt ml-2"></i>
+                    </a>
+                </div>
+                <div class="p-4 rounded-lg bg-tf-navy/30 border border-tf-yellow/50">
+                    <div class="flex items-center mb-2">
+                        <i class="fas fa-lightbulb text-tf-yellow mr-2"></i>
+                        <h4 class="font-semibold">Quick Tip</h4>
+                    </div>
+                    <p class="text-sm text-gray-400">For UK & Scotland tours, request 4-star hotels and confirm based on most competitive rates offered.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // COMPLETE HOTEL DATABASE - All 24 Properties
+        const defaultHotels = [
+            // CONTRACTED HOTELS (3) - Direct with TripFactory
+            {
+                id: 1,
+                name: "Renaissance London Heathrow Hotel",
+                type: "contracted",
+                stars: 4,
+                city: "Heathrow",
+                area: "Airport",
+                email: "RE2@renaissanceheathrow.co.uk",
+                phone: "",
+                contact: "Reservations Team",
+                rooms: 600,
+                contract: "contracted",
+                amenities: ["wifi", "parking", "restaurant", "gym", "airport-shuttle"],
+                notes: "Primary Heathrow hotel for groups. Direct contract in place. Group check-in facilities available."
+            },
+            {
+                id: 2,
+                name: "Moxy Slough",
+                type: "contracted",
+                stars: 3,
+                city: "Slough",
+                area: "Near Windsor",
+                email: "reservations@moxyslough.com",
+                phone: "",
+                contact: "Reservations",
+                rooms: 150,
+                contract: "contracted",
+                amenities: ["wifi", "restaurant"],
+                notes: "Modern budget option near Heathrow. Good for cost-conscious groups."
+            },
+            {
+                id: 3,
+                name: "Copthorne Hotel Slough-Windsor",
+                type: "contracted",
+                stars: 4,
+                city: "Slough",
+                area: "Windsor",
+                email: "reservations.slough@millenniumhotels.com",
+                phone: "",
+                contact: "Reservations Team",
+                rooms: 200,
+                contract: "contracted",
+                amenities: ["wifi", "parking", "restaurant", "gym"],
+                notes: "Near Windsor Castle. Good for groups visiting the castle."
+            },
+
+            // ESTEE GROUP PORTFOLIO (6 hotels)
+            {
+                id: 4,
+                name: "Mercure Newbury West Grange Hotel",
+                type: "estee",
+                stars: 4,
+                city: "Newbury",
+                area: "Berkshire",
+                email: "",
+                phone: "",
+                contact: "Estee Group",
+                rooms: 0,
+                contract: "prospect",
+                amenities: ["wifi", "parking", "restaurant", "gym"],
+                notes: "Estee Group Portfolio. West Grange location. Good for southern England tours."
+            },
+            {
+                id: 5,
+                name: "Mercure Thame Lambert Hotel",
+                type: "estee",
+                stars: 4,
+                city: "Thame",
+                area: "Oxfordshire",
+                email: "",
+                phone: "",
+                contact: "Estee Group",
+                rooms: 0,
+                contract: "prospect",
+                amenities: ["wifi", "parking", "restaurant", "gym"],
+                notes: "Estee Group Portfolio. Oxfordshire location. Historic Lambert Arms."
+            },
+            {
+                id: 6,
+                name: "Mercure St Helens Hotel",
+                type: "estee",
+                stars: 4,
+                city: "St Helens",
+                area: "Merseyside",
+                email: "",
+                phone: "",
+                contact: "Estee Group",
+                rooms: 0,
+                contract: "prospect",
+                amenities: ["wifi", "parking", "restaurant", "gym"],
+                notes: "Estee Group Portfolio. Northwest England. Good for Liverpool/Manchester tours."
+            },
+            {
+                id: 7,
+                name: "Holiday Inn Dumfries",
+                type: "estee",
+                stars: 3,
+                city: "Dumfries",
+                area: "Scotland",
+                email: "",
+                phone: "",
+                contact: "Estee Group",
+                rooms: 0,
+                contract: "prospect",
+                amenities: ["wifi", "parking", "restaurant", "gym"],
+                notes: "Estee Group Portfolio - Project License acquisition. Scottish Borders location."
+            },
+            {
+                id: 8,
+                name: "Holiday Inn Darlington North",
+                type: "estee",
+                stars: 3,
+                city: "Darlington",
+                area: "County Durham",
+                email: "",
+                phone: "",
+                contact: "Estee Group",
+                rooms: 0,
+                contract: "prospect",
+                amenities: ["wifi", "parking", "restaurant", "gym"],
+                notes: "Estee Group Portfolio - Project License acquisition. Northeast England."
+            },
+            {
+                id: 9,
+                name: "Mercure Sheffield Parkway",
+                type: "estee",
+                stars: 4,
+                city: "Sheffield",
+                area: "Yorkshire",
+                email: "",
+                phone: "",
+                contact: "Estee Group",
+                rooms: 0,
+                contract: "prospect",
+                amenities: ["wifi", "parking", "restaurant", "gym"],
+                notes: "Estee Group Portfolio - Project License acquisition. Yorkshire location."
+            },
+
+            // 7 HOSPITALITY PORTFOLIO (15 hotels)
+            {
+                id: 10,
+                name: "Delta Hotels by Marriott, Birmingham",
+                type: "7hospitality",
+                stars: 4,
+                city: "Birmingham",
+                area: "City Centre",
+                email: "",
+                phone: "",
+                contact: "7 Hospitality",
+                rooms: 0,
+                contract: "prospect",
+                amenities: ["wifi", "parking", "restaurant", "gym"],
+                notes: "7H Portfolio. Marriott brand. Good for Midlands stops."
+            },
+            {
+                id: 11,
+                name: "Dalhousie Castle Hotel And Aqueous Spa",
+                type: "7hospitality",
+                stars: 4,
+                city: "Edinburgh",
+                area: "Near Edinburgh",
+                email: "",
+                phone: "",
+                contact: "7 Hospitality",
+                rooms: 0,
+                contract: "prospect",
+                amenities: ["wifi", "parking", "restaurant", "spa"],
+                notes: "7H Portfolio. Historic 13th century castle hotel. Unique experience for Indian groups."
+            },
+            {
+                id: 12,
+                name: "Thornbury Castle Hotel & Restaurant",
+                type: "7hospitality",
+                stars: 5,
+                city: "Bristol",
+                area: "Thornbury",
+                email: "",
+                phone: "",
+                contact: "7 Hospitality",
+                rooms: 0,
+                contract: "prospect",
+                amenities: ["wifi", "parking", "restaurant"],
+                notes: "7H Portfolio. Tudor castle, luxury option. Henry VIII and Anne Boleyn stayed here."
+            },
+            {
+                id: 13,
+                name: "Weetwood Hall Estate, Leeds",
+                type: "7hospitality",
+                stars: 4,
+                city: "Leeds",
+                area: "West Yorkshire",
+                email: "",
+                phone: "",
+                contact: "7 Hospitality",
+                rooms: 0,
+                contract: "prospect",
+                amenities: ["wifi", "parking", "restaurant", "gym"],
+                notes: "7H Portfolio. Conference facilities, good for groups."
+            },
+            {
+                id: 14,
+                name: "The Haweswater, Lake District",
+                type: "7hospitality",
+                stars: 4,
+                city: "Lake District",
+                area: "Bampton, Penrith",
+                email: "",
+                phone: "",
+                contact: "7 Hospitality",
+                rooms: 0,
+                contract: "prospect",
+                amenities: ["wifi", "parking", "restaurant"],
+                notes: "7H Portfolio. Lake District location, scenic for groups."
+            },
+            {
+                id: 15,
+                name: "The Ro Hotel, Windermere",
+                type: "7hospitality",
+                stars: 4,
+                city: "Windermere",
+                area: "Lake District",
+                email: "",
+                phone: "",
+                contact: "7 Hospitality",
+                rooms: 0,
+                contract: "prospect",
+                amenities: ["wifi", "parking", "restaurant"],
+                notes: "7H Portfolio. Lake Windermere location. Near Indian restaurant (Lake Raj)."
+            },
+            {
+                id: 16,
+                name: "Islay House",
+                type: "7hospitality",
+                stars: 4,
+                city: "Islay",
+                area: "Inner Hebrides, Scotland",
+                email: "",
+                phone: "",
+                contact: "7 Hospitality",
+                rooms: 0,
+                contract: "prospect",
+                amenities: ["wifi", "parking", "restaurant"],
+                notes: "7H Portfolio. Scottish island location. Whisky distillery tours."
+            },
+            {
+                id: 17,
+                name: "Braid Hills Hotel Edinburgh",
+                type: "7hospitality",
+                stars: 3,
+                city: "Edinburgh",
+                area: "South Edinburgh",
+                email: "",
+                phone: "",
+                contact: "7 Hospitality",
+                rooms: 0,
+                contract: "prospect",
+                amenities: ["wifi", "parking", "restaurant"],
+                notes: "7H Portfolio. Edinburgh location, city access."
+            },
+            {
+                id: 18,
+                name: "Rosslea Hall Hotel Helensburgh",
+                type: "7hospitality",
+                stars: 3,
+                city: "Helensburgh",
+                area: "Scotland",
+                email: "",
+                phone: "",
+                contact: "7 Hospitality",
+                rooms: 0,
+                contract: "prospect",
+                amenities: ["wifi", "parking", "restaurant"],
+                notes: "7H Portfolio. Near Glasgow, coastal location."
+            },
+            {
+                id: 19,
+                name: "Judges Court York",
+                type: "7hospitality",
+                stars: 4,
+                city: "York",
+                area: "City Centre",
+                email: "",
+                phone: "",
+                contact: "7 Hospitality",
+                rooms: 0,
+                contract: "prospect",
+                amenities: ["wifi", "restaurant"],
+                notes: "7H Portfolio. Historic York, good for northern tours."
+            },
+            {
+                id: 20,
+                name: "Worcester Whitehouse Hotel",
+                type: "7hospitality",
+                stars: 4,
+                city: "Worcester",
+                area: "Worcestershire",
+                email: "",
+                phone: "",
+                contact: "7 Hospitality",
+                rooms: 0,
+                contract: "prospect",
+                amenities: ["wifi", "parking", "restaurant", "gym"],
+                notes: "7H Portfolio. Central England location."
+            },
+            {
+                id: 21,
+                name: "Eight Acres Hotel",
+                type: "7hospitality",
+                stars: 3,
+                city: "Elgin",
+                area: "Moray, Scotland",
+                email: "",
+                phone: "",
+                contact: "7 Hospitality",
+                rooms: 0,
+                contract: "prospect",
+                amenities: ["wifi", "parking", "restaurant"],
+                notes: "7H Portfolio. Scottish Highlands access."
+            },
+            {
+                id: 22,
+                name: "Marston Farm Hotel",
+                type: "7hospitality",
+                stars: 3,
+                city: "Sutton Coldfield",
+                area: "West Midlands",
+                email: "",
+                phone: "",
+                contact: "7 Hospitality",
+                rooms: 0,
+                contract: "prospect",
+                amenities: ["wifi", "parking", "restaurant"],
+                notes: "7H Portfolio. Near Birmingham, country house style."
+            },
+            {
+                id: 23,
+                name: "Kingston Lodge Hotel, London",
+                type: "7hospitality",
+                stars: 4,
+                city: "London",
+                area: "Kingston upon Thames",
+                email: "",
+                phone: "",
+                contact: "7 Hospitality",
+                rooms: 0,
+                contract: "prospect",
+                amenities: ["wifi", "parking", "restaurant"],
+                notes: "7H Portfolio. Southwest London location."
+            },
+            {
+                id: 24,
+                name: "The Cranley, South Kensington",
+                type: "7hospitality",
+                stars: 4,
+                city: "London",
+                area: "South Kensington",
+                email: "",
+                phone: "",
+                contact: "7 Hospitality",
+                rooms: 0,
+                contract: "prospect",
+                amenities: ["wifi", "restaurant"],
+                notes: "7H Portfolio. Central London, museum district."
+            }
+        ];
+
+        let hotels = [];
+        let currentFilter = 'all';
+        let editingId = null;
+
+        const typeBadges = {
+            contracted: 'bg-tf-cyan text-tf-dark',
+            estee: 'bg-tf-blue text-white',
+            '7hospitality': 'bg-tf-lime text-tf-dark',
+            chain: 'bg-tf-yellow text-tf-dark',
+            supplier: 'bg-tf-red text-white'
+        };
+
+        const typeLabels = {
+            contracted: 'Contracted',
+            estee: 'Estee Group',
+            '7hospitality': '7 Hospitality',
+            chain: 'Chain',
+            supplier: 'Supplier'
+        };
+
+        const contractColors = {
+            contracted: 'text-tf-lime',
+            negotiating: 'text-tf-yellow',
+            prospect: 'text-tf-cyan',
+            inactive: 'text-gray-500'
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadHotels();
+            renderHotels();
+            updateTabCounts();
+        });
+
+        function loadHotels() {
+            const stored = localStorage.getItem('ukmarket_hotels');
+            if (stored) {
+                hotels = JSON.parse(stored);
+            } else {
+                hotels = [...defaultHotels];
+                localStorage.setItem('ukmarket_hotels', JSON.stringify(hotels));
+            }
+        }
+
+        function updateTabCounts() {
+            const counts = {
+                all: hotels.length,
+                contracted: hotels.filter(h => h.type === 'contracted').length,
+                estee: hotels.filter(h => h.type === 'estee').length,
+                '7hospitality': hotels.filter(h => h.type === '7hospitality').length
+            };
+
+            document.querySelector('[data-type="all"]').textContent = `All Hotels (${counts.all})`;
+            document.querySelector('[data-type="contracted"]').innerHTML = `<i class="fas fa-file-contract mr-2"></i>Contracted (${counts.contracted})`;
+            document.querySelector('[data-type="estee"]').innerHTML = `<i class="fas fa-building mr-2"></i>Estee Group (${counts.estee})`;
+            document.querySelector('[data-type="7hospitality"]').innerHTML = `<i class="fas fa-hotel mr-2"></i>7 Hospitality (${counts['7hospitality']})`;
+        }
+
+        function renderHotels(filtered = hotels) {
+            const grid = document.getElementById('hotelsGrid');
+            
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full text-center py-12">
+                        <i class="fas fa-hotel text-4xl text-gray-600 mb-4"></i>
+                        <p class="text-gray-400">No hotels found matching your criteria</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = filtered.map(hotel => `
+                <div class="hotel-card glass rounded-xl overflow-hidden border border-gray-700">
+                    <div class="h-32 bg-gradient-to-br from-tf-navy to-tf-dark relative">
+                        <div class="absolute top-4 left-4">
+                            <span class="px-3 py-1 rounded-full text-xs font-bold ${typeBadges[hotel.type]}">
+                                ${typeLabels[hotel.type]}
+                            </span>
+                        </div>
+                        <div class="absolute top-4 right-4 flex space-x-1">
+                            ${Array(hotel.stars).fill('<i class="fas fa-star star-rating text-sm"></i>').join('')}
+                        </div>
+                        <div class="absolute bottom-4 left-4 right-4">
+                            <h3 class="font-bold text-lg text-white leading-tight">${hotel.name}</h3>
+                            <p class="text-sm text-gray-300"><i class="fas fa-map-marker-alt mr-1"></i>${hotel.city}${hotel.area ? `, ${hotel.area}` : ''}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4">
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="text-sm ${contractColors[hotel.contract]} font-medium capitalize">
+                                <i class="fas fa-circle text-xs mr-1"></i>${hotel.contract}
+                            </span>
+                            ${hotel.rooms ? `<span class="text-sm text-gray-400">${hotel.rooms} rooms</span>` : ''}
+                        </div>
+
+                        <div class="space-y-2 mb-3">
+                            ${hotel.email ? `
+                                <div class="flex items-center text-sm">
+                                    <i class="fas fa-envelope text-gray-500 w-5"></i>
+                                    <a href="mailto:${hotel.email}" class="text-tf-cyan hover:underline truncate">${hotel.email}</a>
+                                </div>
+                            ` : ''}
+                            ${hotel.phone ? `
+                                <div class="flex items-center text-sm">
+                                    <i class="fas fa-phone text-gray-500 w-5"></i>
+                                    <span class="text-gray-300">${hotel.phone}</span>
+                                </div>
+                            ` : ''}
+                            ${hotel.contact ? `
+                                <div class="flex items-center text-sm">
+                                    <i class="fas fa-user text-gray-500 w-5"></i>
+                                    <span class="text-gray-300">${hotel.contact}</span>
+                                </div>
+                            ` : ''}
+                        </div>
+
+                        ${hotel.amenities && hotel.amenities.length > 0 ? `
+                            <div class="flex flex-wrap gap-1 mb-3">
+                                ${hotel.amenities.map(a => `<span class="text-xs bg-gray-700 px-2 py-1 rounded">${a.replace('-', ' ')}</span>`).join('')}
+                            </div>
+                        ` : ''}
+
+                        ${hotel.notes ? `
+                            <div class="text-sm text-gray-400 border-t border-gray-700 pt-2 mt-2">
+                                ${hotel.notes}
+                            </div>
+                        ` : ''}
+
+                        <div class="flex space-x-2 mt-4">
+                            <button onclick="editHotel(${hotel.id})" class="flex-1 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 transition text-sm">
+                                <i class="fas fa-edit mr-1"></i>Edit
+                            </button>
+                            <button onclick="deleteHotel(${hotel.id})" class="px-3 py-2 rounded-lg bg-red-900/30 hover:bg-red-900/50 text-red-400 transition">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterHotels(type) {
+            currentFilter = type;
+            
+            document.querySelectorAll('.hotel-tab').forEach(tab => {
+                if (tab.dataset.type === type) {
+                    tab.classList.remove('text-gray-300', 'hover:bg-gray-700');
+                    tab.classList.add('bg-tf-cyan', 'text-tf-dark', 'font-medium');
+                } else {
+                    tab.classList.add('text-gray-300', 'hover:bg-gray-700');
+                    tab.classList.remove('bg-tf-cyan', 'text-tf-dark', 'font-medium');
+                }
+            });
+
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const city = document.getElementById('cityFilter').value;
+            const stars = document.getElementById('starFilter').value;
+
+            const filtered = hotels.filter(hotel => {
+                const matchesType = type === 'all' || hotel.type === type;
+                const matchesSearch = !search || 
+                    hotel.name.toLowerCase().includes(search) ||
+                    hotel.city.toLowerCase().includes(search) ||
+                    (hotel.area && hotel.area.toLowerCase().includes(search));
+                const matchesCity = !city || hotel.city === city;
+                const matchesStars = !stars || hotel.stars === parseInt(stars);
+
+                return matchesType && matchesSearch && matchesCity && matchesStars;
+            });
+
+            renderHotels(filtered);
+        }
+
+        function openAddHotelModal() {
+            editingId = null;
+            document.getElementById('modalTitle').textContent = 'Add Hotel';
+            document.getElementById('hotelForm').reset();
+            document.getElementById('hotelModal').classList.remove('hidden');
+        }
+
+        function editHotel(id) {
+            const hotel = hotels.find(h => h.id === id);
+            if (!hotel) return;
+
+            editingId = id;
+            document.getElementById('modalTitle').textContent = 'Edit Hotel';
+            document.getElementById('hotelName').value = hotel.name;
+            document.getElementById('hotelType').value = hotel.type;
+            document.getElementById('hotelStars').value = hotel.stars;
+            document.getElementById('hotelCity').value = hotel.city;
+            document.getElementById('hotelArea').value = hotel.area || '';
+            document.getElementById('hotelEmail').value = hotel.email || '';
+            document.getElementById('hotelPhone').value = hotel.phone || '';
+            document.getElementById('hotelContact').value = hotel.contact || '';
+            document.getElementById('hotelRooms').value = hotel.rooms || '';
+            document.getElementById('hotelContract').value = hotel.contract;
+            document.getElementById('hotelNotes').value = hotel.notes || '';
+
+            document.querySelectorAll('.hotel-amenity').forEach(cb => {
+                cb.checked = hotel.amenities && hotel.amenities.includes(cb.value);
+            });
+
+            document.getElementById('hotelModal').classList.remove('hidden');
+        }
+
+        function closeHotelModal() {
+            document.getElementById('hotelModal').classList.add('hidden');
+            editingId = null;
+        }
+
+        function openPortfolioModal() {
+            document.getElementById('portfolioModal').classList.remove('hidden');
+        }
+
+        function closePortfolioModal() {
+            document.getElementById('portfolioModal').classList.add('hidden');
+        }
+
+        document.getElementById('hotelForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const amenities = Array.from(document.querySelectorAll('.hotel-amenity:checked')).map(cb => cb.value);
+            
+            const hotelData = {
+                id: editingId || Date.now(),
+                name: document.getElementById('hotelName').value,
+                type: document.getElementById('hotelType').value,
+                stars: parseInt(document.getElementById('hotelStars').value),
+                city: document.getElementById('hotelCity').value,
+                area: document.getElementById('hotelArea').value,
+                email: document.getElementById('hotelEmail').value,
+                phone: document.getElementById('hotelPhone').value,
+                contact: document.getElementById('hotelContact').value,
+                rooms: parseInt(document.getElementById('hotelRooms').value) || 0,
+                contract: document.getElementById('hotelContract').value,
+                amenities: amenities,
+                notes: document.getElementById('hotelNotes').value,
+                updatedAt: new Date().toISOString()
+            };
+
+            if (editingId) {
+                const index = hotels.findIndex(h => h.id === editingId);
+                hotels[index] = { ...hotels[index], ...hotelData };
+            } else {
+                hotelData.createdAt = new Date().toISOString();
+                hotels.push(hotelData);
+            }
+
+            localStorage.setItem('ukmarket_hotels', JSON.stringify(hotels));
+            renderHotels();
+            updateTabCounts();
+            closeHotelModal();
+            alert(editingId ? 'Hotel updated' : 'Hotel added');
+        });
+
+        function deleteHotel(id) {
+            if (!confirm('Are you sure you want to delete this hotel?')) return;
+            hotels = hotels.filter(h => h.id !== id);
+            localStorage.setItem('ukmarket_hotels', JSON.stringify(hotels));
+            renderHotels();
+            updateTabCounts();
+        }
+
+        window.onclick = function(event) {
+            if (event.target.id === 'hotelModal') closeHotelModal();
+            if (event.target.id === 'portfolioModal') closePortfolioModal();
+        }
+    </script>
+</body>
+</html>
