@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hotels Directory - TripFactory UK Market</title>
+    <title>Hotels - TripFactory UK Market</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script>
@@ -19,53 +19,51 @@
     </script>
     <style>
         body { background: #0f172a; color: #e2e8f0; font-family: 'Segoe UI', system-ui, sans-serif; }
-        .glass { background: rgba(30, 41, 59, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.1); }
-        .gradient-text { background: linear-gradient(135deg, #06b6d4, #2563eb); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .nav-item { position: relative; }
+        .glass { background: rgba(30, 41, 59, 0.9); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .nav-item { position: relative; padding: 0.5rem 0; }
         .nav-item::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: #06b6d4; transition: width 0.3s; }
         .nav-item:hover::after { width: 100%; }
         .nav-item.active::after { width: 100%; }
-        .hotel-card { transition: all 0.3s ease; }
-        .hotel-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
-        .star-rating { color: #eab308; }
-        .logo-container { background: rgba(255,255,255,0.95); padding: 8px 16px; border-radius: 8px; }
     </style>
+
 </head>
-<body class="min-h-screen">
+<body class="min-h-screen bg-tf-dark">
     <!-- Navigation -->
     <nav class="glass fixed w-full z-50 top-0">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-20 items-center">
-                <!-- Left: TripFactory Logo -->
-                <div class="flex items-center space-x-4">
-                    <div class="logo-container">
-                        <img src="tripfactory-logo.png" alt="TripFactory" class="h-10 w-auto" onerror="this.style.display='none'">
-                        <span class="text-tf-navy font-bold text-xl" id="tf-logo-fallback">TripFactory</span>
-                    </div>
+            <div class="flex justify-between h-16 items-center">
+                <!-- Left: Brand -->
+                <div class="flex items-center">
+                    <a href="ukmarket.html" class="text-2xl font-bold text-white">
+                        <span class="text-tf-cyan">Trip</span>Factory
+                        <span class="text-sm font-normal text-gray-400 ml-2">UK Market</span>
+                    </a>
                 </div>
 
                 <!-- Center: Navigation -->
-                <div class="hidden md:flex space-x-8">
+                <div class="hidden md:flex space-x-6">
                     <a href="ukmarket.html" class="nav-item text-gray-300 hover:text-white transition">Dashboard</a>
                     <a href="ukmarket-contacts.html" class="nav-item text-gray-300 hover:text-white transition">Contacts</a>
                     <a href="ukmarket-hotels.html" class="nav-item active text-tf-cyan font-medium">Hotels</a>
                     <a href="ukmarket-tours.html" class="nav-item text-gray-300 hover:text-white transition">Tours</a>
+                    <a href="ukmarket-newtours-2026.html" class="nav-item text-gray-300 hover:text-white transition">Tour Collection 2026</a>
                     <a href="ukmarket-tasks.html" class="nav-item text-gray-300 hover:text-white transition">Tasks</a>
                     <a href="ukmarket-wiki.html" class="nav-item text-gray-300 hover:text-white transition">Wiki</a>
                 </div>
 
-                <!-- Right: ORN Logo -->
+                <!-- Right: User -->
                 <div class="flex items-center space-x-3">
-                    <div class="logo-container hidden sm:block">
-                        <img src="orn-logo.png" alt="ORN" class="h-8 w-auto" onerror="this.style.display='none'">
-                        <span class="text-tf-navy font-semibold text-sm" id="orn-logo-fallback">ORN</span>
+                    <div class="text-right hidden sm:block">
+                        <p class="text-sm font-medium text-white">Ajay Kawa</p>
+                        <p class="text-xs text-gray-400">Head of Global Business Development</p>
                     </div>
                 </div>
             </div>
         </div>
     </nav>
 
-    <main class="pt-24 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+
+<main class="pt-24 pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <!-- Header -->
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
             <div>
@@ -167,163 +165,19 @@
         </div>
     </main>
 
-    <!-- Add/Edit Hotel Modal -->
-    <div id="hotelModal" class="fixed inset-0 bg-black/80 hidden z-50 flex items-center justify-center p-4">
-        <div class="glass rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg font-semibold" id="modalTitle">Add Hotel</h3>
-                <button onclick="closeHotelModal()" class="text-gray-400 hover:text-white">
-                    <i class="fas fa-times text-xl"></i>
-                </button>
-            </div>
-            <form id="hotelForm" class="space-y-4">
-                <input type="hidden" id="hotelId">
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="col-span-2">
-                        <label class="block text-sm text-gray-400 mb-1">Hotel Name *</label>
-                        <input type="text" id="hotelName" required class="w-full bg-tf-navy/50 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-tf-cyan focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-sm text-gray-400 mb-1">Type *</label>
-                        <select id="hotelType" required class="w-full bg-tf-navy/50 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-tf-cyan focus:outline-none">
-                            <option value="contracted">Contracted (Direct)</option>
-                            <option value="estee">Estee Group Portfolio</option>
-                            <option value="7hospitality">7 Hospitality Portfolio</option>
-                            <option value="chain">Chain Partner</option>
-                            <option value="supplier">Third Party Supplier</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-sm text-gray-400 mb-1">Star Rating</label>
-                        <select id="hotelStars" class="w-full bg-tf-navy/50 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-tf-cyan focus:outline-none">
-                            <option value="3">3 Star</option>
-                            <option value="4">4 Star</option>
-                            <option value="5">5 Star</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm text-gray-400 mb-1">City *</label>
-                        <input type="text" id="hotelCity" required class="w-full bg-tf-navy/50 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-tf-cyan focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-sm text-gray-400 mb-1">Location/Area</label>
-                        <input type="text" id="hotelArea" class="w-full bg-tf-navy/50 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-tf-cyan focus:outline-none">
-                    </div>
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm text-gray-400 mb-1">Email</label>
-                        <input type="email" id="hotelEmail" class="w-full bg-tf-navy/50 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-tf-cyan focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-sm text-gray-400 mb-1">Phone</label>
-                        <input type="tel" id="hotelPhone" class="w-full bg-tf-navy/50 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-tf-cyan focus:outline-none">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-sm text-gray-400 mb-1">Contact Person</label>
-                    <input type="text" id="hotelContact" class="w-full bg-tf-navy/50 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-tf-cyan focus:outline-none">
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm text-gray-400 mb-1">Room Count</label>
-                        <input type="number" id="hotelRooms" class="w-full bg-tf-navy/50 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-tf-cyan focus:outline-none">
-                    </div>
-                    <div>
-                        <label class="block text-sm text-gray-400 mb-1">Contract Status</label>
-                        <select id="hotelContract" class="w-full bg-tf-navy/50 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-tf-cyan focus:outline-none">
-                            <option value="contracted">Contracted</option>
-                            <option value="negotiating">In Negotiation</option>
-                            <option value="prospect">Prospect</option>
-                            <option value="inactive">Inactive</option>
-                        </select>
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-sm text-gray-400 mb-1">Amenities</label>
-                    <div class="flex flex-wrap gap-2">
-                        <label class="flex items-center space-x-2 cursor-pointer">
-                            <input type="checkbox" value="wifi" class="hotel-amenity rounded bg-tf-navy/50 border-gray-600 text-tf-cyan">
-                            <span class="text-sm">WiFi</span>
-                        </label>
-                        <label class="flex items-center space-x-2 cursor-pointer">
-                            <input type="checkbox" value="parking" class="hotel-amenity rounded bg-tf-navy/50 border-gray-600 text-tf-cyan">
-                            <span class="text-sm">Parking</span>
-                        </label>
-                        <label class="flex items-center space-x-2 cursor-pointer">
-                            <input type="checkbox" value="restaurant" class="hotel-amenity rounded bg-tf-navy/50 border-gray-600 text-tf-cyan">
-                            <span class="text-sm">Restaurant</span>
-                        </label>
-                        <label class="flex items-center space-x-2 cursor-pointer">
-                            <input type="checkbox" value="gym" class="hotel-amenity rounded bg-tf-navy/50 border-gray-600 text-tf-cyan">
-                            <span class="text-sm">Gym</span>
-                        </label>
-                        <label class="flex items-center space-x-2 cursor-pointer">
-                            <input type="checkbox" value="spa" class="hotel-amenity rounded bg-tf-navy/50 border-gray-600 text-tf-cyan">
-                            <span class="text-sm">Spa</span>
-                        </label>
-                        <label class="flex items-center space-x-2 cursor-pointer">
-                            <input type="checkbox" value="airport-shuttle" class="hotel-amenity rounded bg-tf-navy/50 border-gray-600 text-tf-cyan">
-                            <span class="text-sm">Airport Shuttle</span>
-                        </label>
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-sm text-gray-400 mb-1">Notes / Indian Group Facilities</label>
-                    <textarea id="hotelNotes" rows="3" class="w-full bg-tf-navy/50 border border-gray-600 rounded-lg px-4 py-2 text-white focus:border-tf-cyan focus:outline-none" placeholder="e.g., Halal kitchen available, Group check-in facilities, Hindi-speaking staff..."></textarea>
-                </div>
-                <div class="flex space-x-3 pt-4">
-                    <button type="button" onclick="closeHotelModal()" class="flex-1 px-4 py-2 rounded-lg border border-gray-600 text-gray-300 hover:bg-gray-700 transition">Cancel</button>
-                    <button type="submit" class="flex-1 px-4 py-2 rounded-lg bg-tf-cyan text-tf-dark font-semibold hover:bg-cyan-400 transition">Save Hotel</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Portfolio Links Modal -->
-    <div id="portfolioModal" class="fixed inset-0 bg-black/80 hidden z-50 flex items-center justify-center p-4">
-        <div class="glass rounded-xl p-6 w-full max-w-lg">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg font-semibold">Portfolio Access</h3>
-                <button onclick="closePortfolioModal()" class="text-gray-400 hover:text-white">
-                    <i class="fas fa-times text-xl"></i>
-                </button>
-            </div>
-            <div class="space-y-4">
-                <div class="p-4 rounded-lg bg-tf-navy/30 border border-gray-700">
-                    <div class="flex items-center mb-2">
-                        <i class="fas fa-building text-tf-cyan mr-2"></i>
-                        <h4 class="font-semibold">Estee Group</h4>
-                    </div>
-                    <p class="text-sm text-gray-400 mb-3">6 hotels across UK - Mercure & Holiday Inn brands</p>
-                    <a href="https://www.esteegroup.co.uk/our-portfolio" target="_blank" class="inline-flex items-center px-4 py-2 bg-tf-cyan text-tf-dark rounded-lg text-sm font-medium hover:bg-cyan-400 transition">
-                        View Portfolio <i class="fas fa-external-link-alt ml-2"></i>
-                    </a>
-                </div>
-                <div class="p-4 rounded-lg bg-tf-navy/30 border border-gray-700">
-                    <div class="flex items-center mb-2">
-                        <i class="fas fa-hotel text-tf-lime mr-2"></i>
-                        <h4 class="font-semibold">7 Hospitality Management</h4>
-                    </div>
-                    <p class="text-sm text-gray-400 mb-3">15 properties across UK - Boutique & castle hotels</p>
-                    <a href="https://www.7hospitality.co.uk/portfolio/" target="_blank" class="inline-flex items-center px-4 py-2 bg-tf-lime text-tf-dark rounded-lg text-sm font-medium hover:bg-lime-400 transition">
-                        View Portfolio <i class="fas fa-external-link-alt ml-2"></i>
-                    </a>
-                </div>
-                <div class="p-4 rounded-lg bg-tf-navy/30 border border-tf-yellow/50">
-                    <div class="flex items-center mb-2">
-                        <i class="fas fa-lightbulb text-tf-yellow mr-2"></i>
-                        <h4 class="font-semibold">Quick Tip</h4>
-                    </div>
-                    <p class="text-sm text-gray-400">For UK & Scotland tours, request 4-star hotels and confirm based on most competitive rates offered.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        tf: { navy: '#1e3a5f', blue: '#2563eb', cyan: '#06b6d4', lime: '#84cc16', yellow: '#eab308', red: '#ef4444', dark: '#0f172a', card: '#1e293b' }
+                    }
+                }
+            }
+        }
+    </script>
+<script>
         // COMPLETE HOTEL DATABASE - All 24 Properties
         const defaultHotels = [
             // CONTRACTED HOTELS (3) - Direct with TripFactory
