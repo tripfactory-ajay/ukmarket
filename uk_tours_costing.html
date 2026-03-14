@@ -1,0 +1,1496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TripFactory UK Tours 2026 - Costing Sheets</title>
+    <!-- SheetJS for Excel export -->
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', Arial, sans-serif; 
+            background: #f5f5f5; 
+            padding: 20px;
+        }
+        .header {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .header h1 { font-size: 24px; margin-bottom: 5px; }
+        .header p { opacity: 0.9; font-size: 14px; }
+
+        .global-settings {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .setting-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .setting-group label {
+            font-weight: 600;
+            color: #333;
+        }
+        .setting-group input {
+            width: 100px;
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            text-align: center;
+        }
+        .setting-group input:focus {
+            border-color: #2563eb;
+            outline: none;
+        }
+
+        .tabs-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .tab-buttons {
+            display: flex;
+            background: #e0e0e0;
+            border-bottom: 2px solid #ccc;
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            padding: 12px 20px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            color: #666;
+            border-right: 1px solid #ccc;
+            white-space: nowrap;
+            transition: all 0.3s;
+        }
+
+        .tab-btn:hover {
+            background: #f0f0f0;
+        }
+
+        .tab-btn.active {
+            background: white;
+            color: #2563eb;
+            border-bottom: 3px solid #2563eb;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 20px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .tour-header {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .tour-header h2 {
+            color: #1e3a5f;
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .tour-header .subtitle {
+            color: #666;
+            font-size: 13px;
+        }
+
+        .tour-stats {
+            display: flex;
+            gap: 20px;
+            margin-top: 10px;
+            font-size: 12px;
+            color: #888;
+        }
+
+        .costing-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+
+        .costing-table th {
+            background: #1e3a5f;
+            color: white;
+            padding: 12px 8px;
+            text-align: left;
+            font-weight: 600;
+            border: 1px solid #1e3a5f;
+        }
+
+        .costing-table td {
+            padding: 10px 8px;
+            border: 1px solid #ddd;
+            vertical-align: top;
+        }
+
+        .costing-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        .costing-table tr:hover {
+            background: #e3f2fd;
+        }
+
+        .day-col { width: 50px; text-align: center; font-weight: 600; background: #f0f0f0; }
+        .activity-col { width: 35%; }
+        .type-col { width: 12%; font-size: 11px; }
+        .gbp-col { width: 100px; }
+        .rate-col { width: 80px; }
+        .inr-col { width: 110px; font-weight: 600; color: #2563eb; }
+        .supplier-col { width: 20%; }
+
+        input[type="number"], input[type="text"] {
+            width: 100%;
+            padding: 6px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+
+        input[type="number"]:focus, input[type="text"]:focus {
+            border-color: #2563eb;
+            outline: none;
+            background: #fffde7;
+        }
+
+        .total-row {
+            background: #e8f5e9 !important;
+            font-weight: 700;
+            border-top: 3px solid #4caf50;
+        }
+
+        .total-row td {
+            border-top: 3px solid #4caf50;
+            padding: 12px 8px;
+        }
+
+        .coach-row {
+            background: #fff3e0 !important;
+            font-weight: 600;
+        }
+
+        .summary-box {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            border: 2px solid #4caf50;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+
+        .summary-item {
+            text-align: center;
+        }
+
+        .summary-item .label {
+            font-size: 11px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+
+        .summary-item .value {
+            font-size: 20px;
+            font-weight: 700;
+            color: #2e7d32;
+        }
+
+        .summary-item .value.inr {
+            color: #d32f2f;
+        }
+
+        .export-section {
+            margin-top: 20px;
+            padding: 20px;
+            background: #e3f2fd;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin: 5px;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-success {
+            background: #4caf50;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #45a049;
+        }
+
+        .btn-warning {
+            background: #ff9800;
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background: #f57c00;
+        }
+
+        .type-accommodation { color: #7b1fa2; font-weight: 600; }
+        .type-activity { color: #1976d2; font-weight: 600; }
+        .type-meal { color: #388e3c; font-weight: 600; }
+        .type-transport { color: #f57c00; font-weight: 600; }
+        .type-temple { color: #d32f2f; font-weight: 600; }
+
+        .notes-section {
+            margin-top: 15px;
+            padding: 15px;
+            background: #fffde7;
+            border-left: 4px solid #ffc107;
+            border-radius: 4px;
+        }
+
+        .notes-section h4 {
+            font-size: 13px;
+            margin-bottom: 8px;
+            color: #f57c00;
+        }
+
+        .notes-section textarea {
+            width: 100%;
+            min-height: 60px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 12px;
+            resize: vertical;
+        }
+
+        @media print {
+            .tab-buttons, .export-section, .global-settings { display: none; }
+            .tab-content { display: block !important; page-break-after: always; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🇬🇧 TripFactory UK Tours 2026 - Costing Sheets</h1>
+        <p>Comprehensive costing tool for all 7 UK tour products. Enter GBP costs to auto-calculate INR pricing.</p>
+    </div>
+
+    <div class="global-settings">
+        <div class="setting-group">
+            <label>Exchange Rate (GBP → INR):</label>
+            <input type="number" id="globalExchangeRate" value="110" onchange="updateAllCalculations()">
+        </div>
+        <div class="setting-group">
+            <label>Coach Transport (per person/day):</label>
+            <input type="number" id="globalCoachRate" value="25" onchange="updateAllCalculations()">
+        </div>
+        <div class="setting-group">
+            <button class="btn btn-primary" onclick="exportAllToExcel()">📊 Export All to Excel (.xlsx)</button>
+            <button class="btn btn-success" onclick="window.print()">🖨️ Print All</button>
+            <button class="btn btn-warning" onclick="exportAllToCSV()">📁 Export to CSV</button>
+        </div>
+    </div>
+
+    <div class="tabs-container">
+        <div class="tab-buttons">
+            <button class="tab-btn active" onclick="showTab('tour1')">Grand British (16D)</button>
+            <button class="tab-btn" onclick="showTab('tour2')">London Paris (7D)</button>
+            <button class="tab-btn" onclick="showTab('tour3')">Lake District (6D)</button>
+            <button class="tab-btn" onclick="showTab('tour4')">Ultimate Heritage (10D)</button>
+            <button class="tab-btn" onclick="showTab('tour5')">Family Adventure (12D)</button>
+            <button class="tab-btn" onclick="showTab('tour6')">Towers & Temples (12D)</button>
+            <button class="tab-btn" onclick="showTab('tour7')">Bollywood UK (9D)</button>
+        </div>
+
+        <!-- TOUR 1: Grand British Isles Explorer (16 Days) -->
+        <div id="tour1" class="tab-content active">
+            <div class="tour-header">
+                <h2>Grand British Isles Explorer</h2>
+                <div class="subtitle">16 Days | London to Edinburgh | Heritage Tour</div>
+                <div class="tour-stats">
+                    <span>📍 8 Cities</span>
+                    <span>🏨 8 Hotels (2 Castles)</span>
+                    <span>🍽️ 45 Meals</span>
+                    <span>🎯 24 Activities</span>
+                </div>
+            </div>
+
+            <table class="costing-table" id="table-tour1">
+                <thead>
+                    <tr>
+                        <th class="day-col">Day</th>
+                        <th class="activity-col">Activity / Item</th>
+                        <th class="type-col">Type</th>
+                        <th class="gbp-col">GBP Cost</th>
+                        <th class="rate-col">Rate</th>
+                        <th class="inr-col">INR Cost</th>
+                        <th class="supplier-col">Supplier</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td class="day-col">1</td><td class="activity-col">Kingston Lodge Hotel - 3 nights (B&B)</td><td class="type-col"><span class="type-accommodation">ACCOMMODATION</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Hotel supplier"></td></tr>
+                    <tr><td class="day-col">1</td><td class="activity-col">Chokhi Dhani Welcome Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+                    <tr><td class="day-col">1</td><td class="activity-col">Heathrow Airport Transfer</td><td class="type-col"><span class="type-transport">TRANSPORT</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Transfer company"></td></tr>
+
+                    <tr><td class="day-col">2</td><td class="activity-col">Tower of London + Crown Jewels Entry</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">2</td><td class="activity-col">London Eye Fast Track Tickets</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">2</td><td class="activity-col">London City Tour Guide</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Tour guide"></td></tr>
+                    <tr><td class="day-col">2</td><td class="activity-col">Sagar Lunch + Dishoom Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+
+                    <tr><td class="day-col">3</td><td class="activity-col">Lords Cricket Stadium Tour</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">3</td><td class="activity-col">Madame Tussauds London</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">3</td><td class="activity-col">Bicester Village VIP Shopping</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Shopping venue"></td></tr>
+                    <tr><td class="day-col">3</td><td class="activity-col">Gymkhana Lunch + Tayyabs Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+
+                    <tr><td class="day-col">4</td><td class="activity-col">Windsor Castle State Apartments</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">4</td><td class="activity-col">Thornbury Castle - 2 nights (B&B)</td><td class="type-col"><span class="type-accommodation">ACCOMMODATION</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Hotel supplier"></td></tr>
+                    <tr><td class="day-col">4</td><td class="activity-col">Mango Tree Lunch + Castle Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+                    <tr><td class="day-col">4</td><td class="activity-col">Transfer London to Thornbury</td><td class="type-col"><span class="type-transport">TRANSPORT</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Coach company"></td></tr>
+
+                    <tr><td class="day-col">5</td><td class="activity-col">Cotswolds Villages Tour</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Tour operator"></td></tr>
+                    <tr><td class="day-col">5</td><td class="activity-col">Bath Roman Baths Entry</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">5</td><td class="activity-col">Rajpoot Lunch + Castle Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+
+                    <tr><td class="day-col">6</td><td class="activity-col">Stratford Shakespeare Birthplace</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">6</td><td class="activity-col">Anne Hathaway's Cottage</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">6</td><td class="activity-col">Delta Hotels Birmingham - 1 night</td><td class="type-col"><span class="type-accommodation">ACCOMMODATION</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Hotel supplier"></td></tr>
+                    <tr><td class="day-col">6</td><td class="activity-col">Spice Kitchen Lunch + Pushkar Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+                    <tr><td class="day-col">6</td><td class="activity-col">Transfer Thornbury to Birmingham</td><td class="type-col"><span class="type-transport">TRANSPORT</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Coach company"></td></tr>
+
+                    <tr><td class="day-col">7</td><td class="activity-col">Chatsworth House Entry</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">7</td><td class="activity-col">Weetwood Hall Estate - 2 nights</td><td class="type-col"><span class="type-accommodation">ACCOMMODATION</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Hotel supplier"></td></tr>
+                    <tr><td class="day-col">7</td><td class="activity-col">Saffron Lunch + Aagrah Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+                    <tr><td class="day-col">7</td><td class="activity-col">Transfer Birmingham to Leeds</td><td class="type-col"><span class="type-transport">TRANSPORT</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Coach company"></td></tr>
+
+                    <tr><td class="day-col">8</td><td class="activity-col">York Minster Entry</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">8</td><td class="activity-col">Yorkshire Dales Tour</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Tour operator"></td></tr>
+                    <tr><td class="day-col">8</td><td class="activity-col">Bolton Abbey + Aysgarth Falls</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">8</td><td class="activity-col">Mumbai Lounge Lunch + Hotel Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+
+                    <tr><td class="day-col">9</td><td class="activity-col">The Ro Hotel Windermere - 3 nights</td><td class="type-col"><span class="type-accommodation">ACCOMMODATION</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Hotel supplier"></td></tr>
+                    <tr><td class="day-col">9</td><td class="activity-col">Windermere Lake Cruise</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">9</td><td class="activity-col">Beatrix Potter Hill Top Farm</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">9</td><td class="activity-col">Cottage Lunch + Bombay Spice Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+                    <tr><td class="day-col">9</td><td class="activity-col">Transfer Leeds to Windermere</td><td class="type-col"><span class="type-transport">TRANSPORT</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Coach company"></td></tr>
+
+                    <tr><td class="day-col">10</td><td class="activity-col">Ambleside + Grasmere Tour</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Tour operator"></td></tr>
+                    <tr><td class="day-col">10</td><td class="activity-col">Dove Cottage Wordsworth Museum</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">10</td><td class="activity-col">Castlerigg Stone Circle</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">10</td><td class="activity-col">Kathmandu Lunch + Royal Oak Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+
+                    <tr><td class="day-col">11</td><td class="activity-col">The Haweswater Hotel - 1 night</td><td class="type-col"><span class="type-accommodation">ACCOMMODATION</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Hotel supplier"></td></tr>
+                    <tr><td class="day-col">11</td><td class="activity-col">Ullswater Steamers Cruise</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">11</td><td class="activity-col">Aira Force Waterfall</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">11</td><td class="activity-col">Hotel Lunch + Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+                    <tr><td class="day-col">11</td><td class="activity-col">Transfer Windermere to Haweswater</td><td class="type-col"><span class="type-transport">TRANSPORT</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Coach company"></td></tr>
+
+                    <tr><td class="day-col">12</td><td class="activity-col">Hadrian's Wall UNESCO Site</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">12</td><td class="activity-col">Rosslea Hall Hotel - 2 nights</td><td class="type-col"><span class="type-accommodation">ACCOMMODATION</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Hotel supplier"></td></tr>
+                    <tr><td class="day-col">12</td><td class="activity-col">Spice Hut Lunch + Dakhin Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+                    <tr><td class="day-col">12</td><td class="activity-col">Transfer Haweswater to Helensburgh</td><td class="type-col"><span class="type-transport">TRANSPORT</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Coach company"></td></tr>
+
+                    <tr><td class="day-col">13</td><td class="activity-col">Loch Lomond Cruise</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">13</td><td class="activity-col">Luss Village + Glengoyne Distillery</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">13</td><td class="activity-col">Lunch + Hotel Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+
+                    <tr><td class="day-col">14</td><td class="activity-col">Dalhousie Castle - 2 nights</td><td class="type-col"><span class="type-accommodation">ACCOMMODATION</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Hotel supplier"></td></tr>
+                    <tr><td class="day-col">14</td><td class="activity-col">Edinburgh Castle Entry</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">14</td><td class="activity-col">Royal Mile Walking Tour</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Tour guide"></td></tr>
+                    <tr><td class="day-col">14</td><td class="activity-col">Mother India Lunch + Castle Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+                    <tr><td class="day-col">14</td><td class="activity-col">Transfer Helensburgh to Edinburgh</td><td class="type-col"><span class="type-transport">TRANSPORT</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Coach company"></td></tr>
+
+                    <tr><td class="day-col">15</td><td class="activity-col">Arthur's Seat Hike</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Free activity"></td></tr>
+                    <tr><td class="day-col">15</td><td class="activity-col">National Gallery + New Town</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">15</td><td class="activity-col">Dishoom Lunch + The Kitchin Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+
+                    <tr><td class="day-col">16</td><td class="activity-col">Edinburgh Airport Transfer</td><td class="type-col"><span class="type-transport">TRANSPORT</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Transfer company"></td></tr>
+                    <tr><td class="day-col">16</td><td class="activity-col">Breakfast at Castle</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Hotel"></td></tr>
+
+                    <!-- Coach Transport Row -->
+                    <tr class="coach-row">
+                        <td class="day-col">-</td>
+                        <td class="activity-col"><strong>Coach Transport (16 days × £25 pp)</strong></td>
+                        <td class="type-col"><span class="type-transport">TRANSPORT</span></td>
+                        <td class="gbp-col"><input type="number" class="gbp-input coach-gbp" value="400" readonly></td>
+                        <td class="rate-col"><input type="number" class="rate-input" value="110" readonly></td>
+                        <td class="inr-col"><span class="inr-value coach-inr">44000</span></td>
+                        <td class="supplier-col"><input type="text" placeholder="Coach hire company"></td></tr>
+
+                    <!-- Total Row -->
+                    <tr class="total-row">
+                        <td class="day-col" colspan="3"><strong>TOTAL TOUR COST</strong></td>
+                        <td class="gbp-col"><strong><span class="total-gbp">0.00</span></strong></td>
+                        <td class="rate-col">-</td>
+                        <td class="inr-col"><strong><span class="total-inr">0</span></strong></td>
+                        <td class="supplier-col">-</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="summary-box">
+                <div class="summary-grid">
+                    <div class="summary-item">
+                        <div class="label">Accommodation</div>
+                        <div class="value gbp" id="tour1-acc-gbp">£0</div>
+                        <div class="value inr" id="tour1-acc-inr">₹0</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="label">Activities</div>
+                        <div class="value gbp" id="tour1-act-gbp">£0</div>
+                        <div class="value inr" id="tour1-act-inr">₹0</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="label">Meals</div>
+                        <div class="value gbp" id="tour1-meal-gbp">£0</div>
+                        <div class="value inr" id="tour1-meal-inr">₹0</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="label">Transport</div>
+                        <div class="value gbp" id="tour1-trans-gbp">£0</div>
+                        <div class="value inr" id="tour1-trans-inr">₹0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="notes-section">
+                <h4>📝 Notes & Margins</h4>
+                <textarea placeholder="Enter selling price, margin calculations, commission notes here..."></textarea>
+            </div>
+        </div>
+
+        <!-- TOUR 2: London, Paris & English Castles (7 Days) -->
+        <div id="tour2" class="tab-content">
+            <div class="tour-header">
+                <h2>London, Paris & English Castles</h2>
+                <div class="subtitle">7 Days | London to Paris | City & Heritage Tour</div>
+                <div class="tour-stats">
+                    <span>📍 2 Cities</span>
+                    <span>🏨 5 Hotels</span>
+                    <span>🍽️ 18 Meals</span>
+                    <span>🎯 12 Activities</span>
+                </div>
+            </div>
+
+            <table class="costing-table" id="table-tour2">
+                <thead>
+                    <tr>
+                        <th class="day-col">Day</th>
+                        <th class="activity-col">Activity / Item</th>
+                        <th class="type-col">Type</th>
+                        <th class="gbp-col">GBP Cost</th>
+                        <th class="rate-col">Rate</th>
+                        <th class="inr-col">INR Cost</th>
+                        <th class="supplier-col">Supplier</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td class="day-col">1</td><td class="activity-col">Heathrow Airport Transfer</td><td class="type-col"><span class="type-transport">TRANSPORT</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Transfer company"></td></tr>
+                    <tr><td class="day-col">1</td><td class="activity-col">Kingston Lodge Hotel - 2 nights</td><td class="type-col"><span class="type-accommodation">ACCOMMODATION</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Hotel supplier"></td></tr>
+                    <tr><td class="day-col">1</td><td class="activity-col">Chokhi Dhani Welcome Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+
+                    <tr><td class="day-col">2</td><td class="activity-col">Tower of London + Crown Jewels</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">2</td><td class="activity-col">London Eye Fast Track</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">2</td><td class="activity-col">Sagar Lunch + Dishoom Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+
+                    <tr><td class="day-col">3</td><td class="activity-col">Windsor Castle State Apartments</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">3</td><td class="activity-col">Thornbury Castle - 1 night</td><td class="type-col"><span class="type-accommodation">ACCOMMODATION</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Hotel supplier"></td></tr>
+                    <tr><td class="day-col">3</td><td class="activity-col">Mango Tree Lunch + Castle Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+                    <tr><td class="day-col">3</td><td class="activity-col">Transfer London to Thornbury</td><td class="type-col"><span class="type-transport">TRANSPORT</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Coach company"></td></tr>
+
+                    <tr><td class="day-col">4</td><td class="activity-col">Stonehenge Entry</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">4</td><td class="activity-col">Eurostar to Paris</td><td class="type-col"><span class="type-transport">TRANSPORT</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Eurostar"></td></tr>
+                    <tr><td class="day-col">4</td><td class="activity-col">Hotel Elysees Union Paris - 3 nights</td><td class="type-col"><span class="type-accommodation">ACCOMMODATION</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Hotel supplier"></td></tr>
+                    <tr><td class="day-col">4</td><td class="activity-col">Lunch + Krishna Bhavan Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+
+                    <tr><td class="day-col">5</td><td class="activity-col">Eiffel Tower Summit Access</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">5</td><td class="activity-col">Seine River Cruise</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">5</td><td class="activity-col">Louvre Museum Entry</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">5</td><td class="activity-col">Saravanaa Bhavan Lunch + Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+
+                    <tr><td class="day-col">6</td><td class="activity-col">Versailles Palace Entry</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">6</td><td class="activity-col">Champs-Élysées + Arc de Triomphe</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Free activity"></td></tr>
+                    <tr><td class="day-col">6</td><td class="activity-col">Lunch + New Jawad Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+
+                    <tr><td class="day-col">7</td><td class="activity-col">Montmartre + Sacré-Cœur</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Free activity"></td></tr>
+                    <tr><td class="day-col">7</td><td class="activity-col">Eurostar return to London</td><td class="type-col"><span class="type-transport">TRANSPORT</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Eurostar"></td></tr>
+                    <tr><td class="day-col">7</td><td class="activity-col">Breakfast</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Hotel"></td></tr>
+
+                    <!-- Coach Transport Row -->
+                    <tr class="coach-row">
+                        <td class="day-col">-</td>
+                        <td class="activity-col"><strong>Coach Transport (7 days × £25 pp)</strong></td>
+                        <td class="type-col"><span class="type-transport">TRANSPORT</span></td>
+                        <td class="gbp-col"><input type="number" class="gbp-input coach-gbp" value="175" readonly></td>
+                        <td class="rate-col"><input type="number" class="rate-input" value="110" readonly></td>
+                        <td class="inr-col"><span class="inr-value coach-inr">19250</span></td>
+                        <td class="supplier-col"><input type="text" placeholder="Coach hire company"></td></tr>
+
+                    <!-- Total Row -->
+                    <tr class="total-row">
+                        <td class="day-col" colspan="3"><strong>TOTAL TOUR COST</strong></td>
+                        <td class="gbp-col"><strong><span class="total-gbp">0.00</span></strong></td>
+                        <td class="rate-col">-</td>
+                        <td class="inr-col"><strong><span class="total-inr">0</span></strong></td>
+                        <td class="supplier-col">-</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="summary-box">
+                <div class="summary-grid">
+                    <div class="summary-item">
+                        <div class="label">Accommodation</div>
+                        <div class="value gbp" id="tour2-acc-gbp">£0</div>
+                        <div class="value inr" id="tour2-acc-inr">₹0</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="label">Activities</div>
+                        <div class="value gbp" id="tour2-act-gbp">£0</div>
+                        <div class="value inr" id="tour2-act-inr">₹0</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="label">Meals</div>
+                        <div class="value gbp" id="tour2-meal-gbp">£0</div>
+                        <div class="value inr" id="tour2-meal-inr">₹0</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="label">Transport</div>
+                        <div class="value gbp" id="tour2-trans-gbp">£0</div>
+                        <div class="value inr" id="tour2-trans-inr">₹0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="notes-section">
+                <h4>📝 Notes & Margins</h4>
+                <textarea placeholder="Enter selling price, margin calculations, commission notes here..."></textarea>
+            </div>
+        </div>
+
+        <!-- TOUR 3: Lake District & Yorkshire Dales (6 Days) -->
+        <div id="tour3" class="tab-content">
+            <div class="tour-header">
+                <h2>Lake District & Yorkshire Dales Discovery</h2>
+                <div class="subtitle">6 Days | Leeds to Windermere | Nature Tour</div>
+                <div class="tour-stats">
+                    <span>📍 3 Towns</span>
+                    <span>🏨 3 Hotels</span>
+                    <span>🍽️ 15 Meals</span>
+                    <span>🎯 10 Activities</span>
+                </div>
+            </div>
+
+            <table class="costing-table" id="table-tour3">
+                <thead>
+                    <tr>
+                        <th class="day-col">Day</th>
+                        <th class="activity-col">Activity / Item</th>
+                        <th class="type-col">Type</th>
+                        <th class="gbp-col">GBP Cost</th>
+                        <th class="rate-col">Rate</th>
+                        <th class="inr-col">INR Cost</th>
+                        <th class="supplier-col">Supplier</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td class="day-col">1</td><td class="activity-col">Leeds Bradford Airport Transfer</td><td class="type-col"><span class="type-transport">TRANSPORT</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Transfer company"></td></tr>
+                    <tr><td class="day-col">1</td><td class="activity-col">Weetwood Hall Estate - 2 nights</td><td class="type-col"><span class="type-accommodation">ACCOMMODATION</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Hotel supplier"></td></tr>
+                    <tr><td class="day-col">1</td><td class="activity-col">Saffron Lunch + Aagrah Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+
+                    <tr><td class="day-col">2</td><td class="activity-col">York Minster Entry</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">2</td><td class="activity-col">Yorkshire Dales Tour</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Tour operator"></td></tr>
+                    <tr><td class="day-col">2</td><td class="activity-col">Bolton Abbey + Aysgarth Falls</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">2</td><td class="activity-col">Mumbai Lounge Lunch + Hotel Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+
+                    <tr><td class="day-col">3</td><td class="activity-col">The Ro Hotel Windermere - 3 nights</td><td class="type-col"><span class="type-accommodation">ACCOMMODATION</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Hotel supplier"></td></tr>
+                    <tr><td class="day-col">3</td><td class="activity-col">Windermere Lake Cruise</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">3</td><td class="activity-col">Beatrix Potter Hill Top Farm</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">3</td><td class="activity-col">Cottage Lunch + Bombay Spice Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+                    <tr><td class="day-col">3</td><td class="activity-col">Transfer Leeds to Windermere</td><td class="type-col"><span class="type-transport">TRANSPORT</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Coach company"></td></tr>
+
+                    <tr><td class="day-col">4</td><td class="activity-col">Ambleside + Grasmere Tour</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Tour operator"></td></tr>
+                    <tr><td class="day-col">4</td><td class="activity-col">Dove Cottage Wordsworth Museum</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">4</td><td class="activity-col">Castlerigg Stone Circle</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">4</td><td class="activity-col">Kathmandu Lunch + Royal Oak Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+
+                    <tr><td class="day-col">5</td><td class="activity-col">The Haweswater Hotel - 1 night</td><td class="type-col"><span class="type-accommodation">ACCOMMODATION</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Hotel supplier"></td></tr>
+                    <tr><td class="day-col">5</td><td class="activity-col">Ullswater Steamers Cruise</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">5</td><td class="activity-col">Aira Force Waterfall</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">5</td><td class="activity-col">Hotel Lunch + Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+                    <tr><td class="day-col">5</td><td class="activity-col">Transfer Windermere to Haweswater</td><td class="type-col"><span class="type-transport">TRANSPORT</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Coach company"></td></tr>
+
+                    <tr><td class="day-col">6</td><td class="activity-col">Hadrian's Wall UNESCO Site</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">6</td><td class="activity-col">Manchester Airport Transfer</td><td class="type-col"><span class="type-transport">TRANSPORT</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Transfer company"></td></tr>
+                    <tr><td class="day-col">6</td><td class="activity-col">Breakfast</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Hotel"></td></tr>
+
+                    <!-- Coach Transport Row -->
+                    <tr class="coach-row">
+                        <td class="day-col">-</td>
+                        <td class="activity-col"><strong>Coach Transport (6 days × £25 pp)</strong></td>
+                        <td class="type-col"><span class="type-transport">TRANSPORT</span></td>
+                        <td class="gbp-col"><input type="number" class="gbp-input coach-gbp" value="150" readonly></td>
+                        <td class="rate-col"><input type="number" class="rate-input" value="110" readonly></td>
+                        <td class="inr-col"><span class="inr-value coach-inr">16500</span></td>
+                        <td class="supplier-col"><input type="text" placeholder="Coach hire company"></td></tr>
+
+                    <!-- Total Row -->
+                    <tr class="total-row">
+                        <td class="day-col" colspan="3"><strong>TOTAL TOUR COST</strong></td>
+                        <td class="gbp-col"><strong><span class="total-gbp">0.00</span></strong></td>
+                        <td class="rate-col">-</td>
+                        <td class="inr-col"><strong><span class="total-inr">0</span></strong></td>
+                        <td class="supplier-col">-</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="summary-box">
+                <div class="summary-grid">
+                    <div class="summary-item">
+                        <div class="label">Accommodation</div>
+                        <div class="value gbp" id="tour3-acc-gbp">£0</div>
+                        <div class="value inr" id="tour3-acc-inr">₹0</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="label">Activities</div>
+                        <div class="value gbp" id="tour3-act-gbp">£0</div>
+                        <div class="value inr" id="tour3-act-inr">₹0</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="label">Meals</div>
+                        <div class="value gbp" id="tour3-meal-gbp">£0</div>
+                        <div class="value inr" id="tour3-meal-inr">₹0</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="label">Transport</div>
+                        <div class="value gbp" id="tour3-trans-gbp">£0</div>
+                        <div class="value inr" id="tour3-trans-inr">₹0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="notes-section">
+                <h4>📝 Notes & Margins</h4>
+                <textarea placeholder="Enter selling price, margin calculations, commission notes here..."></textarea>
+            </div>
+        </div>
+
+        <!-- TOUR 4: Ultimate UK Heritage & Castles (10 Days) -->
+        <div id="tour4" class="tab-content">
+            <div class="tour-header">
+                <h2>Ultimate UK Heritage & Castles</h2>
+                <div class="subtitle">10 Days | London to Edinburgh | Heritage Tour</div>
+                <div class="tour-stats">
+                    <span>📍 6 Cities</span>
+                    <span>🏨 5 Hotels (2 Castles)</span>
+                    <span>🍽️ 27 Meals</span>
+                    <span>🎯 15 Activities</span>
+                </div>
+            </div>
+
+            <table class="costing-table" id="table-tour4">
+                <thead>
+                    <tr>
+                        <th class="day-col">Day</th>
+                        <th class="activity-col">Activity / Item</th>
+                        <th class="type-col">Type</th>
+                        <th class="gbp-col">GBP Cost</th>
+                        <th class="rate-col">Rate</th>
+                        <th class="inr-col">INR Cost</th>
+                        <th class="supplier-col">Supplier</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td class="day-col">1</td><td class="activity-col">Heathrow Airport Transfer</td><td class="type-col"><span class="type-transport">TRANSPORT</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Transfer company"></td></tr>
+                    <tr><td class="day-col">1</td><td class="activity-col">Kingston Lodge Hotel - 2 nights</td><td class="type-col"><span class="type-accommodation">ACCOMMODATION</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Hotel supplier"></td></tr>
+                    <tr><td class="day-col">1</td><td class="activity-col">Chokhi Dhani Welcome Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+
+                    <tr><td class="day-col">2</td><td class="activity-col">Tower of London + Crown Jewels</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">2</td><td class="activity-col">Westminster Abbey</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">2</td><td class="activity-col">Sagar Lunch + Dishoom Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+
+                    <tr><td class="day-col">3</td><td class="activity-col">Windsor Castle State Apartments</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">3</td><td class="activity-col">Thornbury Castle - 2 nights</td><td class="type-col"><span class="type-accommodation">ACCOMMODATION</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Hotel supplier"></td></tr>
+                    <tr><td class="day-col">3</td><td class="activity-col">Mango Tree Lunch + Castle Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+                    <tr><td class="day-col">3</td><td class="activity-col">Transfer London to Thornbury</td><td class="type-col"><span class="type-transport">TRANSPORT</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Coach company"></td></tr>
+
+                    <tr><td class="day-col">4</td><td class="activity-col">Cotswolds Villages Tour</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Tour operator"></td></tr>
+                    <tr><td class="day-col">4</td><td class="activity-col">Bath Roman Baths Entry</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">4</td><td class="activity-col">Rajpoot Lunch + Castle Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+
+                    <tr><td class="day-col">5</td><td class="activity-col">Stratford Shakespeare Birthplace</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">5</td><td class="activity-col">Warwick Castle Entry</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">5</td><td class="activity-col">Weetwood Hall Estate - 2 nights</td><td class="type-col"><span class="type-accommodation">ACCOMMODATION</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Hotel supplier"></td></tr>
+                    <tr><td class="day-col">5</td><td class="activity-col">Spice Kitchen Lunch + Aagrah Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+                    <tr><td class="day-col">5</td><td class="activity-col">Transfer Thornbury to Leeds</td><td class="type-col"><span class="type-transport">TRANSPORT</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Coach company"></td></tr>
+
+                    <tr><td class="day-col">6</td><td class="activity-col">York Minster Entry</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">6</td><td class="activity-col">York Medieval Walking Tour</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Tour guide"></td></tr>
+                    <tr><td class="day-col">6</td><td class="activity-col">Mumbai Lounge Lunch + Hotel Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+
+                    <tr><td class="day-col">7</td><td class="activity-col">Chatsworth House Entry</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">7</td><td class="activity-col">The Ro Hotel Windermere - 2 nights</td><td class="type-col"><span class="type-accommodation">ACCOMMODATION</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Hotel supplier"></td></tr>
+                    <tr><td class="day-col">7</td><td class="activity-col">Cottage Lunch + Bombay Spice Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+                    <tr><td class="day-col">7</td><td class="activity-col">Transfer Leeds to Windermere</td><td class="type-col"><span class="type-transport">TRANSPORT</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Coach company"></td></tr>
+
+                    <tr><td class="day-col">8</td><td class="activity-col">Windermere Lake Cruise</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">8</td><td class="activity-col">Beatrix Potter Hill Top Farm</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">8</td><td class="activity-col">Kathmandu Lunch + Royal Oak Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+
+                    <tr><td class="day-col">9</td><td class="activity-col">Dalhousie Castle - 1 night</td><td class="type-col"><span class="type-accommodation">ACCOMMODATION</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Hotel supplier"></td></tr>
+                    <tr><td class="day-col">9</td><td class="activity-col">Edinburgh Castle Entry</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">9</td><td class="activity-col">Royal Mile Walking Tour</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Tour guide"></td></tr>
+                    <tr><td class="day-col">9</td><td class="activity-col">Mother India Lunch + Castle Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+                    <tr><td class="day-col">9</td><td class="activity-col">Transfer Windermere to Edinburgh</td><td class="type-col"><span class="type-transport">TRANSPORT</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Coach company"></td></tr>
+
+                    <tr><td class="day-col">10</td><td class="activity-col">Edinburgh Airport Transfer</td><td class="type-col"><span class="type-transport">TRANSPORT</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Transfer company"></td></tr>
+                    <tr><td class="day-col">10</td><td class="activity-col">Breakfast at Castle</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Hotel"></td></tr>
+
+                    <!-- Coach Transport Row -->
+                    <tr class="coach-row">
+                        <td class="day-col">-</td>
+                        <td class="activity-col"><strong>Coach Transport (10 days × £25 pp)</strong></td>
+                        <td class="type-col"><span class="type-transport">TRANSPORT</span></td>
+                        <td class="gbp-col"><input type="number" class="gbp-input coach-gbp" value="250" readonly></td>
+                        <td class="rate-col"><input type="number" class="rate-input" value="110" readonly></td>
+                        <td class="inr-col"><span class="inr-value coach-inr">27500</span></td>
+                        <td class="supplier-col"><input type="text" placeholder="Coach hire company"></td></tr>
+
+                    <!-- Total Row -->
+                    <tr class="total-row">
+                        <td class="day-col" colspan="3"><strong>TOTAL TOUR COST</strong></td>
+                        <td class="gbp-col"><strong><span class="total-gbp">0.00</span></strong></td>
+                        <td class="rate-col">-</td>
+                        <td class="inr-col"><strong><span class="total-inr">0</span></strong></td>
+                        <td class="supplier-col">-</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="summary-box">
+                <div class="summary-grid">
+                    <div class="summary-item">
+                        <div class="label">Accommodation</div>
+                        <div class="value gbp" id="tour4-acc-gbp">£0</div>
+                        <div class="value inr" id="tour4-acc-inr">₹0</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="label">Activities</div>
+                        <div class="value gbp" id="tour4-act-gbp">£0</div>
+                        <div class="value inr" id="tour4-act-inr">₹0</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="label">Meals</div>
+                        <div class="value gbp" id="tour4-meal-gbp">£0</div>
+                        <div class="value inr" id="tour4-meal-inr">₹0</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="label">Transport</div>
+                        <div class="value gbp" id="tour4-trans-gbp">£0</div>
+                        <div class="value inr" id="tour4-trans-inr">₹0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="notes-section">
+                <h4>📝 Notes & Margins</h4>
+                <textarea placeholder="Enter selling price, margin calculations, commission notes here..."></textarea>
+            </div>
+        </div>
+
+        <!-- TOUR 5: UK Family Adventure (12 Days) -->
+        <div id="tour5" class="tab-content">
+            <div class="tour-header">
+                <h2>UK Family Adventure - Castles, Wizards & Wildlife</h2>
+                <div class="subtitle">12 Days | London to Edinburgh | Family Tour</div>
+                <div class="tour-stats">
+                    <span>📍 6 Cities</span>
+                    <span>🏨 6 Hotels</span>
+                    <span>🍽️ 33 Meals</span>
+                    <span>🎯 18 Activities</span>
+                </div>
+            </div>
+
+            <table class="costing-table" id="table-tour5">
+                <thead>
+                    <tr>
+                        <th class="day-col">Day</th>
+                        <th class="activity-col">Activity / Item</th>
+                        <th class="type-col">Type</th>
+                        <th class="gbp-col">GBP Cost</th>
+                        <th class="rate-col">Rate</th>
+                        <th class="inr-col">INR Cost</th>
+                        <th class="supplier-col">Supplier</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td class="day-col">1</td><td class="activity-col">Heathrow Airport Transfer</td><td class="type-col"><span class="type-transport">TRANSPORT</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Transfer company"></td></tr>
+                    <tr><td class="day-col">1</td><td class="activity-col">Novotel London West - 3 nights</td><td class="type-col"><span class="type-accommodation">ACCOMMODATION</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Hotel supplier"></td></tr>
+                    <tr><td class="day-col">1</td><td class="activity-col">Chokhi Dhani Welcome Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+
+                    <tr><td class="day-col">2</td><td class="activity-col">Warner Bros Studio Tour London</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">2</td><td class="activity-col">Harry Potter Walking Tour London</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Tour operator"></td></tr>
+                    <tr><td class="day-col">2</td><td class="activity-col">Sagar Lunch + Dishoom Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+
+                    <tr><td class="day-col">3</td><td class="activity-col">London Zoo Entry</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">3</td><td class="activity-col">Madame Tussauds London</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">3</td><td class="activity-col">Gymkhana Lunch + Tayyabs Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+
+                    <tr><td class="day-col">4</td><td class="activity-col">Legoland Windsor Entry</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">4</td><td class="activity-col">Windsor Castle State Apartments</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">4</td><td class="activity-col">Thornbury Castle - 2 nights</td><td class="type-col"><span class="type-accommodation">ACCOMMODATION</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Hotel supplier"></td></tr>
+                    <tr><td class="day-col">4</td><td class="activity-col">Mango Tree Lunch + Castle Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+                    <tr><td class="day-col">4</td><td class="activity-col">Transfer London to Thornbury</td><td class="type-col"><span class="type-transport">TRANSPORT</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Coach company"></td></tr>
+
+                    <tr><td class="day-col">5</td><td class="activity-col">Cotswolds Wildlife Park</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">5</td><td class="activity-col">Bourton-on-the-Water Model Village</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">5</td><td class="activity-col">Rajpoot Lunch + Castle Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+
+                    <tr><td class="day-col">6</td><td class="activity-col">Alton Towers Theme Park</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">6</td><td class="activity-col">Delta Hotels Birmingham - 1 night</td><td class="type-col"><span class="type-accommodation">ACCOMMODATION</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Hotel supplier"></td></tr>
+                    <tr><td class="day-col">6</td><td class="activity-col">Spice Kitchen Lunch + Pushkar Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+                    <tr><td class="day-col">6</td><td class="activity-col">Transfer Thornbury to Birmingham</td><td class="type-col"><span class="type-transport">TRANSPORT</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Coach company"></td></tr>
+
+                    <tr><td class="day-col">7</td><td class="activity-col">Cadbury World Birmingham</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">7</td><td class="activity-col">Thinktank Birmingham Science Museum</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">7</td><td class="activity-col">The Ro Hotel Windermere - 3 nights</td><td class="type-col"><span class="type-accommodation">ACCOMMODATION</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Hotel supplier"></td></tr>
+                    <tr><td class="day-col">7</td><td class="activity-col">Cottage Lunch + Bombay Spice Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+                    <tr><td class="day-col">7</td><td class="activity-col">Transfer Birmingham to Windermere</td><td class="type-col"><span class="type-transport">TRANSPORT</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Coach company"></td></tr>
+
+                    <tr><td class="day-col">8</td><td class="activity-col">Windermere Lake Cruise</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">8</td><td class="activity-col">Beatrix Potter Hill Top Farm</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">8</td><td class="activity-col">World of Beatrix Potter Attraction</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">8</td><td class="activity-col">Kathmandu Lunch + Royal Oak Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+
+                    <tr><td class="day-col">9</td><td class="activity-col">Ambleside + Grasmere Tour</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Tour operator"></td></tr>
+                    <tr><td class="day-col">9</td><td class="activity-col">Dove Cottage Wordsworth Museum</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">9</td><td class="activity-col">Lunch + Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+
+                    <tr><td class="day-col">10</td><td class="activity-col">Edinburgh Zoo Entry</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">10</td><td class="activity-col">Dynamic Earth Edinburgh</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">10</td><td class="activity-col">Novotel Edinburgh Centre - 2 nights</td><td class="type-col"><span class="type-accommodation">ACCOMMODATION</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Hotel supplier"></td></tr>
+                    <tr><td class="day-col">10</td><td class="activity-col">Lunch + Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+                    <tr><td class="day-col">10</td><td class="activity-col">Transfer Windermere to Edinburgh</td><td class="type-col"><span class="type-transport">TRANSPORT</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Coach company"></td></tr>
+
+                    <tr><td class="day-col">11</td><td class="activity-col">Edinburgh Castle Entry</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">11</td><td class="activity-col">Camera Obscura & World of Illusions</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">11</td><td class="activity-col">Mother India Lunch + Dishoom Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+
+                    <tr><td class="day-col">12</td><td class="activity-col">Edinburgh Airport Transfer</td><td class="type-col"><span class="type-transport">TRANSPORT</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Transfer company"></td></tr>
+                    <tr><td class="day-col">12</td><td class="activity-col">Breakfast</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Hotel"></td></tr>
+
+                    <!-- Coach Transport Row -->
+                    <tr class="coach-row">
+                        <td class="day-col">-</td>
+                        <td class="activity-col"><strong>Coach Transport (12 days × £25 pp)</strong></td>
+                        <td class="type-col"><span class="type-transport">TRANSPORT</span></td>
+                        <td class="gbp-col"><input type="number" class="gbp-input coach-gbp" value="300" readonly></td>
+                        <td class="rate-col"><input type="number" class="rate-input" value="110" readonly></td>
+                        <td class="inr-col"><span class="inr-value coach-inr">33000</span></td>
+                        <td class="supplier-col"><input type="text" placeholder="Coach hire company"></td></tr>
+
+                    <!-- Total Row -->
+                    <tr class="total-row">
+                        <td class="day-col" colspan="3"><strong>TOTAL TOUR COST</strong></td>
+                        <td class="gbp-col"><strong><span class="total-gbp">0.00</span></strong></td>
+                        <td class="rate-col">-</td>
+                        <td class="inr-col"><strong><span class="total-inr">0</span></strong></td>
+                        <td class="supplier-col">-</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="summary-box">
+                <div class="summary-grid">
+                    <div class="summary-item">
+                        <div class="label">Accommodation</div>
+                        <div class="value gbp" id="tour5-acc-gbp">£0</div>
+                        <div class="value inr" id="tour5-acc-inr">₹0</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="label">Activities</div>
+                        <div class="value gbp" id="tour5-act-gbp">£0</div>
+                        <div class="value inr" id="tour5-act-inr">₹0</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="label">Meals</div>
+                        <div class="value gbp" id="tour5-meal-gbp">£0</div>
+                        <div class="value inr" id="tour5-meal-inr">₹0</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="label">Transport</div>
+                        <div class="value gbp" id="tour5-trans-gbp">£0</div>
+                        <div class="value inr" id="tour5-trans-inr">₹0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="notes-section">
+                <h4>📝 Notes & Margins</h4>
+                <textarea placeholder="Enter selling price, margin calculations, commission notes here..."></textarea>
+            </div>
+        </div>
+
+        <!-- TOUR 6: Towers and Temples (12 Days) -->
+        <div id="tour6" class="tab-content">
+            <div class="tour-header">
+                <h2>Towers and Temples - UK Heritage & Hindu Spiritual Journey</h2>
+                <div class="subtitle">12 Days | London to Edinburgh | Spiritual Heritage Tour</div>
+                <div class="tour-stats">
+                    <span>📍 6 Cities</span>
+                    <span>🏨 6 Hotels (2 Castles)</span>
+                    <span>🍽️ 33 Meals</span>
+                    <span>🎯 15 Activities</span>
+                </div>
+            </div>
+
+            <table class="costing-table" id="table-tour6">
+                <thead>
+                    <tr>
+                        <th class="day-col">Day</th>
+                        <th class="activity-col">Activity / Item</th>
+                        <th class="type-col">Type</th>
+                        <th class="gbp-col">GBP Cost</th>
+                        <th class="rate-col">Rate</th>
+                        <th class="inr-col">INR Cost</th>
+                        <th class="supplier-col">Supplier</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td class="day-col">1</td><td class="activity-col">Heathrow Airport Transfer</td><td class="type-col"><span class="type-transport">TRANSPORT</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Transfer company"></td></tr>
+                    <tr><td class="day-col">1</td><td class="activity-col">Kingston Lodge Hotel - 2 nights</td><td class="type-col"><span class="type-accommodation">ACCOMMODATION</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Hotel supplier"></td></tr>
+                    <tr><td class="day-col">1</td><td class="activity-col">Shree Swaminarayan Mandir (Neasden Temple)</td><td class="type-col"><span class="type-temple">TEMPLE</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Temple"></td></tr>
+                    <tr><td class="day-col">1</td><td class="activity-col">Chokhi Dhani Welcome Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+
+                    <tr><td class="day-col">2</td><td class="activity-col">Tower of London + Crown Jewels</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">2</td><td class="activity-col">St Paul's Cathedral</td><td class="type-col"><span class="type-temple">TEMPLE</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">2</td><td class="activity-col">Sagar Lunch + Dishoom Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+
+                    <tr><td class="day-col">3</td><td class="activity-col">Windsor Castle State Apartments</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">3</td><td class="activity-col">Thornbury Castle - 2 nights</td><td class="type-col"><span class="type-accommodation">ACCOMMODATION</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Hotel supplier"></td></tr>
+                    <tr><td class="day-col">3</td><td class="activity-col">Mango Tree Lunch + Castle Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+                    <tr><td class="day-col">3</td><td class="activity-col">Transfer London to Thornbury</td><td class="type-col"><span class="type-transport">TRANSPORT</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Coach company"></td></tr>
+
+                    <tr><td class="day-col">4</td><td class="activity-col">Bath Roman Baths Entry</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">4</td><td class="activity-col">Bath Abbey</td><td class="type-col"><span class="type-temple">TEMPLE</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Temple"></td></tr>
+                    <tr><td class="day-col">4</td><td class="activity-col">Rajpoot Lunch + Castle Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+
+                    <tr><td class="day-col">5</td><td class="activity-col">Stratford Shakespeare Birthplace</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">5</td><td class="activity-col">Holy Trinity Church (Shakespeare's Grave)</td><td class="type-col"><span class="type-temple">TEMPLE</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Temple"></td></tr>
+                    <tr><td class="day-col">5</td><td class="activity-col">Weetwood Hall Estate - 2 nights</td><td class="type-col"><span class="type-accommodation">ACCOMMODATION</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Hotel supplier"></td></tr>
+                    <tr><td class="day-col">5</td><td class="activity-col">Spice Kitchen Lunch + Aagrah Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+                    <tr><td class="day-col">5</td><td class="activity-col">Transfer Thornbury to Leeds</td><td class="type-col"><span class="type-transport">TRANSPORT</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Coach company"></td></tr>
+
+                    <tr><td class="day-col">6</td><td class="activity-col">York Minster Entry</td><td class="type-col"><span class="type-temple">TEMPLE</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Temple"></td></tr>
+                    <tr><td class="day-col">6</td><td class="activity-col">York Medieval Walking Tour</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Tour guide"></td></tr>
+                    <tr><td class="day-col">6</td><td class="activity-col">Mumbai Lounge Lunch + Hotel Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+
+                    <tr><td class="day-col">7</td><td class="activity-col">Chatsworth House Entry</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">7</td><td class="activity-col">The Ro Hotel Windermere - 2 nights</td><td class="type-col"><span class="type-accommodation">ACCOMMODATION</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Hotel supplier"></td></tr>
+                    <tr><td class="day-col">7</td><td class="activity-col">Cottage Lunch + Bombay Spice Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+                    <tr><td class="day-col">7</td><td class="activity-col">Transfer Leeds to Windermere</td><td class="type-col"><span class="type-transport">TRANSPORT</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Coach company"></td></tr>
+
+                    <tr><td class="day-col">8</td><td class="activity-col">Windermere Lake Cruise</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">8</td><td class="activity-col">Kathmandu Lunch + Royal Oak Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+
+                    <tr><td class="day-col">9</td><td class="activity-col">Glasgow Cathedral</td><td class="type-col"><span class="type-temple">TEMPLE</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Temple"></td></tr>
+                    <tr><td class="day-col">9</td><td class="activity-col">Glasgow Hindu Mandir</td><td class="type-col"><span class="type-temple">TEMPLE</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Temple"></td></tr>
+                    <tr><td class="day-col">9</td><td class="activity-col">Rosslea Hall Hotel - 1 night</td><td class="type-col"><span class="type-accommodation">ACCOMMODATION</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Hotel supplier"></td></tr>
+                    <tr><td class="day-col">9</td><td class="activity-col">Lunch + Dakhin Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+                    <tr><td class="day-col">9</td><td class="activity-col">Transfer Windermere to Helensburgh</td><td class="type-col"><span class="type-transport">TRANSPORT</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Coach company"></td></tr>
+
+                    <tr><td class="day-col">10</td><td class="activity-col">Loch Lomond Cruise</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">10</td><td class="activity-col">Lunch + Hotel Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+
+                    <tr><td class="day-col">11</td><td class="activity-col">Dalhousie Castle - 1 night</td><td class="type-col"><span class="type-accommodation">ACCOMMODATION</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Hotel supplier"></td></tr>
+                    <tr><td class="day-col">11</td><td class="activity-col">Edinburgh Castle Entry</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">11</td><td class="activity-col">St Giles' Cathedral</td><td class="type-col"><span class="type-temple">TEMPLE</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Temple"></td></tr>
+                    <tr><td class="day-col">11</td><td class="activity-col">Mother India Lunch + Castle Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+                    <tr><td class="day-col">11</td><td class="activity-col">Transfer Helensburgh to Edinburgh</td><td class="type-col"><span class="type-transport">TRANSPORT</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Coach company"></td></tr>
+
+                    <tr><td class="day-col">12</td><td class="activity-col">Edinburgh Airport Transfer</td><td class="type-col"><span class="type-transport">TRANSPORT</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Transfer company"></td></tr>
+                    <tr><td class="day-col">12</td><td class="activity-col">Breakfast at Castle</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Hotel"></td></tr>
+
+                    <!-- Coach Transport Row -->
+                    <tr class="coach-row">
+                        <td class="day-col">-</td>
+                        <td class="activity-col"><strong>Coach Transport (12 days × £25 pp)</strong></td>
+                        <td class="type-col"><span class="type-transport">TRANSPORT</span></td>
+                        <td class="gbp-col"><input type="number" class="gbp-input coach-gbp" value="300" readonly></td>
+                        <td class="rate-col"><input type="number" class="rate-input" value="110" readonly></td>
+                        <td class="inr-col"><span class="inr-value coach-inr">33000</span></td>
+                        <td class="supplier-col"><input type="text" placeholder="Coach hire company"></td></tr>
+
+                    <!-- Total Row -->
+                    <tr class="total-row">
+                        <td class="day-col" colspan="3"><strong>TOTAL TOUR COST</strong></td>
+                        <td class="gbp-col"><strong><span class="total-gbp">0.00</span></strong></td>
+                        <td class="rate-col">-</td>
+                        <td class="inr-col"><strong><span class="total-inr">0</span></strong></td>
+                        <td class="supplier-col">-</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="summary-box">
+                <div class="summary-grid">
+                    <div class="summary-item">
+                        <div class="label">Accommodation</div>
+                        <div class="value gbp" id="tour6-acc-gbp">£0</div>
+                        <div class="value inr" id="tour6-acc-inr">₹0</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="label">Activities</div>
+                        <div class="value gbp" id="tour6-act-gbp">£0</div>
+                        <div class="value inr" id="tour6-act-inr">₹0</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="label">Meals</div>
+                        <div class="value gbp" id="tour6-meal-gbp">£0</div>
+                        <div class="value inr" id="tour6-meal-inr">₹0</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="label">Transport</div>
+                        <div class="value gbp" id="tour6-trans-gbp">£0</div>
+                        <div class="value inr" id="tour6-trans-inr">₹0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="notes-section">
+                <h4>📝 Notes & Margins</h4>
+                <textarea placeholder="Enter selling price, margin calculations, commission notes here..."></textarea>
+            </div>
+        </div>
+
+        <!-- TOUR 7: Bollywood UK Experience (9 Days) -->
+        <div id="tour7" class="tab-content">
+            <div class="tour-header">
+                <h2>Bollywood UK Experience - Lights, Camera, Action!</h2>
+                <div class="subtitle">9 Days | London to Edinburgh | Film & Heritage Tour</div>
+                <div class="tour-stats">
+                    <span>📍 4 Cities</span>
+                    <span>🏨 4 Hotels (1 Castle)</span>
+                    <span>🍽️ 24 Meals</span>
+                    <span>🎯 12 Activities</span>
+                </div>
+            </div>
+
+            <table class="costing-table" id="table-tour7">
+                <thead>
+                    <tr>
+                        <th class="day-col">Day</th>
+                        <th class="activity-col">Activity / Item</th>
+                        <th class="type-col">Type</th>
+                        <th class="gbp-col">GBP Cost</th>
+                        <th class="rate-col">Rate</th>
+                        <th class="inr-col">INR Cost</th>
+                        <th class="supplier-col">Supplier</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td class="day-col">1</td><td class="activity-col">Heathrow Airport Transfer</td><td class="type-col"><span class="type-transport">TRANSPORT</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Transfer company"></td></tr>
+                    <tr><td class="day-col">1</td><td class="activity-col">Kingston Lodge Hotel - 3 nights</td><td class="type-col"><span class="type-accommodation">ACCOMMODATION</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Hotel supplier"></td></tr>
+                    <tr><td class="day-col">1</td><td class="activity-col">Chokhi Dhani Welcome Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+
+                    <tr><td class="day-col">2</td><td class="activity-col">Warner Bros Studio Tour London</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">2</td><td class="activity-col">London Film Locations Walking Tour</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Tour operator"></td></tr>
+                    <tr><td class="day-col">2</td><td class="activity-col">Sagar Lunch + Dishoom Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+
+                    <tr><td class="day-col">3</td><td class="activity-col">Tower of London + Crown Jewels</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">3</td><td class="activity-col">London Eye Fast Track</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">3</td><td class="activity-col">Gymkhana Lunch + Tayyabs Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+
+                    <tr><td class="day-col">4</td><td class="activity-col">Windsor Castle State Apartments</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">4</td><td class="activity-col">Thornbury Castle - 1 night</td><td class="type-col"><span class="type-accommodation">ACCOMMODATION</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Hotel supplier"></td></tr>
+                    <tr><td class="day-col">4</td><td class="activity-col">Mango Tree Lunch + Castle Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+                    <tr><td class="day-col">4</td><td class="activity-col">Transfer London to Thornbury</td><td class="type-col"><span class="type-transport">TRANSPORT</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Coach company"></td></tr>
+
+                    <tr><td class="day-col">5</td><td class="activity-col">Cotswolds Bollywood Film Locations</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Tour operator"></td></tr>
+                    <tr><td class="day-col">5</td><td class="activity-col">Bath Roman Baths Entry</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">5</td><td class="activity-col">The Ro Hotel Windermere - 3 nights</td><td class="type-col"><span class="type-accommodation">ACCOMMODATION</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Hotel supplier"></td></tr>
+                    <tr><td class="day-col">5</td><td class="activity-col">Rajpoot Lunch + Bombay Spice Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+                    <tr><td class="day-col">5</td><td class="activity-col">Transfer Thornbury to Windermere</td><td class="type-col"><span class="type-transport">TRANSPORT</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Coach company"></td></tr>
+
+                    <tr><td class="day-col">6</td><td class="activity-col">Windermere Lake Cruise</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">6</td><td class="activity-col">Beatrix Potter Hill Top Farm</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">6</td><td class="activity-col">Cottage Lunch + Royal Oak Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+
+                    <tr><td class="day-col">7</td><td class="activity-col">Ambleside + Grasmere Tour</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Tour operator"></td></tr>
+                    <tr><td class="day-col">7</td><td class="activity-col">Kathmandu Lunch + Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+
+                    <tr><td class="day-col">8</td><td class="activity-col">Dalhousie Castle - 1 night</td><td class="type-col"><span class="type-accommodation">ACCOMMODATION</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Hotel supplier"></td></tr>
+                    <tr><td class="day-col">8</td><td class="activity-col">Edinburgh Castle Entry</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Attraction supplier"></td></tr>
+                    <tr><td class="day-col">8</td><td class="activity-col">Royal Mile Walking Tour</td><td class="type-col"><span class="type-activity">ACTIVITY</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Tour guide"></td></tr>
+                    <tr><td class="day-col">8</td><td class="activity-col">Mother India Lunch + Castle Dinner</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Restaurant"></td></tr>
+                    <tr><td class="day-col">8</td><td class="activity-col">Transfer Windermere to Edinburgh</td><td class="type-col"><span class="type-transport">TRANSPORT</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Coach company"></td></tr>
+
+                    <tr><td class="day-col">9</td><td class="activity-col">Edinburgh Airport Transfer</td><td class="type-col"><span class="type-transport">TRANSPORT</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Transfer company"></td></tr>
+                    <tr><td class="day-col">9</td><td class="activity-col">Breakfast at Castle</td><td class="type-col"><span class="type-meal">MEAL</span></td><td class="gbp-col"><input type="number" class="gbp-input" placeholder="0.00" onchange="calculateRow(this)"></td><td class="rate-col"><input type="number" class="rate-input" value="110" onchange="calculateRow(this)"></td><td class="inr-col"><span class="inr-value">0</span></td><td class="supplier-col"><input type="text" placeholder="Hotel"></td></tr>
+
+                    <!-- Coach Transport Row -->
+                    <tr class="coach-row">
+                        <td class="day-col">-</td>
+                        <td class="activity-col"><strong>Coach Transport (9 days × £25 pp)</strong></td>
+                        <td class="type-col"><span class="type-transport">TRANSPORT</span></td>
+                        <td class="gbp-col"><input type="number" class="gbp-input coach-gbp" value="225" readonly></td>
+                        <td class="rate-col"><input type="number" class="rate-input" value="110" readonly></td>
+                        <td class="inr-col"><span class="inr-value coach-inr">24750</span></td>
+                        <td class="supplier-col"><input type="text" placeholder="Coach hire company"></td></tr>
+
+                    <!-- Total Row -->
+                    <tr class="total-row">
+                        <td class="day-col" colspan="3"><strong>TOTAL TOUR COST</strong></td>
+                        <td class="gbp-col"><strong><span class="total-gbp">0.00</span></strong></td>
+                        <td class="rate-col">-</td>
+                        <td class="inr-col"><strong><span class="total-inr">0</span></strong></td>
+                        <td class="supplier-col">-</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="summary-box">
+                <div class="summary-grid">
+                    <div class="summary-item">
+                        <div class="label">Accommodation</div>
+                        <div class="value gbp" id="tour7-acc-gbp">£0</div>
+                        <div class="value inr" id="tour7-acc-inr">₹0</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="label">Activities</div>
+                        <div class="value gbp" id="tour7-act-gbp">£0</div>
+                        <div class="value inr" id="tour7-act-inr">₹0</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="label">Meals</div>
+                        <div class="value gbp" id="tour7-meal-gbp">£0</div>
+                        <div class="value inr" id="tour7-meal-inr">₹0</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="label">Transport</div>
+                        <div class="value gbp" id="tour7-trans-gbp">£0</div>
+                        <div class="value inr" id="tour7-trans-inr">₹0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="notes-section">
+                <h4>📝 Notes & Margins</h4>
+                <textarea placeholder="Enter selling price, margin calculations, commission notes here..."></textarea>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab switching functionality
+        function showTab(tabId) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show selected tab
+            document.getElementById(tabId).classList.add('active');
+
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+
+        // Calculate individual row
+        function calculateRow(input) {
+            const row = input.closest('tr');
+            const gbpInput = row.querySelector('.gbp-input');
+            const rateInput = row.querySelector('.rate-input');
+            const inrValue = row.querySelector('.inr-value');
+
+            const gbp = parseFloat(gbpInput.value) || 0;
+            const rate = parseFloat(rateInput.value) || 110;
+            const inr = Math.round(gbp * rate);
+
+            inrValue.textContent = inr.toLocaleString('en-IN');
+
+            // Update totals for this table
+            updateTableTotals(row.closest('table'));
+        }
+
+        // Update all calculations when global settings change
+        function updateAllCalculations() {
+            const globalRate = parseFloat(document.getElementById('globalExchangeRate').value) || 110;
+            const globalCoachRate = parseFloat(document.getElementById('globalCoachRate').value) || 25;
+
+            // Update all rate inputs
+            document.querySelectorAll('.rate-input').forEach(input => {
+                if (!input.closest('.coach-row')) {
+                    input.value = globalRate;
+                }
+            });
+
+            // Update all coach transport rows
+            document.querySelectorAll('.coach-row').forEach(row => {
+                const table = row.closest('table');
+                const tourId = table.id;
+                const days = getTourDays(tourId);
+                const coachGbp = days * globalCoachRate;
+
+                const gbpInput = row.querySelector('.coach-gbp');
+                const inrValue = row.querySelector('.coach-inr');
+
+                gbpInput.value = coachGbp;
+                inrValue.textContent = Math.round(coachGbp * globalRate).toLocaleString('en-IN');
+            });
+
+            // Recalculate all rows
+            document.querySelectorAll('.gbp-input').forEach(input => {
+                calculateRow(input);
+            });
+        }
+
+        // Get tour days from table ID
+        function getTourDays(tableId) {
+            const daysMap = {
+                'table-tour1': 16,
+                'table-tour2': 7,
+                'table-tour3': 6,
+                'table-tour4': 10,
+                'table-tour5': 12,
+                'table-tour6': 12,
+                'table-tour7': 9
+            };
+            return daysMap[tableId] || 1;
+        }
+
+        // Update table totals and category breakdowns
+        function updateTableTotals(table) {
+            const tourId = table.id.replace('table-', '');
+            const rows = table.querySelectorAll('tbody tr:not(.total-row):not(.coach-row)');
+
+            let totalGbp = 0;
+            let accGbp = 0, actGbp = 0, mealGbp = 0, transGbp = 0;
+
+            rows.forEach(row => {
+                const gbpInput = row.querySelector('.gbp-input');
+                const typeCol = row.querySelector('.type-col');
+
+                if (gbpInput && typeCol) {
+                    const gbp = parseFloat(gbpInput.value) || 0;
+                    totalGbp += gbp;
+
+                    const typeText = typeCol.textContent.toUpperCase();
+                    if (typeText.includes('ACCOMMODATION')) accGbp += gbp;
+                    else if (typeText.includes('ACTIVITY') || typeText.includes('TEMPLE')) actGbp += gbp;
+                    else if (typeText.includes('MEAL')) mealGbp += gbp;
+                    else if (typeText.includes('TRANSPORT')) transGbp += gbp;
+                }
+            });
+
+            // Add coach transport
+            const coachRow = table.querySelector('.coach-row');
+            if (coachRow) {
+                const coachGbp = parseFloat(coachRow.querySelector('.coach-gbp').value) || 0;
+                totalGbp += coachGbp;
+                transGbp += coachGbp;
+            }
+
+            const globalRate = parseFloat(document.getElementById('globalExchangeRate').value) || 110;
+
+            // Update total row
+            const totalRow = table.querySelector('.total-row');
+            if (totalRow) {
+                totalRow.querySelector('.total-gbp').textContent = totalGbp.toFixed(2);
+                totalRow.querySelector('.total-inr').textContent = Math.round(totalGbp * globalRate).toLocaleString('en-IN');
+            }
+
+            // Update summary boxes
+            updateSummaryBox(tourId, accGbp, actGbp, mealGbp, transGbp, globalRate);
+        }
+
+        // Update summary box for a tour
+        function updateSummaryBox(tourId, acc, act, meal, trans, rate) {
+            const ids = {
+                accGbp: `${tourId}-acc-gbp`, accInr: `${tourId}-acc-inr`,
+                actGbp: `${tourId}-act-gbp`, actInr: `${tourId}-act-inr`,
+                mealGbp: `${tourId}-meal-gbp`, mealInr: `${tourId}-meal-inr`,
+                transGbp: `${tourId}-trans-gbp`, transInr: `${tourId}-trans-inr`
+            };
+
+            const setValues = (gbpId, inrId, gbpVal) => {
+                const gbpEl = document.getElementById(gbpId);
+                const inrEl = document.getElementById(inrId);
+                if (gbpEl) gbpEl.textContent = '£' + gbpVal.toFixed(0);
+                if (inrEl) inrEl.textContent = '₹' + Math.round(gbpVal * rate).toLocaleString('en-IN');
+            };
+
+            setValues(ids.accGbp, ids.accInr, acc);
+            setValues(ids.actGbp, ids.actInr, act);
+            setValues(ids.mealGbp, ids.mealInr, meal);
+            setValues(ids.transGbp, ids.transInr, trans);
+        }
+
+        // Export all tours to Excel using SheetJS
+        function exportAllToExcel() {
+            const wb = XLSX.utils.book_new();
+            wb.Props = {
+                Title: "TripFactory UK Tours 2026 - Costing Sheets",
+                Subject: "Tour Costing",
+                Author: "TripFactory",
+                CreatedDate: new Date()
+            };
+
+            const tourNames = [
+                'Grand British Isles (16D)',
+                'London Paris Castles (7D)',
+                'Lake District (6D)',
+                'Ultimate Heritage (10D)',
+                'Family Adventure (12D)',
+                'Towers & Temples (12D)',
+                'Bollywood UK (9D)'
+            ];
+
+            const tableIds = ['table-tour1', 'table-tour2', 'table-tour3', 'table-tour4', 'table-tour5', 'table-tour6', 'table-tour7'];
+
+            tableIds.forEach((tableId, index) => {
+                const table = document.getElementById(tableId);
+                if (table) {
+                    const ws_data = [];
+
+                    // Header row
+                    ws_data.push(['Day', 'Activity / Item', 'Type', 'GBP Cost', 'Rate', 'INR Cost', 'Supplier']);
+
+                    // Data rows
+                    const rows = table.querySelectorAll('tbody tr');
+                    rows.forEach(row => {
+                        const day = row.querySelector('.day-col')?.textContent || '';
+                        const activity = row.querySelector('.activity-col')?.textContent?.trim() || '';
+                        const type = row.querySelector('.type-col')?.textContent?.trim() || '';
+                        const gbp = row.querySelector('.gbp-input')?.value || '';
+                        const rate = row.querySelector('.rate-input')?.value || '';
+                        const inr = row.querySelector('.inr-value')?.textContent?.replace(/,/g, '') || '';
+                        const supplier = row.querySelector('.supplier-col input')?.value || '';
+
+                        ws_data.push([day, activity, type, gbp, rate, inr, supplier]);
+                    });
+
+                    const ws = XLSX.utils.aoa_to_sheet(ws_data);
+
+                    // Set column widths
+                    ws['!cols'] = [
+                        {wch: 8},   // Day
+                        {wch: 40},  // Activity
+                        {wch: 15},  // Type
+                        {wch: 12},  // GBP
+                        {wch: 10},  // Rate
+                        {wch: 15},  // INR
+                        {wch: 25}   // Supplier
+                    ];
+
+                    XLSX.utils.book_append_sheet(wb, ws, tourNames[index]);
+                }
+            });
+
+            // Generate file name with date
+            const date = new Date().toISOString().split('T')[0];
+            const fileName = `TripFactory_UK_Tours_Costing_${date}.xlsx`;
+
+            XLSX.writeFile(wb, fileName);
+        }
+
+        // Export to CSV (single tour or all)
+        function exportAllToCSV() {
+            let csvContent = 'Tour,Day,Activity,Type,GBP Cost,Rate,INR Cost,Supplier\n';
+
+            const tourData = [
+                { id: 'table-tour1', name: 'Grand British Isles (16D)' },
+                { id: 'table-tour2', name: 'London Paris Castles (7D)' },
+                { id: 'table-tour3', name: 'Lake District (6D)' },
+                { id: 'table-tour4', name: 'Ultimate Heritage (10D)' },
+                { id: 'table-tour5', name: 'Family Adventure (12D)' },
+                { id: 'table-tour6', name: 'Towers & Temples (12D)' },
+                { id: 'table-tour7', name: 'Bollywood UK (9D)' }
+            ];
+
+            tourData.forEach(tour => {
+                const table = document.getElementById(tour.id);
+                if (table) {
+                    const rows = table.querySelectorAll('tbody tr');
+                    rows.forEach(row => {
+                        const day = (row.querySelector('.day-col')?.textContent || '').replace(/,/g, '');
+                        const activity = (row.querySelector('.activity-col')?.textContent?.trim() || '').replace(/,/g, '');
+                        const type = (row.querySelector('.type-col')?.textContent?.trim() || '').replace(/,/g, '');
+                        const gbp = (row.querySelector('.gbp-input')?.value || '').replace(/,/g, '');
+                        const rate = (row.querySelector('.rate-input')?.value || '').replace(/,/g, '');
+                        const inr = (row.querySelector('.inr-value')?.textContent?.replace(/,/g, '') || '');
+                        const supplier = (row.querySelector('.supplier-col input')?.value || '').replace(/,/g, '');
+
+                        csvContent += `"${tour.name}","${day}","${activity}","${type}","${gbp}","${rate}","${inr}","${supplier}"\n`;
+                    });
+                }
+            });
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const date = new Date().toISOString().split('T')[0];
+            link.href = URL.createObjectURL(blob);
+            link.download = `TripFactory_UK_Tours_Costing_${date}.csv`;
+            link.click();
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Calculate all existing values
+            document.querySelectorAll('.gbp-input').forEach(input => {
+                calculateRow(input);
+            });
+        });
+    </script>
+</body>
+</html>

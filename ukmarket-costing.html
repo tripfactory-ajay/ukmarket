@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TripFactory UK Market - Tour Costing Sheets</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f5f5; }
+
+        /* Header Styles - Matching UK Market */
+        .header {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%);
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header-left { display: flex; align-items: center; gap: 20px; }
+        .header img { height: 50px; background: white; padding: 5px; border-radius: 5px; }
+        .header h1 { font-size: 24px; }
+        .header-right { display: flex; align-items: center; gap: 20px; }
+        .header-right img { height: 40px; background: white; padding: 3px; border-radius: 4px; }
+
+        /* Navigation */
+        .nav-bar {
+            background: #1e3a5f;
+            padding: 0 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .nav-bar a {
+            color: white;
+            text-decoration: none;
+            padding: 15px 20px;
+            display: inline-block;
+            transition: background 0.3s;
+            font-size: 14px;
+        }
+        .nav-bar a:hover, .nav-bar a.active {
+            background: rgba(255,255,255,0.1);
+        }
+        .nav-bar a.active { border-bottom: 3px solid #ffd700; }
+
+        /* Main Content */
+        .main-content {
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Page Title */
+        .page-title {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .page-title h2 {
+            color: #1e3a5f;
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        .page-title p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* iFrame Container */
+        .iframe-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .iframe-container iframe {
+            width: 100%;
+            height: 1200px;
+            border: none;
+        }
+
+        /* Quick Links */
+        .quick-links {
+            background: #e3f2fd;
+            padding: 15px 20px;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .quick-links span {
+            font-weight: 600;
+            color: #1e3a5f;
+        }
+        .quick-links a {
+            color: #2563eb;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .quick-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-left">
+            <img src="tripfactory-logo.png" alt="TripFactory Logo" onerror="this.style.display='none'">
+            <div>
+                <h1>🇬🇧 UK Market</h1>
+                <p style="font-size: 12px; opacity: 0.9;">Tour Costing & Operations</p>
+            </div>
+        </div>
+        <div class="header-right">
+            <img src="orn-logo.png" alt="ORN Logo" onerror="this.style.display='none'">
+            <img src="nexusdmc-logo.png" alt="Nexus DMC Logo" onerror="this.style.display='none'">
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav-bar">
+        <a href="ukmarket.html">🏠 Dashboard</a>
+        <a href="ukmarket-contacts.html">📞 Contacts</a>
+        <a href="ukmarket-hotels.html">🏨 Hotels</a>
+        <a href="ukmarket-tours.html">🎯 Tours</a>
+        <a href="ukmarket-tasks.html">✅ Tasks</a>
+        <a href="ukmarket-wiki.html">📚 Wiki</a>
+        <a href="ukmarket-costing.html" class="active">💰 Costing</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="page-title">
+            <h2>🇬🇧 UK Tours 2026 - Costing Sheets</h2>
+            <p>Comprehensive costing tool for all 7 UK tour products. Enter GBP costs to auto-calculate INR pricing.</p>
+        </div>
+
+        <div class="quick-links">
+            <span>Quick Links:</span>
+            <a href="uk-tours-costing.html" target="_blank">🔗 Open in New Tab</a>
+            <a href="ukmarket-tours.html">← Back to Tours</a>
+        </div>
+
+        <div class="iframe-container">
+            <iframe src="uk-tours-costing.html" title="UK Tours Costing Sheets"></iframe>
+        </div>
+    </div>
+</body>
+</html>
